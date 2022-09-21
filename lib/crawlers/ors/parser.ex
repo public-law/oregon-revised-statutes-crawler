@@ -19,7 +19,10 @@ defmodule Parser do
   def volumes(document) do
     document
     |> Floki.find("tbody[id^=titl]")
-    |> Enum.map(fn e -> %{name: Floki.text(e)} end)
+    |> Enum.map(&Floki.text/1)
+    |> Enum.map(&String.trim/1)
+    |> Enum.filter(&String.match?(&1, ~r/Volume/))
+    |> dbg()
   end
 
   # defp id(elem) do

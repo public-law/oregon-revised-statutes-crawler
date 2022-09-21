@@ -6,7 +6,9 @@ defmodule CrawlersTest do
   doctest Crawlers
 
   setup_all do
-    %{doc: Floki.parse_document(File.read!("test/fixtures/ors.aspx"))}
+    {:ok, document} = Floki.parse_document(File.read!("test/fixtures/ors.aspx"))
+
+    %{doc: document}
   end
 
   test "finds the correct # of Volumes", %{doc: doc} do
