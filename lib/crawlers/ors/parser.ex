@@ -1,4 +1,5 @@
 import Enum
+alias Crawlers.ORS.Models.Volume
 
 defmodule Parser do
   @moduledoc """
@@ -12,6 +13,7 @@ defmodule Parser do
     |> map(&String.trim/1)
     |> filter(&String.match?(&1, ~r/Volume/))
     |> uniq()
+    |> map(fn n -> %Volume{name: n} end)
   end
 
   # def parse(html) when is_binary(html) do
