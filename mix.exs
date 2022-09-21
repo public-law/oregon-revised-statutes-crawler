@@ -22,6 +22,7 @@ defmodule Crawlers.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:credo, "> 0.0.0"},
       {:crawly, "~> 0.14.0"},
       {:floki, "~> 0.33.0"}
       # {:dep_from_hexpm, "~> 0.3.0"},

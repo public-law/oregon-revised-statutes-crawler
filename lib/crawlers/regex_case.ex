@@ -1,4 +1,8 @@
 defmodule RegexCase do
+  @moduledoc """
+  Creates a Case expression which branches on the result of a Regex match.
+  """
+
   defmacro regex_case(string, do: lines) do
     new_lines =
       Enum.map(lines, fn {:->, context, [[regex], result]} ->
