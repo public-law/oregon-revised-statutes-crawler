@@ -16,6 +16,12 @@ defmodule Parser do
 
   def parse(%{body: html}), do: parse(html)
 
+  def volumes(document) do
+    document
+    |> Floki.find("tbody[id^=titl]")
+    |> Enum.map(fn e -> %{name: Floki.text(e)} end)
+  end
+
   # defp id(elem) do
   #   elem
   #   |> Floki.attribute("id")
