@@ -15,25 +15,25 @@ defmodule CrawlersTest do
     assert Enum.count(volumes) == 19
   end
 
-  test "gets Volume 1 name", %{volumes: volumes} do
+  test "Volume 1 name", %{volumes: volumes} do
     vol_1 = List.first(volumes)
 
     assert vol_1.name == "Courts, Oregon Rules of Civil Procedure"
   end
 
-  test "gets Volume 1 number", %{volumes: volumes} do
+  test "Volume 1 number", %{volumes: volumes} do
     vol_1 = List.first(volumes)
 
     assert vol_1.number == 1
   end
 
-  test "gets Volume 19 name", %{volumes: volumes} do
+  test "Volume 19 name", %{volumes: volumes} do
     vol_19 = List.last(volumes)
 
     assert vol_19.name == "Utilities, Vehicle Code, Watercraft, Aviation"
   end
 
-  test "gets Volume 19 number", %{volumes: volumes} do
+  test "Volume 19 number", %{volumes: volumes} do
     vol_19 = List.last(volumes)
 
     assert vol_19.number == 19
