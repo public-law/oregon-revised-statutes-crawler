@@ -7,8 +7,8 @@ defmodule Crawlers.ORS.Models.Volume do
   typedstruct enforce: true do
     @typedoc "An ORS Volume"
 
-    field(:name, binary)
+    field(:name, String.t())
     field(:number, pos_integer)
-    field(:chapter_range, {pos_integer, pos_integer})
+    field(:chapter_range, Range.t())
   end
 end

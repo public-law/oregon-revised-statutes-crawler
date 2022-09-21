@@ -38,20 +38,14 @@ defmodule Parser do
   # to:
   #   {1, 55}
   #
-  @spec extract_chapter_range(binary) :: {integer(), integer()}
+  @spec extract_chapter_range(binary) :: Range.t()
   defp extract_chapter_range(raw_string) do
-    raw_string
-    |> String.split("-", parts: 3)
-    |> at(2)
-    |> trim()
-    |> String.split(" ")
-    |> at(1)
-    |> String.split("(")
-    |> at(0)
-    |> String.split("-")
-    |> map(fn n -> String.trim_trailing(n, "") end)
-    |> map(&String.to_integer/1)
-    |> map(&List.to_tuple/1)
+    unicode_string = :unicode.characters_to_binary(raw_string) |> dbg
+    regex = ~r/Chapters ([[:alnum:]]+)-([[:alnum:]]+)/
+
+    [_, first_chap, last_chap] = Regex.run(regex, unicode_string) |> dbg
+
+    Range.new(String.to_integer(first_chap), String.to_integer(last_chap))
   end
 
   #
