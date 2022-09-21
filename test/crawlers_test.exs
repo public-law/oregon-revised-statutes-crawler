@@ -3,7 +3,6 @@ defmodule CrawlersTest do
   Test the ORS crawler.
   """
   use ExUnit.Case
-  doctest Crawlers
 
   setup_all do
     {:ok, document} = "test/fixtures/ors.aspx" |> File.read!() |> Floki.parse_document()
