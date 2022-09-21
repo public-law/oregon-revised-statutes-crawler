@@ -50,7 +50,7 @@ defmodule Parser do
   end
 
   #
-  # Clean up a string like:
+  # Convert a raw Volume heading like:
   #   "Volume : 01 - Courts, Oregon Rules of Civil Procedure - Chapters 1-55 (48)"
   # to:
   #   "Courts, Oregon Rules of Civil Procedure"
