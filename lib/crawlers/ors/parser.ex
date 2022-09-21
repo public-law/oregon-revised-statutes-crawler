@@ -11,9 +11,14 @@ defmodule Parser do
     document
     |> extract_headings()
     |> filter(&String.match?(&1, ~r/Volume/))
-    |> map(fn v -> %Volume{name: extract_volume_name(v), number: extract_volume_number(v)} end)
+    |> map(fn v ->
+      %Volume{name: extract_volume_name(v), number: extract_volume_number(v)}
+    end)
   end
 
+  #
+  # Parse out the visible text of the Volume and Title headings.
+  #
   @spec extract_headings(Floki.html_tree()) :: list(binary)
   defp extract_headings(document) do
     document
