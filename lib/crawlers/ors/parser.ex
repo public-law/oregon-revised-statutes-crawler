@@ -40,11 +40,10 @@ defmodule Parser do
   # to:
   #   Range(1, 55)
   #
-  @chapter_range_regex ~r/Chapters (\w+)-(\w+)/u
   @spec extract_chapter_range(binary) :: Range.t()
   defp extract_chapter_range(raw_string) do
     [first_chapter, last_chapter] =
-      run(@chapter_range_regex, raw_string, capture: :all_but_first)
+      run(~r/Chapters (\w+)-(\w+)/u, raw_string, capture: :all_but_first)
       |> map(&to_integer/1)
 
     first_chapter..last_chapter
@@ -74,9 +73,9 @@ defmodule Parser do
   #
   @spec extract_volume_number(binary) :: integer
   defp extract_volume_number(raw_string) do
-    [_, number] = run(~r/^Volume : (\d+)/, raw_string)
-
-    to_integer(number)
+    run(~r/^Volume : (\d+)/, raw_string)
+    |> at(1)
+    |> to_integer
   end
 
   #
