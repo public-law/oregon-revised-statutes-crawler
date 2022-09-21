@@ -1,5 +1,4 @@
 import Enum, only: [at: 2, filter: 2, map: 2, uniq: 1]
-import Regex, except: [split: 2]
 import String, except: [at: 2, filter: 2]
 
 alias Crawlers.ORS.Models.Volume
@@ -44,7 +43,8 @@ defmodule Parser do
   @spec extract_chapter_range(binary) :: Range.t()
   defp extract_chapter_range(raw_string) do
     [first_chapter, last_chapter] =
-      run(~r/Chapters (\w+)-(\w+)/u, raw_string, capture: :all_but_first)
+      raw_string
+      |> capture(~r/Chapters (\w+)-(\w+)/u)
       |> map(&to_integer/1)
 
     first_chapter..last_chapter
