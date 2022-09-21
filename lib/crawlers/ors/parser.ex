@@ -43,9 +43,11 @@ defmodule Parser do
   @chapter_range_regex ~r/Chapters (\w+)-(\w+)/u
   @spec extract_chapter_range(binary) :: Range.t()
   defp extract_chapter_range(raw_string) do
-    [first_chap, last_chap] = run(@chapter_range_regex, raw_string, capture: :all_but_first)
+    [first_chapter, last_chapter] =
+      run(@chapter_range_regex, raw_string, capture: :all_but_first)
+      |> map(&to_integer/1)
 
-    Range.new(to_integer(first_chap), to_integer(last_chap))
+    first_chapter..last_chapter
   end
 
   #
@@ -53,6 +55,8 @@ defmodule Parser do
   #   "Volume : 01 - Courts, Oregon Rules of Civil Procedure - Chapters 1-55 (48)"
   # to:
   #   "Courts, Oregon Rules of Civil Procedure"
+  #
+  # TODO: Test for when a hyphen is in the name.
   #
   @spec extract_volume_name(binary) :: binary
   defp extract_volume_name(raw_string) do
