@@ -22,7 +22,7 @@ defmodule CrawlersTest do
     assert vol_1.name == "Courts, Oregon Rules of Civil Procedure"
   end
 
-  test "get Volume 1 number", %{volumes: volumes} do
+  test "gets Volume 1 number", %{volumes: volumes} do
     vol_1 = List.first(volumes)
 
     assert vol_1.number == 1
