@@ -22,7 +22,7 @@ defmodule Parser do
     |> Enum.map(&Floki.text/1)
     |> Enum.map(&String.trim/1)
     |> Enum.filter(&String.match?(&1, ~r/Volume/))
-    |> dbg()
+    |> Enum.uniq()
   end
 
   # defp id(elem) do
