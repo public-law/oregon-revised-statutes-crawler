@@ -60,7 +60,7 @@ defmodule Parser do
   @spec extract_volume_name(binary) :: binary
   defp extract_volume_name(raw_string) do
     raw_string
-    |> split("-")
+    |> split(" - ")
     |> at(1)
     |> trim()
   end
