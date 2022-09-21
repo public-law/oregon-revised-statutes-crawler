@@ -13,6 +13,8 @@ defmodule Parser do
     |> map(&String.trim/1)
     |> filter(&String.match?(&1, ~r/Volume/))
     |> uniq()
+    |> map(fn n -> at(String.split(n, "-"), 1) end)
+    |> map(&String.trim/1)
     |> map(fn n -> %Volume{name: n} end)
   end
 
