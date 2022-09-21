@@ -1,5 +1,7 @@
-import Enum
-import String, only: [trim: 1]
+import Enum, only: [at: 2, filter: 2, map: 2, uniq: 1]
+import Regex, except: [split: 2]
+import String, except: [at: 2, filter: 2]
+
 alias Crawlers.ORS.Models.Volume
 
 defmodule Parser do
@@ -41,9 +43,9 @@ defmodule Parser do
   @chapter_range_regex ~r/Chapters (\w+)-(\w+)/u
   @spec extract_chapter_range(binary) :: Range.t()
   defp extract_chapter_range(raw_string) do
-    [_, first_chap, last_chap] = Regex.run(@chapter_range_regex, raw_string)
+    [first_chap, last_chap] = run(@chapter_range_regex, raw_string, capture: :all_but_first)
 
-    Range.new(String.to_integer(first_chap), String.to_integer(last_chap))
+    Range.new(to_integer(first_chap), to_integer(last_chap))
   end
 
   #
@@ -55,7 +57,7 @@ defmodule Parser do
   @spec extract_volume_name(binary) :: binary
   defp extract_volume_name(raw_string) do
     raw_string
-    |> String.split("-")
+    |> split("-")
     |> at(1)
     |> trim()
   end
@@ -68,9 +70,9 @@ defmodule Parser do
   #
   @spec extract_volume_number(binary) :: integer
   defp extract_volume_number(raw_string) do
-    [_, number] = Regex.run(~r/^Volume : (\d+)/, raw_string)
+    [_, number] = run(~r/^Volume : (\d+)/, raw_string)
 
-    String.to_integer(number)
+    to_integer(number)
   end
 
   #
