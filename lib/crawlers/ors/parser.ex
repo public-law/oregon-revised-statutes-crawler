@@ -38,7 +38,7 @@ defmodule Parser do
   # to:
   #   {1, 55}
   #
-  @spec extract_chapter_range(binary) :: {pos_integer(), pos_integer()}
+  @spec extract_chapter_range(binary) :: {integer(), integer()}
   defp extract_chapter_range(raw_string) do
     raw_string
     |> String.split("-", parts: 3)
@@ -85,18 +85,22 @@ defmodule Parser do
     |> String.to_integer()
   end
 
-  # def parse(html) when is_binary(html) do
-  #   {:ok, document} = Floki.parse_document(html)
+  #
+  # TODO.
+  #
 
-  #   headings =
-  #     document
-  #     |> Floki.find("tbody[id^=titl]")
-  #     |> Enum.map(fn e -> %{name: Floki.text(e)} end)
+  def parse(html) when is_binary(html) do
+    # {:ok, document} = Floki.parse_document(html)
 
-  #   %Elixir.Crawly.ParsedItem{items: headings, requests: []}
-  # end
+    # headings =
+    #   document
+    #   |> Floki.find("tbody[id^=titl]")
+    #   |> Enum.map(fn e -> %{name: Floki.text(e)} end)
 
-  # def parse(%{body: html}), do: parse(html)
+    %Elixir.Crawly.ParsedItem{items: [], requests: []}
+  end
+
+  def parse(%{body: html}), do: parse(html)
 
   # defp id(elem) do
   #   elem
