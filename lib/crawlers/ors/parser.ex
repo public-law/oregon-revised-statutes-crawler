@@ -3,8 +3,8 @@ defmodule Parser do
   The Parser module is responsible for parsing the response from the spider.
   """
 
-  def parse(response) do
-    {:ok, document} = Floki.parse_document(response.body)
+  def parse(html) when is_binary(html) do
+    {:ok, document} = Floki.parse_document(html)
 
     headings =
       document
@@ -13,6 +13,8 @@ defmodule Parser do
 
     %Elixir.Crawly.ParsedItem{items: headings, requests: []}
   end
+
+  def parse(%{body: html}), do: parse(html)
 
   # defp id(elem) do
   #   elem

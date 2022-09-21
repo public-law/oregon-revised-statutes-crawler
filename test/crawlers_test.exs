@@ -14,8 +14,8 @@ defmodule CrawlersTest do
   end
 
   test "gets the correct # of Volumes", %{html: html} do
-    dbg(html)
+    volumes = Parser.parse(html).volumes
 
-    assert List.length(Parser.parse(html).volumes) == 8
+    assert Enum.count(volumes) == 19
   end
 end
