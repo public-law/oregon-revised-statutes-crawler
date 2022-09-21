@@ -1,5 +1,4 @@
 defmodule Crawlers.Parsers.ORS do
-  @spec parse(atom | %{:body => binary, optional(any) => any}) :: Crawly.ParsedItem.t()
   def parse(response) do
     {:ok, document} = Floki.parse_document(response.body)
 
