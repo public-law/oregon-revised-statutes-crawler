@@ -5,7 +5,7 @@ defmodule CrawlersTest do
   use ExUnit.Case
 
   setup_all do
-    {:ok, document} = "test/fixtures/ors.aspx" |> File.read!() |> Floki.parse_document()
+    document = "test/fixtures/ors.aspx" |> File.read!() |> Floki.parse_document!()
     volumes = Parser.volumes(document)
 
     %{volumes: volumes}

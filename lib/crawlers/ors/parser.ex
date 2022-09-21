@@ -49,8 +49,7 @@ defmodule Parser do
     |> String.split("(")
     |> at(0)
     |> String.split("-")
-    |> map(&String.trim/1)
-    |> dbg
+    |> map(fn n -> String.trim_trailing(n, "") end)
     |> map(&String.to_integer/1)
     |> map(&List.to_tuple/1)
   end
