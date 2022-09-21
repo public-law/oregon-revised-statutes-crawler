@@ -36,7 +36,7 @@ defmodule Parser do
   # Clean up a string like:
   #   "Volume : 01 - Courts, Oregon Rules of Civil Procedure - Chapters 1-55 (48)"
   # to:
-  #   {1, 55}
+  #   Range(1, 55)
   #
   @chapter_range_regex ~r/Chapters (\w+)-(\w+)/u
   @spec extract_chapter_range(binary) :: Range.t()
@@ -68,13 +68,9 @@ defmodule Parser do
   #
   @spec extract_volume_number(binary) :: integer
   defp extract_volume_number(raw_string) do
-    raw_string
-    |> String.split("-")
-    |> at(0)
-    |> String.split(":")
-    |> at(1)
-    |> trim()
-    |> String.to_integer()
+    [_, number] = Regex.run(~r/^Volume : (\d+)/, raw_string)
+
+    String.to_integer(number)
   end
 
   #
