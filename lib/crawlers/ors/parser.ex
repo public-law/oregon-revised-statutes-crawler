@@ -1,3 +1,5 @@
+import Enum
+
 defmodule Parser do
   @moduledoc """
   The Parser module is responsible for parsing the response from the spider.
@@ -19,10 +21,10 @@ defmodule Parser do
   def volumes(document) do
     document
     |> Floki.find("tbody[id^=titl]")
-    |> Enum.map(&Floki.text/1)
-    |> Enum.map(&String.trim/1)
-    |> Enum.filter(&String.match?(&1, ~r/Volume/))
-    |> Enum.uniq()
+    |> map(&Floki.text/1)
+    |> map(&String.trim/1)
+    |> filter(&String.match?(&1, ~r/Volume/))
+    |> uniq()
   end
 
   # defp id(elem) do
