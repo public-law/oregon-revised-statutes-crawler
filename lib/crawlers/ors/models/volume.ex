@@ -8,5 +8,6 @@ defmodule Crawlers.ORS.Models.Volume do
     @typedoc "An ORS Volume"
 
     field(:name, String.t())
+    field(:number, integer)
   end
 end

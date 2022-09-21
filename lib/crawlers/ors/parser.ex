@@ -11,7 +11,7 @@ defmodule Parser do
     |> extract_headings()
     |> filter(&String.match?(&1, ~r/Volume/))
     |> map(&extract_volume_name/1)
-    |> map(fn n -> %Volume{name: n} end)
+    |> map(fn n -> %Volume{name: n, number: 0} end)
   end
 
   @spec extract_headings(Floki.html_tree()) :: list(String.t())
