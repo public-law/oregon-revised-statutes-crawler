@@ -5,7 +5,7 @@ defmodule Parser do
   @moduledoc """
   The Parser module is responsible for parsing the response from the spider.
   """
-
+  @spec volumes(Floki.html_tree()) :: list(Volume.t())
   def volumes(document) do
     document
     |> Floki.find("tbody[id^=titl]")
