@@ -55,14 +55,11 @@ defmodule Parser do
   # to:
   #   "Courts, Oregon Rules of Civil Procedure"
   #
-  # TODO: Test for when a hyphen is in the name.
-  #
   @spec extract_volume_name(binary) :: binary
   defp extract_volume_name(raw_string) do
     raw_string
     |> split(" - ")
     |> at(1)
-    |> trim()
   end
 
   #
