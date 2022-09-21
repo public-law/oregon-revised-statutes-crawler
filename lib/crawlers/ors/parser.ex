@@ -3,7 +3,7 @@ alias Crawlers.ORS.Models.Volume
 
 defmodule Parser do
   @moduledoc """
-  The Parser module is responsible for parsing the response from the spider.
+  The Parser module is responsible for converting the response from the spider.
   """
   @spec volumes(Floki.html_tree()) :: list(Volume.t())
   def volumes(document) do
