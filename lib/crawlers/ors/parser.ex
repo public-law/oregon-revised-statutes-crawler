@@ -40,10 +40,9 @@ defmodule Parser do
   #
   @spec extract_chapter_range(binary) :: Range.t()
   defp extract_chapter_range(raw_string) do
-    unicode_string = :unicode.characters_to_binary(raw_string) |> dbg
-    regex = ~r/Chapters ([[:alnum:]]+)-([[:alnum:]]+)/
+    regex = ~r/Chapters (\W+)-(\W+)/u
 
-    [_, first_chap, last_chap] = Regex.run(regex, unicode_string) |> dbg
+    [_, first_chap, last_chap] = Regex.run(regex, raw_string) |> dbg
 
     Range.new(String.to_integer(first_chap), String.to_integer(last_chap))
   end
