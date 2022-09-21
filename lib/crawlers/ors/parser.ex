@@ -8,13 +8,19 @@ defmodule Parser do
   @spec volumes(Floki.html_tree()) :: list(Volume.t())
   def volumes(document) do
     document
-    |> Floki.find("tbody[id^=titl]")
-    |> map(&Floki.text/1)
-    |> map(&String.trim/1)
+    |> extract_headings()
     |> filter(&String.match?(&1, ~r/Volume/))
     |> uniq()
     |> map(&extract_volume_name/1)
     |> map(fn n -> %Volume{name: n} end)
+  end
+
+  @spec extract_headings(Floki.html_tree()) :: list(String.t())
+  defp extract_headings(document) do
+    document
+    |> Floki.find("tbody[id^=titl]")
+    |> map(&Floki.text/1)
+    |> map(&String.trim/1)
   end
 
   #
