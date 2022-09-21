@@ -3,6 +3,7 @@ import Regex, except: [split: 2]
 import String, except: [at: 2, filter: 2]
 
 alias Crawlers.ORS.Models.Volume
+import Crawlers.Regex, only: [capture: 2]
 
 defmodule Parser do
   @moduledoc """
@@ -70,8 +71,9 @@ defmodule Parser do
   #
   @spec extract_volume_number(binary) :: integer
   defp extract_volume_number(raw_string) do
-    run(~r/^Volume : (\d+)/, raw_string)
-    |> at(1)
+    raw_string
+    |> capture(~r/Volume : (\d+)/u)
+    |> at(0)
     |> to_integer
   end
 
