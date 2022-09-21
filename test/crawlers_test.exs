@@ -6,15 +6,15 @@ defmodule CrawlersTest do
   doctest Crawlers
 
   setup_all do
-    %{html: File.read!("test/fixtures/ors.aspx")}
+    %{doc: Floki.parse_document(File.read!("test/fixtures/ors.aspx"))}
   end
 
   test "greets the world" do
     assert Crawlers.hello() == :world
   end
 
-  test "gets the correct # of Volumes", %{html: html} do
-    volumes = Parser.parse(html).volumes
+  test "gets the correct # of Volumes", %{doc: doc} do
+    volumes = Parser.volumes(doc)
 
     assert Enum.count(volumes) == 19
   end
