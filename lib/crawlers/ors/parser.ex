@@ -38,11 +38,10 @@ defmodule Parser do
   # to:
   #   {1, 55}
   #
+  @chapter_range_regex ~r/Chapters (\w+)-(\w+)/u
   @spec extract_chapter_range(binary) :: Range.t()
   defp extract_chapter_range(raw_string) do
-    range_regex = ~r/Chapters (\w+)-(\w+)/u
-
-    [_, first_chap, last_chap] = Regex.run(range_regex, raw_string) |> dbg
+    [_, first_chap, last_chap] = Regex.run(@chapter_range_regex, raw_string)
 
     Range.new(String.to_integer(first_chap), String.to_integer(last_chap))
   end
