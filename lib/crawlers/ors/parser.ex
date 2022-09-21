@@ -10,7 +10,6 @@ defmodule Parser do
     document
     |> extract_headings()
     |> filter(&String.match?(&1, ~r/Volume/))
-    |> uniq()
     |> map(&extract_volume_name/1)
     |> map(fn n -> %Volume{name: n} end)
   end
@@ -21,6 +20,7 @@ defmodule Parser do
     |> Floki.find("tbody[id^=titl]")
     |> map(&Floki.text/1)
     |> map(&String.trim/1)
+    |> uniq()
   end
 
   #
