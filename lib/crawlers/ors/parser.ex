@@ -13,9 +13,15 @@ defmodule Parser do
     |> map(&String.trim/1)
     |> filter(&String.match?(&1, ~r/Volume/))
     |> uniq()
-    |> map(fn n -> at(String.split(n, "-"), 1) end)
-    |> map(&String.trim/1)
+    |> map(&cleanup_volume_name/1)
     |> map(fn n -> %Volume{name: n} end)
+  end
+
+  defp cleanup_volume_name(raw_string) do
+    raw_string
+    |> String.split("-")
+    |> at(1)
+    |> String.trim()
   end
 
   # def parse(html) when is_binary(html) do
