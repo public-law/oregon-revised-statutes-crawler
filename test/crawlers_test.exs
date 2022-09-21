@@ -26,4 +26,16 @@ defmodule CrawlersTest do
 
     assert vol_1.number == 1
   end
+
+  test "gets Volume 19 name", %{volumes: volumes} do
+    vol_19 = List.last(volumes)
+
+    assert vol_19.name == "Utilities, Vehicle Code, Watercraft, Aviation"
+  end
+
+  test "gets Volume 19 number", %{volumes: volumes} do
+    vol_19 = List.last(volumes)
+
+    assert vol_19.number == 19
+  end
 end
