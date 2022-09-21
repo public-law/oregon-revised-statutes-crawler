@@ -16,4 +16,11 @@ defmodule CrawlersTest do
 
     assert Enum.count(volumes) == 19
   end
+
+  test "gets Volume 1 name", %{doc: doc} do
+    volumes = Parser.volumes(doc)
+    vol_1 = List.first(volumes)
+
+    assert vol_1.name == "Courts, Oregon Rules of Civil Procedure"
+  end
 end
