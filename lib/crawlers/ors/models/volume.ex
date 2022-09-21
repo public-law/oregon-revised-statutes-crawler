@@ -3,13 +3,13 @@ defmodule Crawlers.ORS.Models.Volume do
   An ORS Volume.
   """
 
-  defstruct [:name]
+  # defstruct [:name]
 
-  # use TypedStruct
+  use TypedStruct
 
-  # typedstruct enforce: true do
-  #   @typedoc "An ORS Volume"
+  typedstruct enforce: true do
+    @typedoc "An ORS Volume"
 
-  #   field(:name, String.t())
-  # end
+    field(:name, String.t())
+  end
 end
