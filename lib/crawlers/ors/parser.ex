@@ -1,4 +1,8 @@
-defmodule Crawlers.Parsers.ORS do
+defmodule Parser do
+  @moduledoc """
+  The Parser module is responsible for parsing the response from the spider.
+  """
+
   def parse(response) do
     {:ok, document} = Floki.parse_document(response.body)
 
@@ -10,9 +14,9 @@ defmodule Crawlers.Parsers.ORS do
     %Elixir.Crawly.ParsedItem{items: headings, requests: []}
   end
 
-  defp id(elem) do
-    elem
-    |> Floki.attribute("id")
-    |> List.first("")
-  end
+  # defp id(elem) do
+  #   elem
+  #   |> Floki.attribute("id")
+  #   |> List.first("")
+  # end
 end
