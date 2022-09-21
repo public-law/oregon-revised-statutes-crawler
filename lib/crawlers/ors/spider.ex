@@ -13,7 +13,7 @@ defmodule Spider do
   end
 
   @impl Crawly.Spider
-  def parse_item(response) do
-    Parser.parse(response)
+  def parse_item(_response) do
+    # Parser.parse(response)
   end
 end

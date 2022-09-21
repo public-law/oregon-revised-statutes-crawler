@@ -1,4 +1,5 @@
 import Enum
+import String, only: [trim: 1]
 alias Crawlers.ORS.Models.Volume
 
 defmodule Parser do
@@ -10,16 +11,15 @@ defmodule Parser do
     document
     |> extract_headings()
     |> filter(&String.match?(&1, ~r/Volume/))
-    |> map(&extract_volume_name/1)
-    |> map(fn n -> %Volume{name: n, number: 0} end)
+    |> map(fn v -> %Volume{name: extract_volume_name(v), number: extract_volume_number(v)} end)
   end
 
-  @spec extract_headings(Floki.html_tree()) :: list(String.t())
+  @spec extract_headings(Floki.html_tree()) :: list(binary)
   defp extract_headings(document) do
     document
     |> Floki.find("tbody[id^=titl]")
     |> map(&Floki.text/1)
-    |> map(&String.trim/1)
+    |> map(&trim/1)
     |> uniq()
   end
 
@@ -29,11 +29,29 @@ defmodule Parser do
   # to:
   #   "Courts, Oregon Rules of Civil Procedure"
   #
+  @spec extract_volume_name(binary) :: binary
   defp extract_volume_name(raw_string) do
     raw_string
     |> String.split("-")
     |> at(1)
-    |> String.trim()
+    |> trim()
+  end
+
+  #
+  # Clean up a string like:
+  #   "Volume : 01 - Courts, Oregon Rules of Civil Procedure - Chapters 1-55 (48)"
+  # to:
+  #   1
+  #
+  @spec extract_volume_number(binary) :: integer
+  defp extract_volume_number(raw_string) do
+    raw_string
+    |> String.split("-")
+    |> at(0)
+    |> String.split(":")
+    |> at(1)
+    |> trim()
+    |> String.to_integer()
   end
 
   # def parse(html) when is_binary(html) do
