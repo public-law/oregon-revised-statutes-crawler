@@ -13,11 +13,17 @@ defmodule Parser do
     |> map(&String.trim/1)
     |> filter(&String.match?(&1, ~r/Volume/))
     |> uniq()
-    |> map(&cleanup_volume_name/1)
+    |> map(&extract_volume_name/1)
     |> map(fn n -> %Volume{name: n} end)
   end
 
-  defp cleanup_volume_name(raw_string) do
+  #
+  # Clean up a string like:
+  #   "Volume : 01 - Courts, Oregon Rules of Civil Procedure - Chapters 1-55 (48)"
+  # to:
+  #   "Courts, Oregon Rules of Civil Procedure"
+  #
+  defp extract_volume_name(raw_string) do
     raw_string
     |> String.split("-")
     |> at(1)
