@@ -9,7 +9,7 @@ defmodule CrawlersTest do
     {:ok, document} = "test/fixtures/ors.aspx" |> File.read!() |> Floki.parse_document()
     volumes = Parser.volumes(document)
 
-    %{doc: document, volumes: volumes}
+    %{volumes: volumes}
   end
 
   test "finds the correct # of Volumes", %{volumes: volumes} do
