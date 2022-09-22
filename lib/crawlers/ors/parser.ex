@@ -10,6 +10,26 @@ defmodule Parser do
   The Parser module is responsible for converting the response from the spider.
   """
 
+  def parse_home_page(%{body: html}), do: parse_home_page(html)
+
+  def parse_home_page(html) when is_bitstring(html) do
+    document = Floki.parse_document!(html)
+
+    volumes = volumes(document)
+    titles = titles(document)
+
+    %Elixir.Crawly.ParsedItem{items: volumes ++ titles, requests: []}
+  end
+
+  def parse_chapter(%{body: html}), do: parse_chapter(html)
+
+  def parse_chapter(html) when is_bitstring(html) do
+    # document = Floki.parse_document!(html)
+    # chapter  = chapter(document)
+
+    %Elixir.Crawly.ParsedItem{items: [], requests: []}
+  end
+
   @spec titles(Floki.html_tree()) :: [Title.t()]
   def titles(document) do
     document
@@ -137,19 +157,6 @@ defmodule Parser do
     raw_string
     |> capture(~r/^Title Number : (\w+)\./u)
   end
-
-  def parse(html) when is_binary(html) do
-    document = Floki.parse_document!(html)
-
-    volumes = volumes(document)
-    titles = titles(document)
-
-    results = volumes ++ titles
-
-    %Elixir.Crawly.ParsedItem{items: results, requests: []}
-  end
-
-  def parse(%{body: html}), do: parse(html)
 
   # defp id(elem) do
   #   elem
