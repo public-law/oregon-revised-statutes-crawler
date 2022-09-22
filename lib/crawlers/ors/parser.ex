@@ -143,7 +143,12 @@ defmodule Parser do
   def parse(html) when is_binary(html) do
     document = Floki.parse_document!(html)
 
-    %Elixir.Crawly.ParsedItem{items: volumes(document), requests: []}
+    volumes = volumes(document)
+    titles = titles(document)
+
+    results = volumes ++ titles
+
+    %Elixir.Crawly.ParsedItem{items: results, requests: []}
   end
 
   def parse(%{body: html}), do: parse(html)

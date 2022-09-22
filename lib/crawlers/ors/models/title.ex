@@ -10,6 +10,6 @@ defmodule Crawlers.ORS.Models.Title do
     field :kind, String.t(), default: "title"
     field :name, String.t()
     field :number, String.t()
-    field :chapter_range, [pos_integer]
+    field :chapter_range, [binary]
   end
 end
