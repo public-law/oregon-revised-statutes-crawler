@@ -3,7 +3,7 @@ import String, except: [at: 2, filter: 2]
 
 alias Crawlers.ORS.Models.Volume
 alias Crawlers.ORS.Models.Title
-import Crawlers.Regex, only: [capture: 2]
+import Crawlers.String, only: [capture: 2, captures: 2]
 
 defmodule Parser do
   @moduledoc """
@@ -54,12 +54,12 @@ defmodule Parser do
   # Clean up a string like:
   #   "Volume : 01 - Courts, Oregon Rules of Civil Procedure - Chapters 1-55 (48)"
   # to:
-  #   Range(1, 55)
+  #   [1, 55]
   #
   @spec extract_chapter_range(binary) :: [pos_integer]
   defp extract_chapter_range(raw_string) do
     raw_string
-    |> capture(~r/Chapters (\w+)-(\w+)/u)
+    |> captures(~r/Chapters (\w+)-(\w+)/u)
     |> map(&to_integer/1)
   end
 
@@ -86,7 +86,6 @@ defmodule Parser do
   defp extract_title_name(raw_string) do
     raw_string
     |> capture(~r/\. (.+) - Chapter/)
-    |> at(0)
   end
 
   #
@@ -99,7 +98,6 @@ defmodule Parser do
   defp extract_volume_number(raw_string) do
     raw_string
     |> capture(~r/Volume : (\d+)/u)
-    |> at(0)
     |> to_integer
   end
 
@@ -113,7 +111,6 @@ defmodule Parser do
   defp extract_title_number(raw_string) do
     raw_string
     |> capture(~r/^Title Number : (\w+)\./u)
-    |> at(0)
   end
 
   def parse(html) when is_binary(html) do
