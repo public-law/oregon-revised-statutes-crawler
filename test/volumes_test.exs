@@ -1,9 +1,8 @@
 defmodule VolumesTest do
-  import List
-
   @moduledoc """
   Test the ORS crawler.
   """
+  import List
   use ExUnit.Case, async: true
 
   setup_all do

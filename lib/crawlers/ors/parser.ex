@@ -2,6 +2,7 @@ import Enum, only: [at: 2, filter: 2, map: 2, uniq: 1]
 import String, except: [at: 2, filter: 2]
 
 alias Crawlers.ORS.Models.Volume
+alias Crawlers.ORS.Models.Title
 import Crawlers.Regex, only: [capture: 2]
 
 defmodule Parser do
@@ -14,14 +15,13 @@ defmodule Parser do
     document
     |> extract_headings()
     |> filter(&String.match?(&1, ~r/Title/))
-
-    # |> map(fn v ->
-    #   %Volume{
-    #     name: extract_volume_name(v),
-    #     number: extract_volume_number(v),
-    #     chapter_range: extract_chapter_range(v)
-    #   }
-    # end)
+    |> map(fn v ->
+      %Title{
+        name: extract_title_name(v)
+        # number: extract_volume_number(v),
+        # chapter_range: extract_chapter_range(v)
+      }
+    end)
   end
 
   @spec volumes(Floki.html_tree()) :: [Volume.t()]
@@ -74,6 +74,20 @@ defmodule Parser do
     raw_string
     |> split(" - ")
     |> at(1)
+  end
+
+  #
+  # Convert a raw Title heading like:
+  #   "Title Number : 57. Utility Regulation - Chapters 756-774 (16)"
+  # to:
+  #   "Utility Regulation"
+  #
+  @spec extract_title_name(binary) :: binary
+  defp extract_title_name(raw_string) do
+    raw_string
+    |> capture(~r/\. (.+) - Chapter/)
+    |> dbg
+    |> at(0)
   end
 
   #
