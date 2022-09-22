@@ -5,7 +5,10 @@ defmodule TitlesTest do
   use ExUnit.Case, async: true
 
   setup_all do
-    document = "test/fixtures/ors.aspx" |> File.read!() |> Floki.parse_document!()
+    document =
+      "test/fixtures/ors.aspx"
+      |> File.read!()
+      |> Floki.parse_document!()
 
     %{titles: Parser.titles(document)}
   end
