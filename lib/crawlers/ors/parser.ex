@@ -40,14 +40,11 @@ defmodule Parser do
   # to:
   #   Range(1, 55)
   #
-  @spec extract_chapter_range(binary) :: Range.t()
+  @spec extract_chapter_range(binary) :: [pos_integer]
   defp extract_chapter_range(raw_string) do
-    [first_chapter, last_chapter] =
-      raw_string
-      |> capture(~r/Chapters (\w+)-(\w+)/u)
-      |> map(&to_integer/1)
-
-    first_chapter..last_chapter
+    raw_string
+    |> capture(~r/Chapters (\w+)-(\w+)/u)
+    |> map(&to_integer/1)
   end
 
   #

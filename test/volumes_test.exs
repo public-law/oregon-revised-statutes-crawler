@@ -32,7 +32,7 @@ defmodule VolumesTest do
   test "Volume 1 first & last chapters", %{volumes: volumes} do
     vol_1 = first(volumes)
 
-    assert vol_1.chapter_range == 1..55
+    assert vol_1.chapter_range == [1, 55]
   end
 
   test "Volume 19 name", %{volumes: volumes} do
@@ -50,7 +50,7 @@ defmodule VolumesTest do
   test "Volume 19 first & last chapters", %{volumes: volumes} do
     vol_19 = last(volumes)
 
-    assert vol_19.chapter_range == 756..838
+    assert vol_19.chapter_range == [756, 838]
   end
 
   test "Volume 3 name", %{volumes: volumes} do

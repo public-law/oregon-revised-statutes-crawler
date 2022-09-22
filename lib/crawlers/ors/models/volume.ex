@@ -9,6 +9,6 @@ defmodule Crawlers.ORS.Models.Volume do
 
     field(:name, String.t())
     field(:number, pos_integer)
-    field(:chapter_range, Range.t())
+    field(:chapter_range, [pos_integer])
   end
 end
