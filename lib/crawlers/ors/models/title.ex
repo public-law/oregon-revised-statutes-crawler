@@ -1,13 +1,13 @@
-defmodule Crawlers.ORS.Models.Volume do
+defmodule Crawlers.ORS.Models.Title do
   @moduledoc """
-  An ORS Volume.
+  An ORS Title.
   """
   use TypedStruct
 
   typedstruct enforce: true do
-    @typedoc "An ORS Volume"
+    @typedoc "An ORS Title"
 
-    field :kind, String.t(), default: "volume"
+    field :kind, String.t(), default: "title"
     field :name, String.t()
     field :number, String.t()
     field :chapter_range, [String.t()]
