@@ -29,4 +29,16 @@ defmodule TitlesTest do
 
     assert vol_1.number == "1"
   end
+
+  test "Title 62 name", %{titles: titles} do
+    vol_62 = last(titles)
+
+    assert vol_62.name == "Aviation"
+  end
+
+  test "Title 62 number", %{titles: titles} do
+    vol_62 = last(titles)
+
+    assert vol_62.number == "62"
+  end
 end
