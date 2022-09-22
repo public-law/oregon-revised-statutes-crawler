@@ -21,6 +21,6 @@ defmodule Spider do
 
   def parse_item(%{status_code: 200} = response) do
     dbg(response)
-    Parser.parse_chapter(response)
+    Parser.parse_chapter_page(response)
   end
 end

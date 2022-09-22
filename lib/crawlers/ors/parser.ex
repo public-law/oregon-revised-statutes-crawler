@@ -21,9 +21,9 @@ defmodule Parser do
     %Elixir.Crawly.ParsedItem{items: volumes ++ titles, requests: []}
   end
 
-  def parse_chapter(%{body: html}), do: parse_chapter(html)
+  def parse_chapter_page(%{body: html}), do: parse_chapter_page(html)
 
-  def parse_chapter(html) when is_bitstring(html) do
+  def parse_chapter_page(html) when is_bitstring(html) do
     # document = Floki.parse_document!(html)
     # chapter  = chapter(document)
 
