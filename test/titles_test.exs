@@ -37,14 +37,20 @@ defmodule TitlesTest do
   end
 
   test "Title 62 name", %{titles: titles} do
-    vol_62 = last(titles)
+    title_62 = last(titles)
 
-    assert vol_62.name == "Aviation"
+    assert title_62.name == "Aviation"
   end
 
   test "Title 62 number", %{titles: titles} do
-    vol_62 = last(titles)
+    title_62 = last(titles)
 
-    assert vol_62.number == "62"
+    assert title_62.number == "62"
+  end
+
+  test "Title 62 chapter range", %{titles: titles} do
+    title_62 = last(titles)
+
+    assert title_62.chapter_range == ["835", "838"]
   end
 end
