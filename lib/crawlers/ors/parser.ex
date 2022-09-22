@@ -8,7 +8,7 @@ defmodule Parser do
   @moduledoc """
   The Parser module is responsible for converting the response from the spider.
   """
-  @spec volumes(Floki.html_tree()) :: list(Volume.t())
+  @spec volumes(Floki.html_tree()) :: [Volume.t()]
   def volumes(document) do
     document
     |> extract_headings()
@@ -74,12 +74,8 @@ defmodule Parser do
     |> to_integer
   end
 
-  #
-  # TODO.
-  #
-
   def parse(html) when is_binary(html) do
-    {:ok, document} = Floki.parse_document(html)
+    document = Floki.parse_document!(html)
 
     %Elixir.Crawly.ParsedItem{items: volumes(document), requests: []}
   end
