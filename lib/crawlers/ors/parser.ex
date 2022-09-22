@@ -56,7 +56,7 @@ defmodule Parser do
   # to:
   #   [1, 55]
   #
-  @spec extract_chapter_range(binary) :: [pos_integer]
+  @spec extract_chapter_range(binary) :: [binary]
   defp extract_chapter_range(raw_string) do
     raw_string
     |> captures(~r/Chapters (\w+)-(\w+)/u)
@@ -74,9 +74,7 @@ defmodule Parser do
   #
   @spec extract_chapter_range_from_title(binary) :: [binary]
   defp extract_chapter_range_from_title(raw_string) do
-    chapters =
-      raw_string
-      |> captures(~r/Chapters (\w+)-(\w+)/u)
+    chapters = extract_chapter_range(raw_string)
 
     if chapters != nil do
       chapters
