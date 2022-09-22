@@ -86,7 +86,7 @@ defmodule Parser do
   defp extract_title_name(raw_string) do
     raw_string
     |> capture(~r/\. (.+) - Chapter/)
-    |> List.first()
+    |> at(0)
   end
 
   #
