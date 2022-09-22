@@ -82,14 +82,9 @@ defmodule Parser do
   #
 
   def parse(html) when is_binary(html) do
-    # {:ok, document} = Floki.parse_document(html)
+    {:ok, document} = Floki.parse_document(html)
 
-    # headings =
-    #   document
-    #   |> Floki.find("tbody[id^=titl]")
-    #   |> Enum.map(fn e -> %{name: Floki.text(e)} end)
-
-    %Elixir.Crawly.ParsedItem{items: [], requests: []}
+    %Elixir.Crawly.ParsedItem{items: volumes(document), requests: []}
   end
 
   def parse(%{body: html}), do: parse(html)
