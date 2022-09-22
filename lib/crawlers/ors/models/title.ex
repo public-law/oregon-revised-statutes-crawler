@@ -11,5 +11,6 @@ defmodule Crawlers.ORS.Models.Title do
     field :name, String.t()
     field :number, String.t()
     field :chapter_range, [String.t()]
+    field :volume_number, String.t()
   end
 end

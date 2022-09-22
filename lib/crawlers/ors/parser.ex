@@ -39,7 +39,8 @@ defmodule Parser do
       %Title{
         name: extract_title_name(v),
         number: extract_title_number(v),
-        chapter_range: extract_chapter_range_from_title(v)
+        chapter_range: extract_chapter_range_from_title(v),
+        volume_number: "0"
       }
     end)
   end
