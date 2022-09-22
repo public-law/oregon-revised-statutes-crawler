@@ -25,7 +25,7 @@ defmodule VolumesTest do
   test "Volume 1 number", %{volumes: volumes} do
     vol_1 = first(volumes)
 
-    assert vol_1.number == 1
+    assert vol_1.number == "1"
   end
 
   test "Volume 1 first & last chapters", %{volumes: volumes} do
@@ -43,7 +43,7 @@ defmodule VolumesTest do
   test "Volume 19 number", %{volumes: volumes} do
     vol_19 = last(volumes)
 
-    assert vol_19.number == 19
+    assert vol_19.number == "19"
   end
 
   test "Volume 19 first & last chapters", %{volumes: volumes} do

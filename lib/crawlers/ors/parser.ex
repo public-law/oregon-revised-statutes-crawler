@@ -118,11 +118,12 @@ defmodule Parser do
   # to:
   #   1
   #
-  @spec extract_volume_number(binary) :: integer
+  @spec extract_volume_number(binary) :: binary
   defp extract_volume_number(raw_string) do
     raw_string
     |> capture(~r/Volume : (\d+)/u)
     |> to_integer
+    |> Integer.to_string()
   end
 
   #
