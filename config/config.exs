@@ -3,7 +3,7 @@ import Config
 config :crawly,
   closespider_timeout: nil,
   concurrent_requests_per_domain: 8,
-  closespider_itemcount: 100,
+  # closespider_itemcount: 100,
   middlewares: [
     Crawly.Middlewares.DomainFilter,
     Crawly.Middlewares.UniqueRequest,
