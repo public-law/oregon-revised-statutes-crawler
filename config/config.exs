@@ -10,8 +10,8 @@ config :crawly,
     {Crawly.Middlewares.UserAgent, user_agents: ["Crawly Bot"]}
   ],
   pipelines: [
-    {Crawly.Pipelines.Validate, fields: [:name]},
+    # {Crawly.Pipelines.Validate, fields: [:name]},
     # {Crawly.Pipelines.DuplicatesFilter, item_id: :title},
     Crawly.Pipelines.JSONEncoder,
-    {Crawly.Pipelines.WriteToFile, extension: "jl", folder: "/tmp"}
+    {Crawly.Pipelines.WriteToFile, extension: "jl", folder: "./tmp"}
   ]
