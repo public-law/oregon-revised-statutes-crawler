@@ -24,9 +24,9 @@ defmodule TitlesTest do
     assert vol_1.name == "Courts of Record; Court Officers; Juries"
   end
 
-  # test "Title 1 number", %{titles: titles} do
-  #   vol_1 = first(titles)
+  test "Title 1 number", %{titles: titles} do
+    vol_1 = first(titles)
 
-  #   assert vol_1.number == "1"
-  # end
+    assert vol_1.number == "1"
+  end
 end

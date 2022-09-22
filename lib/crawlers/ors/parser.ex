@@ -17,8 +17,8 @@ defmodule Parser do
     |> filter(&String.match?(&1, ~r/Title/))
     |> map(fn v ->
       %Title{
-        name: extract_title_name(v)
-        # number: extract_volume_number(v),
+        name: extract_title_name(v),
+        number: extract_title_number(v)
         # chapter_range: extract_chapter_range(v)
       }
     end)
@@ -101,6 +101,19 @@ defmodule Parser do
     |> capture(~r/Volume : (\d+)/u)
     |> at(0)
     |> to_integer
+  end
+
+  #
+  # Clean up a string like:
+  #   "Title Number : 57. Utility Regulation - Chapters 756-774 (16)"
+  # to:
+  #   "57"
+  #
+  @spec extract_title_number(binary) :: binary
+  defp extract_title_number(raw_string) do
+    raw_string
+    |> capture(~r/^Title Number : (\w+)\./u)
+    |> at(0)
   end
 
   def parse(html) when is_binary(html) do
