@@ -18,8 +18,8 @@ defmodule Parser do
     |> map(fn v ->
       %Title{
         name: extract_title_name(v),
-        number: extract_title_number(v)
-        # chapter_range: extract_chapter_range(v)
+        number: extract_title_number(v),
+        chapter_range: extract_chapter_range_from_title(v)
       }
     end)
   end
@@ -61,6 +61,33 @@ defmodule Parser do
     raw_string
     |> captures(~r/Chapters (\w+)-(\w+)/u)
     |> map(&to_integer/1)
+  end
+
+  #
+  # Clean up a string like:
+  #   "Volume : 01 - Courts, Oregon Rules of Civil Procedure - Chapters 1-55 (48)"
+  # to:
+  #   ["1", "55"]
+  #
+  #   "Title Number : 5. Small Claims Department of Circuit Court - Chapter 46 (1)"
+  # to:
+  #   ["46", "46"]
+  #
+  @spec extract_chapter_range_from_title(binary) :: [binary]
+  defp extract_chapter_range_from_title(raw_string) do
+    chapters =
+      raw_string
+      |> captures(~r/Chapters (\w+)-(\w+)/u)
+
+    if chapters != nil do
+      chapters
+    else
+      chapter_number =
+        raw_string
+        |> capture(~r/Chapter (\w+)/u)
+
+      [chapter_number, chapter_number]
+    end
   end
 
   #

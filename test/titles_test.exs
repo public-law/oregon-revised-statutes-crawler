@@ -19,21 +19,21 @@ defmodule TitlesTest do
   end
 
   test "Title 1 name", %{titles: titles} do
-    vol_1 = first(titles)
+    title_1 = first(titles)
 
-    assert vol_1.name == "Courts of Record; Court Officers; Juries"
+    assert title_1.name == "Courts of Record; Court Officers; Juries"
   end
 
   test "Title 1 number", %{titles: titles} do
-    vol_1 = first(titles)
+    title_1 = first(titles)
 
-    assert vol_1.number == "1"
+    assert title_1.number == "1"
   end
 
   test "Title 1 first & last chapters", %{titles: titles} do
-    vol_1 = first(titles)
+    title_1 = first(titles)
 
-    assert vol_1.chapter_range == [1, 55]
+    assert title_1.chapter_range == ["1", "11"]
   end
 
   test "Title 62 name", %{titles: titles} do
