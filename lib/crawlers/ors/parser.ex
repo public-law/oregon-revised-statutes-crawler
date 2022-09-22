@@ -60,7 +60,6 @@ defmodule Parser do
   defp extract_chapter_range(raw_string) do
     raw_string
     |> captures(~r/Chapters (\w+)-(\w+)/u)
-    |> map(&to_integer/1)
   end
 
   #

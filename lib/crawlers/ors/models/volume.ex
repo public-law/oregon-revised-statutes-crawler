@@ -9,7 +9,7 @@ defmodule Crawlers.ORS.Models.Volume do
 
     field :kind, String.t(), default: "volume"
     field :name, String.t()
-    field :number, pos_integer
-    field :chapter_range, [pos_integer]
+    field :number, String.t()
+    field :chapter_range, [String.t()]
   end
 end
