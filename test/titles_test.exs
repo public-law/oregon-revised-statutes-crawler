@@ -1,6 +1,4 @@
 defmodule TitlesTest do
-  import List
-
   @moduledoc """
   Test the ORS crawler.
   """
@@ -13,6 +11,6 @@ defmodule TitlesTest do
   end
 
   test "finds the correct # of Titles", %{titles: titles} do
-    assert Enum.count(titles) == 19
+    assert Enum.count(titles) == 61
   end
 end

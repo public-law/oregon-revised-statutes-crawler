@@ -8,6 +8,22 @@ defmodule Parser do
   @moduledoc """
   The Parser module is responsible for converting the response from the spider.
   """
+
+  @spec titles(Floki.html_tree()) :: [Title.t()]
+  def titles(document) do
+    document
+    |> extract_headings()
+    |> filter(&String.match?(&1, ~r/Title/))
+
+    # |> map(fn v ->
+    #   %Volume{
+    #     name: extract_volume_name(v),
+    #     number: extract_volume_number(v),
+    #     chapter_range: extract_chapter_range(v)
+    #   }
+    # end)
+  end
+
   @spec volumes(Floki.html_tree()) :: [Volume.t()]
   def volumes(document) do
     document
