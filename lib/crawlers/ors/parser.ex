@@ -34,13 +34,13 @@ defmodule Parser do
   def titles(document) do
     document
     |> extract_headings()
-    |> filter(&String.match?(&1, ~r/Title/))
-    |> map(fn v ->
+    |> filter(&String.match?(&1.text, ~r/Title/))
+    |> map(fn title_heading ->
       %Title{
-        name: extract_title_name(v),
-        number: extract_title_number(v),
-        chapter_range: extract_chapter_range_from_title(v),
-        volume_number: "0"
+        name: extract_title_name(title_heading.text),
+        number: extract_title_number(title_heading.text),
+        chapter_range: extract_chapter_range_from_title(title_heading.text),
+        volume_number: capture(title_heading.id, ~r/-([^_]+)_/)
       }
     end)
   end
@@ -49,6 +49,8 @@ defmodule Parser do
   def volumes(document) do
     document
     |> extract_headings()
+    |> map(fn v -> v.text end)
+    |> uniq
     |> filter(&String.match?(&1, ~r/Volume/))
     |> map(fn v ->
       %Volume{
@@ -62,12 +64,11 @@ defmodule Parser do
   #
   # Parse out the visible text of the Volume and Title headings.
   #
-  @spec extract_headings(Floki.html_tree()) :: list(binary)
+  @spec extract_headings(Floki.html_tree()) :: list(%{})
   defp extract_headings(document) do
     document
     |> Floki.find("tbody[id^=titl]")
-    |> map(&Floki.text/1)
-    |> map(&trim/1)
+    |> map(fn e -> %{id: id(e), text: trim(Floki.text(e))} end)
     |> uniq()
   end
 
@@ -159,9 +160,9 @@ defmodule Parser do
     |> capture(~r/^Title Number : (\w+)\./u)
   end
 
-  # defp id(elem) do
-  #   elem
-  #   |> Floki.attribute("id")
-  #   |> List.first("")
-  # end
+  defp id(elem) do
+    elem
+    |> Floki.attribute("id")
+    |> List.first("")
+  end
 end
