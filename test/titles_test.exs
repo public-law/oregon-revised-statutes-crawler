@@ -30,6 +30,12 @@ defmodule TitlesTest do
     assert vol_1.number == "1"
   end
 
+  test "Title 1 first & last chapters", %{titles: titles} do
+    vol_1 = first(titles)
+
+    assert vol_1.chapter_range == [1, 55]
+  end
+
   test "Title 62 name", %{titles: titles} do
     vol_62 = last(titles)
 
