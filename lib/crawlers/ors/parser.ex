@@ -32,7 +32,12 @@ defmodule Parser do
 
   def chapters(api_data) do
     api_data
-    |> map(fn c -> %{name: Map.fetch!(c, "ORS_x0020_Chapter_x0020_Title")} end)
+    |> map(fn c ->
+      %{
+        name: Map.fetch!(c, "ORS_x0020_Chapter_x0020_Title"),
+        number: Map.fetch!(c, "Title") |> capture(~r/Chapter (\w+)/) |> String.to_integer()
+      }
+    end)
   end
 
   @spec titles(Floki.html_tree()) :: [Title.t()]
