@@ -18,39 +18,39 @@ defmodule ChaptersTest do
     assert Enum.count(chapters) == 688
   end
 
-  test "Chapter 1 name", %{chapters: chapters} do
-    first_chapter = first(chapters)
+  # test "Chapter 1 name", %{chapters: chapters} do
+  #   first_chapter = first(chapters)
 
-    assert first_chapter.name == "Courts and Judicial Officers Generally"
-  end
+  #   assert first_chapter.name == "Courts and Judicial Officers Generally"
+  # end
 
-  test "Chapter 1 number", %{chapters: chapters} do
-    first_chapter = first(chapters)
+  # test "Chapter 1 number", %{chapters: chapters} do
+  #   first_chapter = first(chapters)
 
-    assert first_chapter.number == "1"
-  end
+  #   assert first_chapter.number == "1"
+  # end
 
-  test "Chapter 1 Title number", %{chapters: chapters} do
-    first_chapter = first(chapters)
+  # test "Chapter 1 Title number", %{chapters: chapters} do
+  #   first_chapter = first(chapters)
 
-    assert first_chapter.title_number == "1"
-  end
+  #   assert first_chapter.title_number == "1"
+  # end
 
-  test "Last Chapter name", %{chapters: chapters} do
-    last_chapter = last(chapters)
+  # test "Last Chapter name", %{chapters: chapters} do
+  #   last_chapter = last(chapters)
 
-    assert last_chapter.name == "Airport Districts"
-  end
+  #   assert last_chapter.name == "Airport Districts"
+  # end
 
-  test "Last Chapter number", %{chapters: chapters} do
-    last_chapter = last(chapters)
+  # test "Last Chapter number", %{chapters: chapters} do
+  #   last_chapter = last(chapters)
 
-    assert last_chapter.number == "838"
-  end
+  #   assert last_chapter.number == "838"
+  # end
 
-  test "Last Chapter Title number", %{chapters: chapters} do
-    last_chapter = last(chapters)
+  # test "Last Chapter Title number", %{chapters: chapters} do
+  #   last_chapter = last(chapters)
 
-    assert last_chapter.title_number == "62"
-  end
+  #   assert last_chapter.title_number == "62"
+  # end
 end
