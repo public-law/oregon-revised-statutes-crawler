@@ -38,7 +38,8 @@ defmodule Parser do
       %Chapter{
         name: Map.fetch!(c, "ORS_x0020_Chapter_x0020_Title"),
         number: Map.fetch!(c, "Title") |> capture(~r/Chapter (\w+)/) |> trim_leading("0"),
-        title_number: Map.fetch!(c, "ORS_x0020_Chapter") |> capture(~r/^([^.]+)/)
+        title_number: Map.fetch!(c, "ORS_x0020_Chapter") |> capture(~r/^([^.]+)/),
+        url: "https://www.oregonlegislature.gov" <> Map.fetch!(c, "TitleURL")
       }
     end)
   end
