@@ -3,6 +3,7 @@ import String, except: [at: 2, filter: 2]
 
 alias Crawlers.ORS.Models.Volume
 alias Crawlers.ORS.Models.Title
+alias Crawlers.ORS.Models.Chapter
 import Crawlers.String, only: [capture: 2, captures: 2]
 
 defmodule Parser do
@@ -10,16 +11,49 @@ defmodule Parser do
   The Parser module is responsible for converting the response from the spider.
   """
 
+  def parse_home_page(%{body: html}), do: parse_home_page(html)
+
+  def parse_home_page(html) when is_bitstring(html) do
+    document = Floki.parse_document!(html)
+
+    volumes = volumes(document)
+    titles = titles(document)
+    chapters = chapters(AllChapters.request())
+
+    %Elixir.Crawly.ParsedItem{items: volumes ++ titles ++ chapters, requests: []}
+  end
+
+  def parse_chapter_page(%{body: html}), do: parse_chapter_page(html)
+
+  def parse_chapter_page(html) when is_bitstring(html) do
+    # document = Floki.parse_document!(html)
+    # chapter  = chapter(document)
+
+    %Elixir.Crawly.ParsedItem{items: [], requests: []}
+  end
+
+  def chapters(api_data) do
+    api_data
+    |> map(fn c ->
+      %Chapter{
+        name: Map.fetch!(c, "ORS_x0020_Chapter_x0020_Title"),
+        number: Map.fetch!(c, "Title") |> capture(~r/Chapter (\w+)/) |> String.trim_leading("0"),
+        title_number: Map.fetch!(c, "ORS_x0020_Chapter") |> capture(~r/^([^.]+)/)
+      }
+    end)
+  end
+
   @spec titles(Floki.html_tree()) :: [Title.t()]
   def titles(document) do
     document
     |> extract_headings()
-    |> filter(&String.match?(&1, ~r/Title/))
-    |> map(fn v ->
+    |> filter(&String.match?(&1.text, ~r/Title/))
+    |> map(fn title_heading ->
       %Title{
-        name: extract_title_name(v),
-        number: extract_title_number(v),
-        chapter_range: extract_chapter_range_from_title(v)
+        name: extract_title_name(title_heading.text),
+        number: extract_title_number(title_heading.text),
+        chapter_range: extract_chapter_range_from_title(title_heading.text),
+        volume_number: capture(title_heading.id, ~r/-([^_]+)_/)
       }
     end)
   end
@@ -28,6 +62,8 @@ defmodule Parser do
   def volumes(document) do
     document
     |> extract_headings()
+    |> map(fn v -> v.text end)
+    |> uniq
     |> filter(&String.match?(&1, ~r/Volume/))
     |> map(fn v ->
       %Volume{
@@ -41,22 +77,21 @@ defmodule Parser do
   #
   # Parse out the visible text of the Volume and Title headings.
   #
-  @spec extract_headings(Floki.html_tree()) :: list(binary)
+  @spec extract_headings(Floki.html_tree()) :: list(%{})
   defp extract_headings(document) do
     document
     |> Floki.find("tbody[id^=titl]")
-    |> map(&Floki.text/1)
-    |> map(&trim/1)
+    |> map(fn e -> %{id: id(e), text: trim(Floki.text(e))} end)
     |> uniq()
   end
 
   #
-  # Clean up a string like:
+  # Extract the chapter range numbers from a Volume heading like this:
   #   "Volume : 01 - Courts, Oregon Rules of Civil Procedure - Chapters 1-55 (48)"
+  #
   # to:
   #   [1, 55]
   #
-  @spec extract_chapter_range(binary) :: [binary]
   defp extract_chapter_range(raw_string) do
     raw_string
     |> captures(~r/Chapters (\w+)-(\w+)/u)
@@ -138,22 +173,9 @@ defmodule Parser do
     |> capture(~r/^Title Number : (\w+)\./u)
   end
 
-  def parse(html) when is_binary(html) do
-    document = Floki.parse_document!(html)
-
-    volumes = volumes(document)
-    titles = titles(document)
-
-    results = volumes ++ titles
-
-    %Elixir.Crawly.ParsedItem{items: results, requests: []}
+  defp id(elem) do
+    elem
+    |> Floki.attribute("id")
+    |> List.first("")
   end
-
-  def parse(%{body: html}), do: parse(html)
-
-  # defp id(elem) do
-  #   elem
-  #   |> Floki.attribute("id")
-  #   |> List.first("")
-  # end
 end

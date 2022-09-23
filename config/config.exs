@@ -15,3 +15,6 @@ config :crawly,
     Crawly.Pipelines.JSONEncoder,
     {Crawly.Pipelines.WriteToFile, extension: "jl", folder: "./tmp"}
   ]
+
+config :mix_test_watch,
+  clear: true

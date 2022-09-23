@@ -36,6 +36,12 @@ defmodule TitlesTest do
     assert title_1.chapter_range == ["1", "11"]
   end
 
+  test "Title 1 Volume number", %{titles: titles} do
+    title_1 = first(titles)
+
+    assert title_1.volume_number == "1"
+  end
+
   test "Title 62 name", %{titles: titles} do
     title_62 = last(titles)
 
@@ -52,5 +58,11 @@ defmodule TitlesTest do
     title_62 = last(titles)
 
     assert title_62.chapter_range == ["835", "838"]
+  end
+
+  test "Title 62 Volume number", %{titles: titles} do
+    title_62 = last(titles)
+
+    assert title_62.volume_number == "19"
   end
 end
