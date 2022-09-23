@@ -82,7 +82,6 @@ defmodule Parser do
     document
     |> Floki.find("tbody[id^=titl]")
     |> map(fn e -> %{id: id(e), text: trim(Floki.text(e))} end)
-    |> uniq()
   end
 
   #
