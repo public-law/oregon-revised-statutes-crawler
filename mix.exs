@@ -26,6 +26,7 @@ defmodule Crawlers.MixProject do
       {:crawly, "~> 0.14.0"},
       {:floki, "~> 0.33.0"},
       {:httpoison, "~> 1.7"},
+      {:jason, "~> 1.4"},
       {:typed_struct, "~> 0.3.0", runtime: false},
       {:erlyconv, github: "eugenehr/erlyconv"}
       # {:dep_from_hexpm, "~> 0.3.0"},

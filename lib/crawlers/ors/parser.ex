@@ -73,12 +73,12 @@ defmodule Parser do
   end
 
   #
-  # Clean up a string like:
+  # Extract the chapter range numbers from a Volume heading like this:
   #   "Volume : 01 - Courts, Oregon Rules of Civil Procedure - Chapters 1-55 (48)"
+  #
   # to:
   #   [1, 55]
   #
-  @spec extract_chapter_range(binary) :: [binary]
   defp extract_chapter_range(raw_string) do
     raw_string
     |> captures(~r/Chapters (\w+)-(\w+)/u)
