@@ -157,8 +157,7 @@ defmodule Parser do
   defp extract_volume_number(raw_string) do
     raw_string
     |> capture(~r/Volume : (\d+)/u)
-    |> to_integer
-    |> Integer.to_string()
+    |> trim_leading("0")
   end
 
   #
