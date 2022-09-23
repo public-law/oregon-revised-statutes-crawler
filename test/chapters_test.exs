@@ -37,6 +37,12 @@ defmodule ChaptersTest do
     assert first_chapter.title_number == "1"
   end
 
+  test "Chapter 1 URL", %{chapters: chapters} do
+    first_chapter = first(chapters)
+
+    assert first_chapter.url == "https://www.oregonlegislature.gov/bills_laws/ors/ors001.html"
+  end
+
   test "Last Chapter name", %{chapters: chapters} do
     last_chapter = last(chapters)
 
@@ -53,5 +59,11 @@ defmodule ChaptersTest do
     last_chapter = last(chapters)
 
     assert last_chapter.title_number == "62"
+  end
+
+  test "Last Chapter URL", %{chapters: chapters} do
+    last_chapter = last(chapters)
+
+    assert last_chapter.url == "https://www.oregonlegislature.gov/bills_laws/ors/ors838.html"
   end
 end

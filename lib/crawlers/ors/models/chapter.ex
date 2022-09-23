@@ -11,5 +11,6 @@ defmodule Crawlers.ORS.Models.Chapter do
     field :name, String.t()
     field :number, String.t()
     field :title_number, String.t()
+    field :url, String.t()
   end
 end

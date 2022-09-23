@@ -37,8 +37,9 @@ defmodule Parser do
     |> map(fn c ->
       %Chapter{
         name: Map.fetch!(c, "ORS_x0020_Chapter_x0020_Title"),
-        number: Map.fetch!(c, "Title") |> capture(~r/Chapter (\w+)/) |> String.trim_leading("0"),
-        title_number: Map.fetch!(c, "ORS_x0020_Chapter") |> capture(~r/^([^.]+)/)
+        number: Map.fetch!(c, "Title") |> capture(~r/Chapter (\w+)/) |> trim_leading("0"),
+        title_number: Map.fetch!(c, "ORS_x0020_Chapter") |> capture(~r/^([^.]+)/),
+        url: "https://www.oregonlegislature.gov" <> Map.fetch!(c, "TitleURL")
       }
     end)
   end
@@ -62,7 +63,7 @@ defmodule Parser do
   def volumes(document) do
     document
     |> extract_headings()
-    |> map(fn v -> v.text end)
+    |> map(& &1.text)
     |> uniq
     |> filter(&String.match?(&1, ~r/Volume/))
     |> map(fn v ->
@@ -81,8 +82,12 @@ defmodule Parser do
   defp extract_headings(document) do
     document
     |> Floki.find("tbody[id^=titl]")
-    |> map(fn e -> %{id: id(e), text: trim(Floki.text(e))} end)
-    |> uniq()
+    |> map(fn e ->
+      %{
+        id: id(e),
+        text: trim(Floki.text(e))
+      }
+    end)
   end
 
   #
@@ -157,8 +162,7 @@ defmodule Parser do
   defp extract_volume_number(raw_string) do
     raw_string
     |> capture(~r/Volume : (\d+)/u)
-    |> to_integer
-    |> Integer.to_string()
+    |> trim_leading("0")
   end
 
   #
