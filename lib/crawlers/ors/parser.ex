@@ -30,6 +30,10 @@ defmodule Parser do
     %Elixir.Crawly.ParsedItem{items: [], requests: []}
   end
 
+  def chapters(api_data) do
+    api_data
+  end
+
   @spec titles(Floki.html_tree()) :: [Title.t()]
   def titles(document) do
     document

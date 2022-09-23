@@ -10,6 +10,7 @@ defmodule ChaptersTest do
       "test/fixtures/ors-chapters.json"
       |> File.read!()
       |> Jason.decode!()
+      |> Map.get("Row")
 
     %{chapters: Parser.chapters(api_result)}
   end
