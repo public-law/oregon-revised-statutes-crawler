@@ -18,8 +18,9 @@ defmodule Parser do
 
     volumes = volumes(document)
     titles = titles(document)
+    chapters = chapters(AllChapters.request())
 
-    %Elixir.Crawly.ParsedItem{items: volumes ++ titles, requests: []}
+    %Elixir.Crawly.ParsedItem{items: volumes ++ titles ++ chapters, requests: []}
   end
 
   def parse_chapter_page(%{body: html}), do: parse_chapter_page(html)
