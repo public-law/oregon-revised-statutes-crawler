@@ -37,11 +37,11 @@ defmodule ChaptersTest do
   #   assert first_chapter.title_number == "1"
   # end
 
-  # test "Last Chapter name", %{chapters: chapters} do
-  #   last_chapter = last(chapters)
+  test "Last Chapter name", %{chapters: chapters} do
+    last_chapter = last(chapters)
 
-  #   assert last_chapter.name == "Airport Districts"
-  # end
+    assert last_chapter.name == "Airport Districts"
+  end
 
   # test "Last Chapter number", %{chapters: chapters} do
   #   last_chapter = last(chapters)
