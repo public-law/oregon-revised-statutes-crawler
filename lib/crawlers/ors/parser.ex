@@ -3,6 +3,7 @@ import String, except: [at: 2, filter: 2]
 
 alias Crawlers.ORS.Models.Volume
 alias Crawlers.ORS.Models.Title
+alias Crawlers.ORS.Models.Chapter
 import Crawlers.String, only: [capture: 2, captures: 2]
 
 defmodule Parser do
@@ -33,7 +34,7 @@ defmodule Parser do
   def chapters(api_data) do
     api_data
     |> map(fn c ->
-      %{
+      %Chapter{
         name: Map.fetch!(c, "ORS_x0020_Chapter_x0020_Title"),
         number: Map.fetch!(c, "Title") |> capture(~r/Chapter (\w+)/) |> String.trim_leading("0"),
         title_number: Map.fetch!(c, "ORS_x0020_Chapter") |> capture(~r/^([^.]+)/)
