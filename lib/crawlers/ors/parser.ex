@@ -81,7 +81,12 @@ defmodule Parser do
   defp extract_headings(document) do
     document
     |> Floki.find("tbody[id^=titl]")
-    |> map(fn e -> %{id: id(e), text: trim(Floki.text(e))} end)
+    |> map(fn e ->
+      %{
+        id: id(e),
+        text: trim(Floki.text(e))
+      }
+    end)
   end
 
   #
