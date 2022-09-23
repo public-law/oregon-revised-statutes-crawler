@@ -29,7 +29,7 @@ defmodule AllChapters do
     HTTPoison.start()
 
     case HTTPoison.post(url, body, headers, params: params) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+      {:ok, %{status_code: 200, body: body}} ->
         body
 
       {:error, error = %HTTPoison.Error{reason: reason}} ->
