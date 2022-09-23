@@ -19,11 +19,11 @@ defmodule ChaptersTest do
     assert Enum.count(chapters) == 688
   end
 
-  # test "Chapter 1 name", %{chapters: chapters} do
-  #   first_chapter = first(chapters)
+  test "Chapter 1 name", %{chapters: chapters} do
+    first_chapter = first(chapters)
 
-  #   assert first_chapter.name == "Courts and Judicial Officers Generally"
-  # end
+    assert first_chapter.name == "Courts and Judicial Officers Generally"
+  end
 
   # test "Chapter 1 number", %{chapters: chapters} do
   #   first_chapter = first(chapters)
