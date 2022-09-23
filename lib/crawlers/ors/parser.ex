@@ -62,7 +62,7 @@ defmodule Parser do
   def volumes(document) do
     document
     |> extract_headings()
-    |> map(fn v -> v.text end)
+    |> map(& &1.text)
     |> uniq
     |> filter(&String.match?(&1, ~r/Volume/))
     |> map(fn v ->
