@@ -30,7 +30,7 @@ defmodule AllChapters do
 
     case HTTPoison.post(url, body, headers, params: params) do
       {:ok, %{status_code: 200, body: body}} ->
-        body
+        Jason.decode!(body)["Row"]
 
       {:error, error = %HTTPoison.Error{reason: reason}} ->
         IO.puts("Request failed: #{reason}")
