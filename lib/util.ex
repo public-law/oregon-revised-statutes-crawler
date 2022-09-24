@@ -11,7 +11,8 @@ defmodule Util do
           [[e]] ++ acc
 
         false ->
-          acc
+          {curr, rest} = List.pop_at(acc, 0)
+          [curr ++ [e] | rest]
       end
     end)
   end
