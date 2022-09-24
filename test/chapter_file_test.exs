@@ -6,17 +6,23 @@ defmodule ChapterFileTest do
   use ExUnit.Case, async: true
 
   setup_all do
-    api_result =
-      "test/fixtures/ors-chapters.json"
+    document =
+      "test/fixtures/ors838.html"
       |> File.read!()
-      |> Jason.decode!()
-      |> Map.get("Row")
+      |> Floki.parse_document!()
 
-    %{chapters: Parser.chapters(api_result)}
+    %{
+      sub_chapters: Parser.ChapterFile.sub_chapters(document),
+      sections: Parser.ChapterFile.sections(document)
+    }
   end
 
   test "finds the correct # of Sections", %{sections: sections} do
-    assert Enum.count(sections) == 688
+    assert Enum.count(sections) == 15
+  end
+
+  test "finds the correct # of SubChapters", %{sub_chapters: sub_chapters} do
+    assert Enum.empty?(sub_chapters)
   end
 
   # test "Chapter 1 name", %{chapters: chapters} do
