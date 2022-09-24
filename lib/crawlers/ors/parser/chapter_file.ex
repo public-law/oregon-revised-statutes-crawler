@@ -27,4 +27,10 @@ defmodule Parser.ChapterFile do
     |> map(&split(&1, "\r\n", parts: 2))
     |> map(fn [number, name] -> %{name: name, number: number} end)
   end
+
+  def first_section_paragraph?(element) do
+    element
+    |> Floki.find("b")
+    |> Enum.empty?()
+  end
 end
