@@ -5,6 +5,7 @@ defmodule Spider do
   use Crawly.Spider
 
   @home_page "https://www.oregonlegislature.gov/bills_laws/Pages/ORS.aspx"
+  @chapter_root "https://www.oregonlegislature.gov/bills_laws/ors/"
 
   @impl Crawly.Spider
   def base_url, do: "https://www.oregonlegislature.gov/"
@@ -15,12 +16,11 @@ defmodule Spider do
   end
 
   @impl Crawly.Spider
-  def parse_item(%{status_code: 200, request_url: @home_page} = response) do
+  def parse_item(%{request_url: @home_page} = response) do
     Parser.parse_home_page(response)
   end
 
-  def parse_item(%{status_code: 200} = response) do
-    dbg(response)
+  def parse_item(%{request_url: @chapter_root <> _} = response) do
     Parser.parse_chapter_page(response)
   end
 end
