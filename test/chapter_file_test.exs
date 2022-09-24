@@ -40,6 +40,18 @@ defmodule ChapterFileTest do
     assert first_section.number == "838.005"
   end
 
+  test "Last section name", %{sections: sections} do
+    last_section = last(sections)
+
+    assert last_section.name == "Refunding bonds"
+  end
+
+  test "Last section number", %{sections: sections} do
+    last_section = last(sections)
+
+    assert last_section.number == "838.075"
+  end
+
   # test "Chapter 1 Title number", %{sections: sections} do
   #   first_chapter = first(sections)
 
