@@ -6,9 +6,12 @@ defmodule ChapterFileTest do
   use ExUnit.Case, async: true
 
   setup_all do
-    document =
+    file =
       "test/fixtures/ors838.html"
       |> File.read!()
+
+    document =
+      :erlyconv.to_unicode(:cp1252, file)
       |> Floki.parse_document!()
 
     %{
@@ -25,20 +28,20 @@ defmodule ChapterFileTest do
     assert Enum.empty?(sub_chapters)
   end
 
-  # test "Chapter 1 name", %{chapters: chapters} do
-  #   first_chapter = first(chapters)
+  test "First section name", %{sections: sections} do
+    first_section = first(sections)
 
-  #   assert first_chapter.name == "Courts and Judicial Officers Generally"
-  # end
+    assert first_section.name == "Definitions"
+  end
 
-  # test "Chapter 1 number", %{chapters: chapters} do
-  #   first_chapter = first(chapters)
+  test "First section number", %{sections: sections} do
+    first_section = first(sections)
 
-  #   assert first_chapter.number == "1"
-  # end
+    assert first_section.number == "838.005"
+  end
 
-  # test "Chapter 1 Title number", %{chapters: chapters} do
-  #   first_chapter = first(chapters)
+  # test "Chapter 1 Title number", %{sections: sections} do
+  #   first_chapter = first(sections)
 
   #   assert first_chapter.title_number == "1"
   # end

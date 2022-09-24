@@ -21,6 +21,6 @@ defmodule Spider do
   end
 
   def parse_item(%{request_url: @chapter_root <> _} = response) do
-    Parser.parse_chapter_page(response)
+    Parser.ChapterFile.parse(response)
   end
 end

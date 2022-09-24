@@ -27,6 +27,7 @@ defmodule Crawlers.MixProject do
     [
       {:credo, "> 0.0.0"},
       {:crawly, "~> 0.14.0"},
+      {:erlyconv, github: "eugenehr/erlyconv"},
       {:floki, "~> 0.33.0"},
       {:httpoison, "~> 1.7"},
       {:jason, "~> 1.4"},
