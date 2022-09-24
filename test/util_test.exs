@@ -9,7 +9,7 @@ defmodule UtilTest do
     value == 1
   end
 
-  test "One 1" do
+  test "1" do
     assert Util.group_until([1], &is_1?/1) == [[1]]
   end
 
@@ -17,9 +17,20 @@ defmodule UtilTest do
     assert Util.group_until([1, 2], &is_1?/1) == [[1, 2]]
   end
 
+  test "1 1" do
+    assert Util.group_until([1, 1], &is_1?/1) == [[1], [1]]
+  end
+
   test "1 2 2" do
     input = [1, 2, 2]
     expected = [[1, 2, 2]]
+
+    assert Util.group_until(input, &is_1?/1) == expected
+  end
+
+  test "1 2 2 1 2 2" do
+    input = [1, 2, 2, 1, 2, 2]
+    expected = [[1, 2, 2], [1, 2, 2]]
 
     assert Util.group_until(input, &is_1?/1) == expected
   end
