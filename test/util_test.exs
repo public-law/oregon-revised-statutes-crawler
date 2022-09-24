@@ -5,22 +5,22 @@ defmodule UtilTest do
   # import List
   use ExUnit.Case, async: true
 
-  def is_true?(value) do
-    value == true
+  def is_1?(value) do
+    value == 1
   end
 
-  test "One true" do
-    assert Util.group_until([true], &is_true?/1) == [[true]]
+  test "One 1" do
+    assert Util.group_until([1], &is_1?/1) == [[1]]
   end
 
-  test "true false" do
-    assert Util.group_until([true, false], &is_true?/1) == [[true, false]]
+  test "1 2" do
+    assert Util.group_until([1, 2], &is_1?/1) == [[1, 2]]
   end
 
-  test "true false false" do
-    input = [true, false, false]
-    expected = [[true, false, false]]
+  test "1 2 2" do
+    input = [1, 2, 2]
+    expected = [[1, 2, 2]]
 
-    assert Util.group_until(input, &is_true?/1) == expected
+    assert Util.group_until(input, &is_1?/1) == expected
   end
 end
