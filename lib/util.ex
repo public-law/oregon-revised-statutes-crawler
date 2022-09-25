@@ -14,7 +14,7 @@ defmodule Util do
           {curr, rest} = List.pop_at(acc, 0)
 
           case curr do
-            nil -> rest
+            nil -> acc
             _ -> [curr ++ [e] | rest]
           end
       end
