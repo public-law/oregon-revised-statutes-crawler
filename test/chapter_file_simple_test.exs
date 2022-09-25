@@ -4,6 +4,7 @@ defmodule ChapterFileSimpleTest do
   sub-chapters, no sub-sub-chapters, and no embedded tables or forms
   in the sections.
   """
+  import Enum
   import List
   use ExUnit.Case, async: true
 
@@ -23,48 +24,54 @@ defmodule ChapterFileSimpleTest do
   end
 
   test "finds the correct # of Sections", %{sections: sections} do
-    assert Enum.count(sections) == 15
+    assert count(sections) == 15
   end
 
   test "finds the correct # of SubChapters", %{sub_chapters: sub_chapters} do
-    assert Enum.empty?(sub_chapters)
+    assert empty?(sub_chapters)
   end
 
-  test "First section name", %{sections: sections} do
-    first_section = first(sections)
+  describe "Section.number" do
+    test "First", %{sections: sections} do
+      first_section = first(sections)
 
-    assert first_section.name == "Definitions"
+      assert first_section.number == "838.005"
+    end
+
+    test "Last", %{sections: sections} do
+      last_section = last(sections)
+
+      assert last_section.number == "838.075"
+    end
   end
 
-  test "First section number", %{sections: sections} do
-    first_section = first(sections)
+  describe "Section.name" do
+    test "First", %{sections: sections} do
+      first_section = first(sections)
 
-    assert first_section.number == "838.005"
+      assert first_section.name == "Definitions"
+    end
+
+    test "Last", %{sections: sections} do
+      last_section = last(sections)
+
+      assert last_section.name == "Refunding bonds"
+    end
   end
 
-  test "Last section name", %{sections: sections} do
-    last_section = last(sections)
+  describe "Section text" do
+    test "First", %{sections: sections} do
+      first_section = first(sections)
 
-    assert last_section.name == "Refunding bonds"
-  end
+      assert first_section.text ==
+               "<p>As used in this chapter, unless the context requires otherwise:</p><p>(1) “District” means an airport district established under this chapter.</p><p>(2) “District board” means the governing body of the district. [Formerly 494.010]</p>"
+    end
 
-  test "Last section number", %{sections: sections} do
-    last_section = last(sections)
+    test "Last", %{sections: sections} do
+      last_section = last(sections)
 
-    assert last_section.number == "838.075"
-  end
-
-  test "First section text", %{sections: sections} do
-    first_section = first(sections)
-
-    assert first_section.text ==
-             "<p>As used in this chapter, unless the context requires otherwise:</p><p>(1) “District” means an airport district established under this chapter.</p><p>(2) “District board” means the governing body of the district. [Formerly 494.010]</p>"
-  end
-
-  test "Last section text", %{sections: sections} do
-    last_section = last(sections)
-
-    assert last_section.text ==
-             "<p>Refunding bonds of the same character and tenor as those replaced thereby may be issued pursuant to a resolution adopted by the district board without submitting to the electors the question of authorizing the issuance of the bonds. [Formerly 494.140]</p>"
+      assert last_section.text ==
+               "<p>Refunding bonds of the same character and tenor as those replaced thereby may be issued pursuant to a resolution adopted by the district board without submitting to the electors the question of authorizing the issuance of the bonds. [Formerly 494.140]</p>"
+    end
   end
 end
