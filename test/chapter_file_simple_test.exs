@@ -11,6 +11,7 @@ defmodule ChapterFileSimpleTest do
   import Enum
   import List
   import TestHelper
+
   use ExUnit.Case, async: true
 
   setup_all do

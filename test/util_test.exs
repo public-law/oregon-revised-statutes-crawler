@@ -2,47 +2,52 @@ defmodule UtilTest do
   @moduledoc """
   Test Util module.
   """
-  # import List
+
+  import Util, only: [group_with: 2]
+
   use ExUnit.Case, async: true
+  doctest Util
 
-  def is_1?(value) do
-    value == 1
-  end
+  describe "group_with/2" do
+    test "1" do
+      assert group_with([1], &(&1 == 1)) == [[1]]
+    end
 
-  test "1" do
-    assert Util.group_with([1], &is_1?/1) == [[1]]
-  end
+    test "1 2" do
+      assert group_with([1, 2], &(&1 == 1)) == [[1, 2]]
+    end
 
-  test "1 2" do
-    assert Util.group_with([1, 2], &is_1?/1) == [[1, 2]]
-  end
+    test "1 1" do
+      assert group_with([1, 1], &(&1 == 1)) == [[1], [1]]
+    end
 
-  test "1 1" do
-    assert Util.group_with([1, 1], &is_1?/1) == [[1], [1]]
-  end
+    test "1 2 3 4" do
+      input = [1, 2, 3, 4]
+      expected = [[1, 2, 3, 4]]
 
-  test "1 2 3 4" do
-    input = [1, 2, 3, 4]
-    expected = [[1, 2, 3, 4]]
+      assert group_with(input, &(&1 == 1)) == expected
+    end
 
-    assert Util.group_with(input, &is_1?/1) == expected
-  end
+    #
+    # Make sure the lists aren't reversed
+    #
 
-  test "1 2 3 1 4 5 1 6" do
-    input = [1, 2, 3, 1, 4, 5, 1, 6]
-    expected = [[1, 2, 3], [1, 4, 5], [1, 6]]
+    test "1 2 3 1 4 5 1 6" do
+      input = [1, 2, 3, 1, 4, 5, 1, 6]
+      expected = [[1, 2, 3], [1, 4, 5], [1, 6]]
 
-    assert Util.group_with(input, &is_1?/1) == expected
-  end
+      assert group_with(input, &(&1 == 1)) == expected
+    end
 
-  #
-  # Skipping over non-conforming objects
-  #
+    #
+    # Skipping over non-conforming objects
+    #
 
-  test "2 2 2 1 2 3" do
-    input = [2, 2, 2, 1, 2, 3]
-    expected = [[1, 2, 3]]
+    test "2 2 2 1 2 3" do
+      input = [2, 2, 2, 1, 2, 3]
+      expected = [[1, 2, 3]]
 
-    assert Util.group_with(input, &is_1?/1) == expected
+      assert group_with(input, &(&1 == 1)) == expected
+    end
   end
 end

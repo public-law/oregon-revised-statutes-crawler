@@ -4,6 +4,18 @@ defmodule Util do
   @moduledoc """
   Utility functions.
   """
+
+  @doc """
+  Group a list of elements into sub-lists, where each sub-list is
+  led by an element that satisfies the predicate. It skips initial
+  elements that do not satisfy the predicate.
+
+  iex> group_with([1, 2, 3, 1, 4], &(&1 == 1))
+  [[1, 2, 3], [1, 4]]
+
+  iex> group_with(["a", "b", "x", "a", "b"], &(&1 == "x"))
+  [["x", "a", "b"]]
+  """
   def group_with(list, predicate) do
     result_reversed =
       reduce(list, [], fn e, acc ->
@@ -20,7 +32,7 @@ defmodule Util do
               # Skip until predicate is true.
               nil -> acc
               # Append to current group.
-              _ -> [curr ++ [e] | rest]
+              group -> [group ++ [e] | rest]
             end
         end
       end)
