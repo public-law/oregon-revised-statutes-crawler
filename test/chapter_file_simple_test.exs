@@ -16,8 +16,7 @@ defmodule ChapterFileSimpleTest do
   setup_all do
     dom =
       "ors838.html"
-      |> fixture_file
-      |> cp1252_to_utf8
+      |> fixture_file(cp1252: true)
       |> Floki.parse_document!()
 
     # The context data for the tests.
@@ -33,6 +32,13 @@ defmodule ChapterFileSimpleTest do
 
   test "finds the correct # of SubChapters", %{sub_chapters: sub_chapters} do
     assert empty?(sub_chapters)
+  end
+
+  @tag :skip
+  describe "Section.kind" do
+    test "is 'section' for all Sections", %{sections: sections} do
+      assert all?(sections, fn s -> s.kind == "section" end)
+    end
   end
 
   describe "Section.number" do
