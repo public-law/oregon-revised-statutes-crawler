@@ -30,20 +30,14 @@ defmodule Parser.ChapterFile do
       tail
       |> map(&Floki.text/1)
       |> Enum.join("</p><p>")
-      |> String.replace("\r\n", " ")
+      |> wrap_in_p_tags
+      |> cleanup
 
     text =
       case extract_heading_text(head) do
-        "" -> "<p>#{text}</p>"
-        t -> "<p>#{t}</p>" <> "<p>#{text}</p>"
+        "" -> text
+        t -> "<p>#{t}</p>" <> text
       end
-
-    text =
-      text
-      |> replace(<<194, 160>>, " ")
-      |> replace(~r/  +/, " ")
-      |> replace("<p> ", "<p>")
-      |> trim_trailing("<p></p>")
 
     %Section{
       name: heading.name,
@@ -90,11 +84,24 @@ defmodule Parser.ChapterFile do
     [number, trim_trailing(name, ".")]
   end
 
+  defp cleanup(text) do
+    text
+    |> String.replace("\r\n", " ")
+    |> replace(<<194, 160>>, " ")
+    |> replace(~r/  +/, " ")
+    |> replace("<p> ", "<p>")
+    |> trim_trailing("<p></p>")
+  end
+
   defp make_new_section([number, name]) do
     %{name: name, number: number}
   end
 
-  def first_section_paragraph?(element) do
+  defp first_section_paragraph?(element) do
     Floki.find(element, "b") != []
+  end
+
+  defp wrap_in_p_tags(text) do
+    "<p>" <> text <> "</p>"
   end
 end
