@@ -20,6 +20,7 @@ defmodule ChapterFileSimpleTest do
       |> cp1252_to_utf8
       |> Floki.parse_document!()
 
+    # The context data for the tests.
     %{
       sub_chapters: Parser.ChapterFile.sub_chapters(dom),
       sections: Parser.ChapterFile.sections(dom)
