@@ -18,6 +18,7 @@ defmodule Parser.ChapterFile do
     raw_sections =
       response
       |> Floki.find("p")
+      |> Floki.filter_out("[align=center]")
       |> Util.group_until(&first_section_paragraph?/1)
 
     raw_sections
