@@ -52,12 +52,12 @@ defmodule ChapterFileSimpleTest do
     assert last_section.number == "838.075"
   end
 
-  # test "First section text", %{sections: sections} do
-  #   first_section = first(sections)
+  test "First section text", %{sections: sections} do
+    first_section = first(sections)
 
-  #   assert first_section.text ==
-  #            "<p>As used in this chapter, unless the context requires otherwise:</p><p>(1) “District” means an airport district established under this chapter.</p><p>(2) “District board” means the governing body of the district. [Formerly 494.010]</p>"
-  # end
+    assert first_section.text ==
+             "<p>As used in this chapter, unless the context requires otherwise:</p><p>(1) “District” means an airport district established under this chapter.</p><p>(2) “District board” means the governing body of the district. [Formerly 494.010]</p>"
+  end
 
   # test "Last section text", %{sections: sections} do
   #   last_section = last(sections)

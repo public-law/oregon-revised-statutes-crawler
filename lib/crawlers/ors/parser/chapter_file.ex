@@ -13,6 +13,7 @@ defmodule Parser.ChapterFile do
     response
     |> Floki.find("b")
     |> extract_heading_info
+    |> map(fn h -> Map.put_new(h, :text, "Hey!") end)
   end
 
   #
