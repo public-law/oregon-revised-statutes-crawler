@@ -1,3 +1,4 @@
 # Oregon Revised Statutes Crawler
 
-Testing [the Crawly framework](https://github.com/elixir-crawly/crawly) for building a crawler.
+Using [the Crawly framework](https://github.com/elixir-crawly/crawly) to parse
+the Oregon Revised Statutes ("ORS") into well formed JSON.
