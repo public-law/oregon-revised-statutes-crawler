@@ -1,5 +1,5 @@
 import Enum, only: [map: 2]
-import String, only: [split: 3, trim: 1, trim_trailing: 2]
+import String, only: [split: 2, trim: 1, trim_trailing: 2]
 
 defmodule Parser.ChapterFile do
   @moduledoc """
@@ -32,11 +32,13 @@ defmodule Parser.ChapterFile do
       tail
       |> map(&Floki.text/1)
       |> Enum.join("</p><p>")
+      |> String.replace("\r\n", " ")
+      |> String.replace(~r/\s\s+/, " ")
 
     %{
       name: heading.name,
       number: heading.number,
-      text: text
+      text: "<p>" <> text <> "</p>"
     }
   end
 
@@ -48,8 +50,9 @@ defmodule Parser.ChapterFile do
     headings
     |> map(&Floki.text/1)
     |> map(&trim/1)
-    |> map(&trim_trailing(&1, "."))
-    |> map(&split(&1, "\r\n", parts: 2))
+    |> map(&split(&1, "\r\n"))
+    |> map(&Enum.take(&1, 2))
+    |> map(fn [number, name] -> [number, trim_trailing(name, ".")] end)
     |> map(fn [number, name] -> %{name: name, number: number} end)
   end
 
