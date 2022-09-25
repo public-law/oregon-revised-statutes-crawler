@@ -34,7 +34,6 @@ defmodule ChapterFileSimpleTest do
     assert empty?(sub_chapters)
   end
 
-  @tag :skip
   describe "Section.kind" do
     test "is 'section' for all Sections", %{sections: sections} do
       assert all?(sections, fn s -> s.kind == "section" end)
