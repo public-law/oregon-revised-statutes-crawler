@@ -50,6 +50,13 @@ defmodule Parser.ChapterFile do
     }
   end
 
+  #
+  # A typical section heading looks like this:
+  #   "838.005 Definitions."
+  #
+  # Or this:
+  #   "838.025 Election laws apply. (1) ORS chapter 255 governs the following:"
+  #
   defp extract_heading_data(heading_p) do
     maybe_heading_text = extract_heading_text(heading_p)
     metadata = extract_heading_metadata(heading_p)
