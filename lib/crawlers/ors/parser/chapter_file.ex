@@ -10,10 +10,34 @@ defmodule Parser.ChapterFile do
   end
 
   def sections(response) do
-    response
-    |> Floki.find("b")
-    |> extract_heading_info
-    |> map(fn h -> Map.put_new(h, :text, "Hey!") end)
+    # headings =
+    #   response
+    #   |> Floki.find("b")
+    #   |> extract_heading_info
+
+    raw_sections =
+      response
+      |> Floki.find("p")
+      |> Util.group_until(&first_section_paragraph?/1)
+
+    raw_sections
+    |> map(&new_section/1)
+  end
+
+  def new_section(elements) do
+    {head, tail} = List.pop_at(elements, 0)
+    heading = List.first(extract_heading_info([head]))
+
+    text =
+      tail
+      |> map(&Floki.text/1)
+      |> Enum.join("</p><p>")
+
+    %{
+      name: heading.name,
+      number: heading.number,
+      text: text
+    }
   end
 
   #
@@ -30,8 +54,6 @@ defmodule Parser.ChapterFile do
   end
 
   def first_section_paragraph?(element) do
-    element
-    |> Floki.find("b")
-    |> Enum.empty?()
+    Floki.find(element, "b") != []
   end
 end

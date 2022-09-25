@@ -21,16 +21,16 @@ defmodule UtilTest do
     assert Util.group_until([1, 1], &is_1?/1) == [[1], [1]]
   end
 
-  test "1 2 2" do
-    input = [1, 2, 2]
-    expected = [[1, 2, 2]]
+  test "1 2 3 4" do
+    input = [1, 2, 3, 4]
+    expected = [[1, 2, 3, 4]]
 
     assert Util.group_until(input, &is_1?/1) == expected
   end
 
-  test "1 2 2 1 2 2" do
-    input = [1, 2, 2, 1, 2, 2]
-    expected = [[1, 2, 2], [1, 2, 2]]
+  test "1 2 3 1 4 5" do
+    input = [1, 2, 3, 1, 4, 5]
+    expected = [[1, 2, 3], [1, 4, 5]]
 
     assert Util.group_until(input, &is_1?/1) == expected
   end
@@ -39,9 +39,9 @@ defmodule UtilTest do
   # Skipping over non-conforming objects
   #
 
-  test "2 2 2 1 2 2" do
-    input = [2, 2, 2, 1, 2, 2]
-    expected = [[1, 2, 2]]
+  test "2 2 2 1 2 3" do
+    input = [2, 2, 2, 1, 2, 3]
+    expected = [[1, 2, 3]]
 
     assert Util.group_until(input, &is_1?/1) == expected
   end
