@@ -34,6 +34,12 @@ defmodule Parser.ChapterFile do
       |> Enum.join("</p><p>")
       |> String.replace("\r\n", " ")
 
+    text =
+      case extract_heading_text(head) do
+        "" -> text
+        t -> t <> text
+      end
+
     # |> String.replace(~r/\s\s+/, " ")
 
     %{
@@ -55,6 +61,19 @@ defmodule Parser.ChapterFile do
     |> Enum.take(2)
     |> cleanup
     |> make_new_section
+  end
+
+  #
+  # A typical section heading looks like this:
+  #   "838.005 Definitions."
+  #
+  defp extract_heading_text(heading) do
+    heading
+    |> Floki.text()
+    |> trim
+    |> split("\r\n")
+    |> Enum.slice(2..-1)
+    |> Enum.join(" ")
   end
 
   defp cleanup([number, name]) do
