@@ -1,4 +1,4 @@
-import Enum, only: [map: 2]
+import Enum, only: [map: 2, join: 1]
 import String, only: [replace: 3, split: 2, trim: 1, trim_trailing: 2]
 
 alias Crawlers.ORS.Models.Section
@@ -23,27 +23,27 @@ defmodule Parser.ChapterFile do
   end
 
   def new_section(elements) do
-    {head, tail} = List.pop_at(elements, 0)
-    heading = extract_heading_info(head)
+    {heading_p, remaining_ps} = List.pop_at(elements, 0)
+    metadata = extract_heading_info(heading_p)
 
-    text =
-      tail
+    remaining_text =
+      remaining_ps
       |> map(&Floki.text/1)
-      |> Enum.join("</p><p>")
-      |> wrap_in_p_tags
+      |> map(fn text -> "<p>#{text}</p>" end)
+      |> join
       |> cleanup
 
-    text =
-      case extract_heading_text(head) do
-        "" -> text
-        t -> "<p>#{t}</p>" <> text
+    full_text =
+      case extract_heading_text(heading_p) do
+        "" -> remaining_text
+        heading_text -> "<p>#{heading_text}</p>" <> remaining_text
       end
 
     %Section{
-      name: heading.name,
-      number: heading.number,
-      text: text,
-      chapter_number: heading.number |> split(".") |> List.first()
+      name: metadata.name,
+      number: metadata.number,
+      text: full_text,
+      chapter_number: metadata.number |> split(".") |> List.first()
     }
   end
 
@@ -99,9 +99,5 @@ defmodule Parser.ChapterFile do
 
   defp first_section_paragraph?(element) do
     Floki.find(element, "b") != []
-  end
-
-  defp wrap_in_p_tags(text) do
-    "<p>" <> text <> "</p>"
   end
 end
