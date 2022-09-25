@@ -2,24 +2,27 @@ defmodule ChapterFileSimpleTest do
   @moduledoc """
   Test a 'simple' Chapter File, 838. It's simple because it has no
   sub-chapters, no sub-sub-chapters, and no embedded tables or forms
-  in the sections.
+  in the sections. The original file is served from:
+
+  https://www.oregonlegislature.gov/bills_laws/ors/ors838.html
+
+  The fixture was made by downloading it verbatim with curl.
   """
   import Enum
   import List
+  import TestHelper
   use ExUnit.Case, async: true
 
   setup_all do
-    file =
-      "test/fixtures/ors838.html"
-      |> File.read!()
-
-    document =
-      :erlyconv.to_unicode(:cp1252, file)
+    dom =
+      "ors838.html"
+      |> fixture_file
+      |> cp1252_to_utf8
       |> Floki.parse_document!()
 
     %{
-      sub_chapters: Parser.ChapterFile.sub_chapters(document),
-      sections: Parser.ChapterFile.sections(document)
+      sub_chapters: Parser.ChapterFile.sub_chapters(dom),
+      sections: Parser.ChapterFile.sections(dom)
     }
   end
 
