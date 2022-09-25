@@ -9,13 +9,17 @@ defmodule Util do
       reduce(list, [], fn e, acc ->
         case predicate.(e) do
           true ->
+            # Start a new group.
             [[e]] ++ acc
 
           false ->
+            # Try to extract the current group.
             {curr, rest} = List.pop_at(acc, 0)
 
             case curr do
+              # Skip until predicate is true.
               nil -> acc
+              # Append to current group.
               _ -> [curr ++ [e] | rest]
             end
         end
