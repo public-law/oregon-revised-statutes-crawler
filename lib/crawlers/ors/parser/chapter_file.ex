@@ -59,6 +59,9 @@ defmodule Parser.ChapterFile do
   # A typical section heading looks like this:
   #   "838.005 Definitions."
   #
+  # Or this:
+  #   "838.025 Election laws apply. (1) ORS chapter 255 governs the following:"
+  #
   defp extract_heading_info(heading) do
     heading
     |> Floki.text()
@@ -72,6 +75,9 @@ defmodule Parser.ChapterFile do
   #
   # A typical section heading looks like this:
   #   "838.005 Definitions."
+  #
+  # Or this:
+  #   "838.025 Election laws apply. (1) ORS chapter 255 governs the following:"
   #
   defp extract_heading_text(heading) do
     heading
