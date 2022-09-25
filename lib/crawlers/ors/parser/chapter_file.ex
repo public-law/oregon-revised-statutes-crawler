@@ -12,11 +12,6 @@ defmodule Parser.ChapterFile do
   end
 
   def sections(response) do
-    # headings =
-    #   response
-    #   |> Floki.find("b")
-    #   |> extract_heading_info
-
     raw_sections =
       response
       |> Floki.find("p")
@@ -54,7 +49,7 @@ defmodule Parser.ChapterFile do
       name: heading.name,
       number: heading.number,
       text: text,
-      chapter_number: "0"
+      chapter_number: heading.number |> split(".") |> List.first()
     }
   end
 
