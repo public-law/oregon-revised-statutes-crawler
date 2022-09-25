@@ -59,10 +59,10 @@ defmodule ChapterFileSimpleTest do
              "<p>As used in this chapter, unless the context requires otherwise:</p><p>(1) “District” means an airport district established under this chapter.</p><p>(2) “District board” means the governing body of the district. [Formerly 494.010]</p>"
   end
 
-  # test "Last section text", %{sections: sections} do
-  #   last_section = last(sections)
+  test "Last section text", %{sections: sections} do
+    last_section = last(sections)
 
-  #   assert last_section.text ==
-  #            "The State Treasurer may refund any bonds issued under ORS 838.005 to 838.075 by issuing new bonds in the same amount and of the same maturity as the bonds to be refunded."
-  # end
+    assert last_section.text ==
+             "<p>Refunding bonds of the same character and tenor as those replaced thereby may be issued pursuant to a resolution adopted by the district board without submitting to the electors the question of authorizing the issuance of the bonds. [Formerly 494.140]</p>"
+  end
 end
