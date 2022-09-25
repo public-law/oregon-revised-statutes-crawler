@@ -49,44 +49,32 @@ defmodule ChapterFileSimpleTest do
 
   describe "Section.number" do
     test "First", %{sections: sections} do
-      first_section = first(sections)
-
-      assert first_section.number == "838.005"
+      assert first(sections).number == "838.005"
     end
 
     test "Last", %{sections: sections} do
-      last_section = last(sections)
-
-      assert last_section.number == "838.075"
+      assert last(sections).number == "838.075"
     end
   end
 
   describe "Section.name" do
     test "First", %{sections: sections} do
-      first_section = first(sections)
-
-      assert first_section.name == "Definitions"
+      assert first(sections).name == "Definitions"
     end
 
     test "Last", %{sections: sections} do
-      last_section = last(sections)
-
-      assert last_section.name == "Refunding bonds"
+      assert last(sections).name == "Refunding bonds"
     end
   end
 
   describe "Section text" do
     test "First", %{sections: sections} do
-      first_section = first(sections)
-
-      assert first_section.text ==
+      assert first(sections).text ==
                "<p>As used in this chapter, unless the context requires otherwise:</p><p>(1) “District” means an airport district established under this chapter.</p><p>(2) “District board” means the governing body of the district. [Formerly 494.010]</p>"
     end
 
     test "Last", %{sections: sections} do
-      last_section = last(sections)
-
-      assert last_section.text ==
+      assert last(sections).text ==
                "<p>Refunding bonds of the same character and tenor as those replaced thereby may be issued pursuant to a resolution adopted by the district board without submitting to the electors the question of authorizing the issuance of the bonds. [Formerly 494.140]</p>"
     end
   end
