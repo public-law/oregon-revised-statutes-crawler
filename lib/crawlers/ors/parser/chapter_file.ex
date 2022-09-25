@@ -11,9 +11,10 @@ defmodule Parser.ChapterFile do
     []
   end
 
-  def sections(response) do
+  @spec sections(any) :: [Section.t()]
+  def sections(dom) do
     raw_sections =
-      response
+      dom
       |> Floki.find("p")
       |> Floki.filter_out("[align=center]")
       |> Util.group_until(&first_section_paragraph?/1)
@@ -22,6 +23,7 @@ defmodule Parser.ChapterFile do
     |> map(&new_section/1)
   end
 
+  @spec new_section(list) :: Section.t()
   def new_section(elements) do
     {heading_p, remaining_ps} = List.pop_at(elements, 0)
     metadata = extract_heading_info(heading_p)
