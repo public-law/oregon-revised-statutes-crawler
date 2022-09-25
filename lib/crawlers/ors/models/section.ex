@@ -10,6 +10,7 @@ defmodule Crawlers.ORS.Models.Section do
     field :kind, String.t(), default: "section"
     field :name, String.t()
     field :number, String.t()
+    field :text, String.t()
     field :chapter_number, String.t()
   end
 end

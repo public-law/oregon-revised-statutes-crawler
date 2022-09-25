@@ -1,6 +1,8 @@
 import Enum, only: [map: 2]
 import String, only: [replace: 3, split: 2, trim: 1, trim_trailing: 2]
 
+alias Crawlers.ORS.Models.Section
+
 defmodule Parser.ChapterFile do
   @moduledoc """
   Parse a chapter file.
@@ -48,10 +50,11 @@ defmodule Parser.ChapterFile do
       |> replace("<p> ", "<p>")
       |> trim_trailing("<p></p>")
 
-    %{
+    %Section{
       name: heading.name,
       number: heading.number,
-      text: text
+      text: text,
+      chapter_number: "0"
     }
   end
 
