@@ -1,6 +1,8 @@
 defmodule ChapterFileSimpleTest do
   @moduledoc """
-  Test ability to parse a chapter file's sections.
+  Test a 'simple' Chapter File, 838. It's simple because it has no
+  sub-chapters, no sub-sub-chapters, and no embedded tables or forms
+  in the sections.
   """
   import List
   use ExUnit.Case, async: true
