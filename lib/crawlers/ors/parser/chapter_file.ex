@@ -11,7 +11,7 @@ defmodule Parser.ChapterFile do
     []
   end
 
-  @spec sections(any) :: [Section.t()]
+  @spec sections(Floki.html_tree()) :: [Section.t()]
   def sections(dom) do
     raw_sections =
       dom
