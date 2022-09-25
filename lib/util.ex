@@ -13,8 +13,8 @@ defmodule Util do
   iex> group_with([1, 2, 3, 1, 4], &(&1 == 1))
   [[1, 2, 3], [1, 4]]
 
-  iex> group_with(["a", "b", "x", "a", "b"], &(&1 == "x"))
-  [["x", "a", "b"]]
+  iex> group_with(["a", "b", "x", "c", "d"], &(&1 == "x"))
+  [["x", "c", "d"]]
   """
   def group_with(list, predicate) do
     result_reversed =
