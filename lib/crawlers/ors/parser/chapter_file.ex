@@ -26,14 +26,15 @@ defmodule Parser.ChapterFile do
 
   def new_section(elements) do
     {head, tail} = List.pop_at(elements, 0)
-    heading = List.first(extract_heading_info([head]))
+    heading = extract_heading_info(head)
 
     text =
       tail
       |> map(&Floki.text/1)
       |> Enum.join("</p><p>")
       |> String.replace("\r\n", " ")
-      |> String.replace(~r/\s\s+/, " ")
+
+    # |> String.replace(~r/\s\s+/, " ")
 
     %{
       name: heading.name,
@@ -46,14 +47,22 @@ defmodule Parser.ChapterFile do
   # A typical section heading looks like this:
   #   "838.005 Definitions."
   #
-  defp extract_heading_info(headings) do
-    headings
-    |> map(&Floki.text/1)
-    |> map(&trim/1)
-    |> map(&split(&1, "\r\n"))
-    |> map(&Enum.take(&1, 2))
-    |> map(fn [number, name] -> [number, trim_trailing(name, ".")] end)
-    |> map(fn [number, name] -> %{name: name, number: number} end)
+  defp extract_heading_info(heading) do
+    heading
+    |> Floki.text()
+    |> trim
+    |> split("\r\n")
+    |> Enum.take(2)
+    |> cleanup
+    |> make_new_section
+  end
+
+  defp cleanup([number, name]) do
+    [number, trim_trailing(name, ".")]
+  end
+
+  defp make_new_section([number, name]) do
+    %{name: name, number: number}
   end
 
   def first_section_paragraph?(element) do
