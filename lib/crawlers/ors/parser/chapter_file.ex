@@ -86,7 +86,7 @@ defmodule Parser.ChapterFile do
     [number, trim_trailing(name, ".")]
   end
 
-  defp cleanup(text) do
+  defp cleanup(text) when is_binary(text) do
     text
     |> String.replace("\r\n", " ")
     |> replace(<<194, 160>>, " ")
