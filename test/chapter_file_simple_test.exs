@@ -34,9 +34,15 @@ defmodule ChapterFileSimpleTest do
     assert empty?(sub_chapters)
   end
 
+  describe "Section.chapter_number" do
+    test "is correct", %{sections: sections} do
+      assert all?(sections, &(&1.chapter_number == "838"))
+    end
+  end
+
   describe "Section.kind" do
     test "is 'section' for all Sections", %{sections: sections} do
-      assert all?(sections, fn s -> s.kind == "section" end)
+      assert all?(sections, &(&1.kind == "section"))
     end
   end
 
