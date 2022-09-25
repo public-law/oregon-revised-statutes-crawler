@@ -12,7 +12,11 @@ defmodule Util do
 
         false ->
           {curr, rest} = List.pop_at(acc, 0)
-          [curr ++ [e] | rest]
+
+          case curr do
+            nil -> rest
+            _ -> [curr ++ [e] | rest]
+          end
       end
     end)
   end

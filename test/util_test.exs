@@ -34,4 +34,15 @@ defmodule UtilTest do
 
     assert Util.group_until(input, &is_1?/1) == expected
   end
+
+  #
+  # Skipping over non-conforming objects
+  #
+
+  test "2 2 2 1 2 2" do
+    input = [2, 2, 2, 1, 2, 2]
+    expected = [[1, 2, 2]]
+
+    assert Util.group_until(input, &is_1?/1) == expected
+  end
 end
