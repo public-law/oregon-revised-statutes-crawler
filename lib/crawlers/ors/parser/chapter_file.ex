@@ -1,5 +1,5 @@
 import Enum, only: [map: 2]
-import String, only: [split: 2, trim: 1, trim_trailing: 2]
+import String, only: [replace: 3, split: 2, trim: 1, trim_trailing: 2]
 
 defmodule Parser.ChapterFile do
   @moduledoc """
@@ -36,16 +36,21 @@ defmodule Parser.ChapterFile do
 
     text =
       case extract_heading_text(head) do
-        "" -> text
-        t -> t <> text
+        "" -> "<p>#{text}</p>"
+        t -> "<p>#{t}</p>" <> "<p>#{text}</p>"
       end
 
-    # |> String.replace(~r/\s\s+/, " ")
+    text =
+      text
+      |> replace(<<194, 160>>, " ")
+      |> replace(~r/  +/, " ")
+      |> replace("<p> ", "<p>")
+      |> trim_trailing("<p></p>")
 
     %{
       name: heading.name,
       number: heading.number,
-      text: "<p>" <> text <> "</p>"
+      text: text
     }
   end
 
