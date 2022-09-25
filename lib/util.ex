@@ -4,7 +4,7 @@ defmodule Util do
   @moduledoc """
   Utility functions.
   """
-  def group_until(list, predicate) do
+  def group_with(list, predicate) do
     result_reversed =
       reduce(list, [], fn e, acc ->
         case predicate.(e) do

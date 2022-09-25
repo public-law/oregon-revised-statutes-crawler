@@ -10,29 +10,29 @@ defmodule UtilTest do
   end
 
   test "1" do
-    assert Util.group_until([1], &is_1?/1) == [[1]]
+    assert Util.group_with([1], &is_1?/1) == [[1]]
   end
 
   test "1 2" do
-    assert Util.group_until([1, 2], &is_1?/1) == [[1, 2]]
+    assert Util.group_with([1, 2], &is_1?/1) == [[1, 2]]
   end
 
   test "1 1" do
-    assert Util.group_until([1, 1], &is_1?/1) == [[1], [1]]
+    assert Util.group_with([1, 1], &is_1?/1) == [[1], [1]]
   end
 
   test "1 2 3 4" do
     input = [1, 2, 3, 4]
     expected = [[1, 2, 3, 4]]
 
-    assert Util.group_until(input, &is_1?/1) == expected
+    assert Util.group_with(input, &is_1?/1) == expected
   end
 
   test "1 2 3 1 4 5 1 6" do
     input = [1, 2, 3, 1, 4, 5, 1, 6]
     expected = [[1, 2, 3], [1, 4, 5], [1, 6]]
 
-    assert Util.group_until(input, &is_1?/1) == expected
+    assert Util.group_with(input, &is_1?/1) == expected
   end
 
   #
@@ -43,6 +43,6 @@ defmodule UtilTest do
     input = [2, 2, 2, 1, 2, 3]
     expected = [[1, 2, 3]]
 
-    assert Util.group_until(input, &is_1?/1) == expected
+    assert Util.group_with(input, &is_1?/1) == expected
   end
 end

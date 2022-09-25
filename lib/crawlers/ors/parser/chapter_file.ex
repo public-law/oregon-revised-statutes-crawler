@@ -17,7 +17,7 @@ defmodule Parser.ChapterFile do
       dom
       |> Floki.find("p")
       |> Floki.filter_out("[align=center]")
-      |> Util.group_until(&first_section_paragraph?/1)
+      |> Util.group_with(&first_section_paragraph?/1)
 
     raw_sections
     |> map(&new_section/1)
@@ -26,7 +26,7 @@ defmodule Parser.ChapterFile do
   @spec new_section(list) :: Section.t()
   def new_section(elements) do
     {heading_p, remaining_ps} = List.pop_at(elements, 0)
-    metadata = extract_heading_info(heading_p)
+    heading = extract_heading_data(heading_p)
 
     remaining_text =
       remaining_ps
@@ -36,16 +36,27 @@ defmodule Parser.ChapterFile do
       |> cleanup
 
     full_text =
-      case extract_heading_text(heading_p) do
+      case heading.maybe_text do
         "" -> remaining_text
-        heading_text -> "<p>#{heading_text}</p>" <> remaining_text
+        text -> "<p>#{text}</p>" <> remaining_text
       end
 
     %Section{
+      name: heading.name,
+      number: heading.number,
+      text: full_text,
+      chapter_number: heading.number |> split(".") |> List.first()
+    }
+  end
+
+  defp extract_heading_data(heading_p) do
+    maybe_heading_text = extract_heading_text(heading_p)
+    metadata = extract_heading_metadata(heading_p)
+
+    %{
       name: metadata.name,
       number: metadata.number,
-      text: full_text,
-      chapter_number: metadata.number |> split(".") |> List.first()
+      maybe_text: maybe_heading_text
     }
   end
 
@@ -56,7 +67,7 @@ defmodule Parser.ChapterFile do
   # Or this:
   #   "838.025 Election laws apply. (1) ORS chapter 255 governs the following:"
   #
-  defp extract_heading_info(heading) do
+  defp extract_heading_metadata(heading) do
     heading
     |> Floki.text()
     |> trim
