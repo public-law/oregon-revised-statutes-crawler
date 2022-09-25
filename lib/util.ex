@@ -5,19 +5,22 @@ defmodule Util do
   Utility functions.
   """
   def group_until(list, predicate) do
-    reduce(list, [], fn e, acc ->
-      case predicate.(e) do
-        true ->
-          [[e]] ++ acc
+    result_reversed =
+      reduce(list, [], fn e, acc ->
+        case predicate.(e) do
+          true ->
+            [[e]] ++ acc
 
-        false ->
-          {curr, rest} = List.pop_at(acc, 0)
+          false ->
+            {curr, rest} = List.pop_at(acc, 0)
 
-          case curr do
-            nil -> acc
-            _ -> [curr ++ [e] | rest]
-          end
-      end
-    end)
+            case curr do
+              nil -> acc
+              _ -> [curr ++ [e] | rest]
+            end
+        end
+      end)
+
+    reverse(result_reversed)
   end
 end

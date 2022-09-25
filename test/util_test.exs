@@ -28,9 +28,9 @@ defmodule UtilTest do
     assert Util.group_until(input, &is_1?/1) == expected
   end
 
-  test "1 2 3 1 4 5" do
-    input = [1, 2, 3, 1, 4, 5]
-    expected = [[1, 2, 3], [1, 4, 5]]
+  test "1 2 3 1 4 5 1 6" do
+    input = [1, 2, 3, 1, 4, 5, 1, 6]
+    expected = [[1, 2, 3], [1, 4, 5], [1, 6]]
 
     assert Util.group_until(input, &is_1?/1) == expected
   end
