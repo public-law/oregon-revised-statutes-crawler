@@ -18,12 +18,13 @@ defmodule Parser.ChapterFile do
       dom
       |> Floki.find("p")
       |> Floki.filter_out("[align=center]")
-      # |> Floki.filter_out("span:fl-contains('repealed by')")
+      |> Floki.filter_out("span:fl-contains('repealed by')")
       |> group_with(&first_section_paragraph?/1)
 
     raw_sections
     |> map(&new_section/1)
     |> reject(fn s -> s.name == "" end)
+    |> dbg
   end
 
   @spec new_section(list) :: Section.t()
@@ -90,7 +91,6 @@ defmodule Parser.ChapterFile do
     |> take(2)
     |> cleanup
     |> then(fn [num, name] -> %{number: num, name: name} end)
-    |> dbg()
   end
 
   defp extract_heading_text(lines) do

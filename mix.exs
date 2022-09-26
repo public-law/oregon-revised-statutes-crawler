@@ -4,6 +4,7 @@ defmodule Crawlers.MixProject do
   def project do
     [
       app: :crawlers,
+      compilers: [:domo_compiler] ++ Mix.compilers(),
       version: "0.1.0",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
@@ -27,6 +28,7 @@ defmodule Crawlers.MixProject do
     [
       {:credo, "> 0.0.0"},
       {:crawly, "~> 0.14.0"},
+      {:domo, "~> 1.5"},
       {:dialyxir, "> 1.0.0", runtime: false},
       {:erlyconv, github: "eugenehr/erlyconv"},
       {:floki, "~> 0.33.0"},
