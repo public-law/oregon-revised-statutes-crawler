@@ -107,7 +107,7 @@ defmodule Parser.ChapterFile do
   end
 
   defp cleanup([number, name]) do
-    [number, trim_trailing(name, ".")]
+    [number, List.first(split(name, "."))]
   end
 
   defp cleanup([number]) when is_binary(number) do
