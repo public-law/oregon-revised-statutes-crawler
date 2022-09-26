@@ -1,5 +1,5 @@
-import Enum, only: [map: 2, join: 1, join: 2, slice: 2, take: 2]
-import String, only: [replace: 3, split: 2, trim: 1, trim_trailing: 2]
+import Enum, except: [split: 2]
+import String, except: [slice: 2]
 
 alias Crawlers.ORS.Models.Section
 import Util, only: [group_with: 2]
