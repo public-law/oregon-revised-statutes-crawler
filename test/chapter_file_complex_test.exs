@@ -50,7 +50,6 @@ defmodule ChapterFileComplexTest do
   end
 
   describe "Section.kind" do
-    @tag :skip
     test "is 'section' for all Sections", %{sections: sections} do
       assert all?(sections, &(&1.kind == "section"))
     end
