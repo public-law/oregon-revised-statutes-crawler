@@ -18,10 +18,15 @@ defmodule Crawlers.ORS.Models.Section do
   precond t: &validate_struct/1
 
   defp validate_struct(struct) do
-    if String.length(struct.name) == 0 do
-      {:error, "Name cannot be blank."}
-    else
-      :ok
+    cond do
+      String.length(struct.name) == 0 ->
+        {:error, "Name can't be blank."}
+
+      !(struct.number =~ ~r/^[[:alnum:]]{3,4}\.[[:alnum:]]{3,4}$/) ->
+        {:error, "Mis-formatted number: \"#{struct.number}\""}
+
+      true ->
+        :ok
     end
   end
 end

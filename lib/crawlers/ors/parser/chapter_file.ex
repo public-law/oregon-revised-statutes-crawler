@@ -1,5 +1,5 @@
 import Enum, except: [split: 2]
-import String, except: [slice: 2]
+import String, except: [reverse: 1, slice: 2]
 
 alias Crawlers.ORS.Models.Section
 import Util, only: [group_with: 2]
@@ -21,10 +21,15 @@ defmodule Parser.ChapterFile do
       |> Floki.filter_out("span:fl-contains('repealed by')")
       |> group_with(&first_section_paragraph?/1)
 
-    reduce(raw_sections, [], fn e, acc ->
-      case new_section(e) do
-        {:error, msg} -> IO.puts(msg[:t])
-        {:ok, section} -> acc ++ [section]
+    processed_sections = map(raw_sections, &new_section/1)
+
+    reduce(processed_sections, [], fn e, acc ->
+      case e do
+        {:error, _msg} ->
+          acc
+
+        {:ok, section} ->
+          acc ++ [section]
       end
     end)
   end
