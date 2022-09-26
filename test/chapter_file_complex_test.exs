@@ -66,13 +66,11 @@ defmodule ChapterFileComplexTest do
   end
 
   describe "Section.name" do
-    @tag :skip
     test "First", %{sections: sections} do
       assert first(sections).name ==
                "Exemptions of certain aircraft from requirements of registration; rules"
     end
 
-    @tag :skip
     test "Last", %{sections: sections} do
       assert last(sections).name == "Civil penalties"
     end
