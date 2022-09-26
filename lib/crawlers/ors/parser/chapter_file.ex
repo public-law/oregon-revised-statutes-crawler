@@ -1,5 +1,4 @@
-import Enum, only: [map: 2, join: 1]
-import List, only: [first: 1, last: 1]
+import Enum, only: [map: 2, join: 1, join: 2, slice: 2, take: 2]
 import String, only: [replace: 3, split: 2, trim: 1, trim_trailing: 2]
 
 alias Crawlers.ORS.Models.Section
@@ -53,10 +52,10 @@ defmodule Parser.ChapterFile do
 
   #
   # A typical section heading looks like this:
-  #   "838.005 Definitions."
+  #   "838.005\r\nDefinitions."
   #
   # Or this:
-  #   "838.025 Election laws apply. (1) ORS chapter 255 governs the following:"
+  #   "838.025\r\nElection laws apply.\r\n(1) ORS chapter 255 governs the following:"
   #
   defp extract_heading_data(heading_p) do
     plaintext_lines =
@@ -77,15 +76,15 @@ defmodule Parser.ChapterFile do
 
   defp extract_heading_metadata(lines) do
     lines
-    |> Enum.take(2)
+    |> take(2)
     |> cleanup
-    |> then(&%{number: first(&1), name: last(&1)})
+    |> then(fn [num, name] -> %{number: num, name: name} end)
   end
 
   defp extract_heading_text(lines) do
     lines
-    |> Enum.slice(2..-1)
-    |> Enum.join(" ")
+    |> slice(2..-1)
+    |> join(" ")
   end
 
   defp cleanup([number, name]) do
@@ -94,7 +93,7 @@ defmodule Parser.ChapterFile do
 
   defp cleanup(text) when is_binary(text) do
     text
-    |> String.replace("\r\n", " ")
+    |> replace("\r\n", " ")
     |> replace(<<194, 160>>, " ")
     |> replace(~r/  +/, " ")
     |> replace("<p> ", "<p>")
