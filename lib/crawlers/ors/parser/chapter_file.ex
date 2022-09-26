@@ -18,10 +18,12 @@ defmodule Parser.ChapterFile do
       dom
       |> Floki.find("p")
       |> Floki.filter_out("[align=center]")
+      # |> Floki.filter_out("span:fl-contains('repealed by')")
       |> group_with(&first_section_paragraph?/1)
 
     raw_sections
     |> map(&new_section/1)
+    |> reject(fn s -> s.name == "" end)
   end
 
   @spec new_section(list) :: Section.t()
@@ -57,14 +59,19 @@ defmodule Parser.ChapterFile do
   # Or this:
   #   "838.025\r\nElection laws apply.\r\n(1) ORS chapter 255 governs the following:"
   #
-  defp extract_heading_data(heading_p) do
+  @spec extract_heading_data(Floki.html_tree()) :: %{
+          :maybe_text => binary(),
+          :name => binary(),
+          :number => binary()
+        }
+  def extract_heading_data(heading_p) do
     plaintext_lines =
       heading_p
       |> Floki.text()
       |> trim
       |> split("\r\n")
 
-    metadata = extract_heading_metadata(plaintext_lines)
+    metadata = extract_heading_metadata(heading_p)
     maybe_heading_text = extract_heading_text(plaintext_lines)
 
     %{
@@ -74,11 +81,16 @@ defmodule Parser.ChapterFile do
     }
   end
 
-  defp extract_heading_metadata(lines) do
-    lines
+  @spec extract_heading_metadata([binary]) :: %{name: any, number: any}
+  def extract_heading_metadata(heading_p) do
+    heading_p
+    |> Floki.text()
+    |> trim
+    |> split("\r\n")
     |> take(2)
     |> cleanup
     |> then(fn [num, name] -> %{number: num, name: name} end)
+    |> dbg()
   end
 
   defp extract_heading_text(lines) do
@@ -91,6 +103,10 @@ defmodule Parser.ChapterFile do
     [number, trim_trailing(name, ".")]
   end
 
+  defp cleanup([number]) when is_binary(number) do
+    [number, ""]
+  end
+
   defp cleanup(text) when is_binary(text) do
     text
     |> replace("\r\n", " ")
@@ -101,6 +117,8 @@ defmodule Parser.ChapterFile do
   end
 
   defp first_section_paragraph?(element) do
-    Floki.find(element, "b") != []
+    b_elem = Floki.find(element, "b")
+
+    b_elem != [] && trim(Floki.text(b_elem)) != "Note:"
   end
 end

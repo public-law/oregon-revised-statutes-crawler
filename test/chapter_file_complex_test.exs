@@ -33,8 +33,8 @@ defmodule ChapterFileComplexTest do
   end
 
   test "finds the correct # of Sections", %{sections: sections} do
-    # "42" arrived at from a manual count.
-    assert count(sections) == 42
+    # "38" arrived at from a manual count, only current sections.
+    assert count(sections) == 38
   end
 
   @tag :skip
