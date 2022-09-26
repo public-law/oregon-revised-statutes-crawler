@@ -24,7 +24,6 @@ defmodule Parser.ChapterFile do
     raw_sections
     |> map(&new_section/1)
     |> reject(fn s -> s.name == "" end)
-    |> dbg
   end
 
   @spec new_section(list) :: Section.t()
