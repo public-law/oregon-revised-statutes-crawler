@@ -23,7 +23,7 @@ defmodule Parser.ChapterFile do
 
     reduce(raw_sections, [], fn e, acc ->
       case new_section(e) do
-        {:error, msg} -> IO.inspect(msg[:t])
+        {:error, msg} -> IO.puts(msg[:t])
         {:ok, section} -> acc ++ [section]
       end
     end)
