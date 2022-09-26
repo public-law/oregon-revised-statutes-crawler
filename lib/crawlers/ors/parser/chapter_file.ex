@@ -1,4 +1,5 @@
 import Enum, only: [map: 2, join: 1]
+import List, only: [first: 1, last: 1]
 import String, only: [replace: 3, split: 2, trim: 1, trim_trailing: 2]
 
 alias Crawlers.ORS.Models.Section
@@ -58,8 +59,14 @@ defmodule Parser.ChapterFile do
   #   "838.025 Election laws apply. (1) ORS chapter 255 governs the following:"
   #
   defp extract_heading_data(heading_p) do
-    maybe_heading_text = extract_heading_text(heading_p)
-    metadata = extract_heading_metadata(heading_p)
+    plaintext_lines =
+      heading_p
+      |> Floki.text()
+      |> trim
+      |> split("\r\n")
+
+    metadata = extract_heading_metadata(plaintext_lines)
+    maybe_heading_text = extract_heading_text(plaintext_lines)
 
     %{
       name: metadata.name,
@@ -68,35 +75,15 @@ defmodule Parser.ChapterFile do
     }
   end
 
-  #
-  # A typical section heading looks like this:
-  #   "838.005 Definitions."
-  #
-  # Or this:
-  #   "838.025 Election laws apply. (1) ORS chapter 255 governs the following:"
-  #
-  defp extract_heading_metadata(heading) do
-    heading
-    |> Floki.text()
-    |> trim
-    |> split("\r\n")
+  defp extract_heading_metadata(lines) do
+    lines
     |> Enum.take(2)
     |> cleanup
-    |> make_new_section
+    |> then(&%{number: first(&1), name: last(&1)})
   end
 
-  #
-  # A typical section heading looks like this:
-  #   "838.005 Definitions."
-  #
-  # Or this:
-  #   "838.025 Election laws apply. (1) ORS chapter 255 governs the following:"
-  #
-  defp extract_heading_text(heading) do
-    heading
-    |> Floki.text()
-    |> trim
-    |> split("\r\n")
+  defp extract_heading_text(lines) do
+    lines
     |> Enum.slice(2..-1)
     |> Enum.join(" ")
   end
@@ -112,10 +99,6 @@ defmodule Parser.ChapterFile do
     |> replace(~r/  +/, " ")
     |> replace("<p> ", "<p>")
     |> trim_trailing("<p></p>")
-  end
-
-  defp make_new_section([number, name]) do
-    %{name: name, number: number}
   end
 
   defp first_section_paragraph?(element) do
