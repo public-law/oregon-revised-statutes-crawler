@@ -21,8 +21,12 @@ defmodule Parser.ChapterFile do
       |> Floki.filter_out("span:fl-contains('repealed by')")
       |> group_with(&first_section_paragraph?/1)
 
-    raw_sections
-    |> map(&new_section/1)
+    reduce(raw_sections, [], fn e, acc ->
+      case new_section(e) do
+        {:error, msg} -> IO.inspect(msg[:t])
+        {:ok, section} -> acc ++ [section]
+      end
+    end)
   end
 
   @spec new_section(list) :: {:error, any} | {:ok, Section.t()}
@@ -43,7 +47,7 @@ defmodule Parser.ChapterFile do
         text -> "<p>#{text}</p>" <> remaining_text
       end
 
-    Section.new!(
+    Section.new(
       name: heading.name,
       number: heading.number,
       text: full_text,
