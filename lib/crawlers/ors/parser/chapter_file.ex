@@ -23,10 +23,9 @@ defmodule Parser.ChapterFile do
 
     raw_sections
     |> map(&new_section/1)
-    |> reject(fn s -> s.name == "" end)
   end
 
-  @spec new_section(list) :: Section.t()
+  @spec new_section(list) :: {:error, any} | {:ok, Section.t()}
   def new_section(elements) do
     {heading_p, remaining_ps} = List.pop_at(elements, 0)
     heading = extract_heading_data(heading_p)
@@ -44,12 +43,12 @@ defmodule Parser.ChapterFile do
         text -> "<p>#{text}</p>" <> remaining_text
       end
 
-    %Section{
+    Section.new!(
       name: heading.name,
       number: heading.number,
       text: full_text,
       chapter_number: heading.number |> split(".") |> List.first()
-    }
+    )
   end
 
   #
