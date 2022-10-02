@@ -5,6 +5,17 @@ alias Crawlers.ORS.Models.Section
 import Util, only: [group_with: 2]
 
 defmodule Parser.ChapterFile do
+  def parse(%{body: html}), do: parse(html)
+
+  def parse(html) when is_bitstring(html) do
+    document = Floki.parse_fragment!(html)
+
+    %Elixir.Crawly.ParsedItem{
+      items: sections(document),
+      requests: []
+    }
+  end
+
   @moduledoc """
   Parse a chapter file.
   """

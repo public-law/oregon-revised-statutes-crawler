@@ -37,10 +37,10 @@ defmodule ChapterFileComplexTest do
     assert count(sections) == 38
   end
 
-  @tag :skip
-  test "finds the correct # of SubChapters", %{sub_chapters: sub_chapters} do
-    assert empty?(sub_chapters)
-  end
+  # @tag :skip
+  # test "finds the correct # of SubChapters", %{sub_chapters: sub_chapters} do
+  #   assert empty?(sub_chapters)
+  # end
 
   describe "Section.chapter_number" do
     test "is correct", %{sections: sections} do
