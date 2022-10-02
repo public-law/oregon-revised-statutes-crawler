@@ -2,13 +2,13 @@ import Enum, except: [split: 2]
 import String, except: [reverse: 1, slice: 2]
 
 alias Crawlers.ORS.Models.Section
-import Util, only: [group_with: 2]
+alias Util
 
 defmodule Parser.ChapterFile do
   def parse(%{body: html}), do: parse(html)
 
   def parse(html) when is_bitstring(html) do
-    document = Floki.parse_fragment!(html)
+    document = Floki.parse_document!(Util.cp1252_to_utf8(html))
 
     %Elixir.Crawly.ParsedItem{
       items: sections(document),
@@ -30,7 +30,7 @@ defmodule Parser.ChapterFile do
       |> Floki.find("p")
       |> Floki.filter_out("[align=center]")
       |> Floki.filter_out("span:fl-contains('repealed by')")
-      |> group_with(&first_section_paragraph?/1)
+      |> Util.group_with(&first_section_paragraph?/1)
 
     processed_sections = map(raw_sections, &new_section/1)
 
