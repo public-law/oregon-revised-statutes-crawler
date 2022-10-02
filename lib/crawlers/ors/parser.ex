@@ -20,7 +20,12 @@ defmodule Parser do
     titles = titles(document)
     chapters = chapters(AllChapters.request())
 
-    %Elixir.Crawly.ParsedItem{items: volumes ++ titles ++ chapters, requests: []}
+    chapter_urls = chapters |> map(fn c -> c.url end)
+
+    %Elixir.Crawly.ParsedItem{
+      items: volumes ++ titles ++ chapters,
+      requests: chapter_urls
+    }
   end
 
   @spec chapters(any) :: [Chapter]
