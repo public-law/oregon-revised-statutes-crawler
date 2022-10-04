@@ -107,8 +107,7 @@ defmodule ChapterFileComplexTest do
     test "72A.5295", %{sections_72A: sections} do
       sec_5295 =
         sections
-        |> Enum.filter(fn s -> s.number == "72A.5295" end)
-        |> List.first()
+        |> find(fn s -> s.number == "72A.5295" end)
 
       assert sec_5295.text ==
                "In addition to any other recovery permitted by this chapter or other law, the lessor may recover from the lessee an amount that will fully compensate the lessor for any loss of or damage to the lessor’s residual interest in the goods caused by the default of the lessee. [1993 c.646 §21]"
