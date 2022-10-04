@@ -103,5 +103,15 @@ defmodule ChapterFileComplexTest do
       assert last(sections).text ==
                "<p>(1) Except as provided in subsection (2) of this section, in addition to any other penalty provided by law, the Director of the Oregon Department of Aviation may impose a civil penalty not to exceed $720 for each violation of any provision of this chapter or any rule adopted, or order issued, under this chapter.</p><p>(2) The director may impose a civil penalty not to exceed $2,500 for violation of ORS 837.080 or any rule adopted, or order issued, under this chapter to enforce ORS 837.080.</p><p>(3) The director shall impose civil penalties under this section in the manner provided in ORS 183.745. [2013 c.403 §2]</p>"
     end
+
+    test "72A.5295", %{sections_72A: sections} do
+      sec_5295 =
+        sections
+        |> Enum.filter(fn s -> s.number == "72A.5295" end)
+        |> List.first()
+
+      assert sec_5295.text ==
+               "In addition to any other recovery permitted by this chapter or other law, the lessor may recover from the lessee an amount that will fully compensate the lessor for any loss of or damage to the lessor’s residual interest in the goods caused by the default of the lessee. [1993 c.646 §21]"
+    end
   end
 end
