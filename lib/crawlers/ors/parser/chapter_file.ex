@@ -84,14 +84,8 @@ defmodule Parser.ChapterFile do
           :number => binary()
         }
   def extract_heading_data(heading_p) do
-    plaintext_lines =
-      heading_p
-      |> Floki.text()
-      |> trim
-      |> split("\r\n")
-
     metadata = extract_heading_metadata(heading_p)
-    maybe_heading_text = extract_heading_text(plaintext_lines)
+    maybe_heading_text = extract_heading_text(heading_p)
 
     %{
       name: metadata.name,
@@ -100,7 +94,7 @@ defmodule Parser.ChapterFile do
     }
   end
 
-  @spec extract_heading_metadata([binary]) :: %{name: any, number: any}
+  @spec extract_heading_metadata(Floki.html_tree()) :: %{name: any, number: any}
   def extract_heading_metadata(heading_p) do
     heading_p
     |> Floki.text()
@@ -111,8 +105,12 @@ defmodule Parser.ChapterFile do
     |> then(fn [num, name] -> %{number: num, name: name} end)
   end
 
-  defp extract_heading_text(lines) do
-    lines
+  @spec extract_heading_text(Floki.html_tree()) :: binary
+  def extract_heading_text(heading_p) do
+    heading_p
+    |> Floki.text()
+    |> trim
+    |> split("\r\n")
     |> slice(2..-1)
     |> join(" ")
   end
