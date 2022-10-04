@@ -105,6 +105,8 @@ defmodule ChapterFileComplexTest do
     end
 
     test "72A.5295", %{sections_72A: sections} do
+      # The problem seems to be: New lines are used as a delimiter in the initial <p>.
+      # Instead, the <b> and not-<b> should be used.
       sec_5295 =
         sections
         |> find(fn s -> s.number == "72A.5295" end)
