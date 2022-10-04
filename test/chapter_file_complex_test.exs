@@ -25,6 +25,11 @@ defmodule ChapterFileComplexTest do
       |> fixture_file(cp1252: true)
       |> Floki.parse_document!()
 
+    dom_72A =
+      "ors072A.html"
+      |> fixture_file(cp1252: true)
+      |> Floki.parse_document!()
+
     # The context data for the tests.
     %{
       sub_chapters: Parser.ChapterFile.sub_chapters(dom),
