@@ -105,11 +105,15 @@ defmodule Parser.ChapterFile do
     |> then(fn [num, name] -> %{number: num, name: name} end)
   end
 
-  @spec extract_heading_text(Floki.html_tree()) :: binary
+  def extract_heading_text({"p", _, [_meta_data, text_elems]}) do
+    Floki.text(text_elems)
+    |> replace("\r\n", " ")
+    |> trim
+  end
+
   def extract_heading_text(heading_p) do
     heading_p
     |> Floki.text()
-    |> trim
     |> split("\r\n")
     |> slice(2..-1)
     |> join(" ")
