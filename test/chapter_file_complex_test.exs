@@ -33,7 +33,8 @@ defmodule ChapterFileComplexTest do
     # The context data for the tests.
     %{
       sub_chapters: Parser.ChapterFile.sub_chapters(dom),
-      sections: Parser.ChapterFile.sections(dom)
+      sections: Parser.ChapterFile.sections(dom),
+      sections_72A: Parser.ChapterFile.sections(dom_72A)
     }
   end
 
@@ -50,6 +51,10 @@ defmodule ChapterFileComplexTest do
   describe "Section.chapter_number" do
     test "is correct", %{sections: sections} do
       assert all?(sections, &(&1.chapter_number == "837"))
+    end
+
+    test "is correct - 72A", %{sections_72A: sections} do
+      assert all?(sections, &(&1.chapter_number == "72A"))
     end
   end
 
