@@ -106,15 +106,13 @@ defmodule Parser.ChapterFile do
   end
 
   @spec extract_heading_text(any) :: binary
-  def extract_heading_text({"p", _, [_meta_data, text_elems]}) do
+  def extract_heading_text({"p", _attrs, [_meta_data, text_elems]}) do
     Floki.text(text_elems)
     |> replace("\r\n", " ")
     |> trim
   end
 
-  def extract_heading_text(_) do
-    ""
-  end
+  def extract_heading_text(_), do: ""
 
   defp cleanup([number, name]) do
     [number, List.first(split(name, "."))]
