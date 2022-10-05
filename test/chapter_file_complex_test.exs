@@ -99,6 +99,14 @@ defmodule ChapterFileComplexTest do
     test "Last - 72A", %{sections_72A: sections} do
       assert last(sections).number == "72A.5310"
     end
+
+    test "First - 001", %{sections_001: sections} do
+      assert first(sections).number == "1.001"
+    end
+
+    test "Last - 001", %{sections_001: sections} do
+      assert last(sections).number == "1.860"
+    end
   end
 
   describe "Section.name" do
