@@ -11,6 +11,13 @@ defmodule Parser do
   The Parser module is responsible for converting the response from the spider.
   """
 
+  @spec parse_home_page(
+          binary
+          | %{
+              :body => binary | %{:body => binary | map, optional(any) => any},
+              optional(any) => any
+            }
+        ) :: Crawly.ParsedItem.t()
   def parse_home_page(%{body: html}), do: parse_home_page(html)
 
   def parse_home_page(html) when is_bitstring(html) do
@@ -23,6 +30,7 @@ defmodule Parser do
     chapter_reqs =
       chapters
       |> map(fn c -> c.url end)
+      |> Enum.reverse()
       |> map(&Crawly.Utils.request_from_url/1)
 
     %Elixir.Crawly.ParsedItem{
