@@ -25,6 +25,11 @@ defmodule ChapterFileComplexTest do
       |> fixture_file(cp1252: true)
       |> Floki.parse_document!()
 
+    dom_001 =
+      "ors001.html"
+      |> fixture_file(cp1252: true)
+      |> Floki.parse_document!()
+
     dom_72A =
       "ors072A.html"
       |> fixture_file(cp1252: true)
@@ -34,7 +39,8 @@ defmodule ChapterFileComplexTest do
     %{
       sub_chapters: Parser.ChapterFile.sub_chapters(dom),
       sections: Parser.ChapterFile.sections(dom),
-      sections_72A: Parser.ChapterFile.sections(dom_72A)
+      sections_72A: Parser.ChapterFile.sections(dom_72A),
+      sections_001: Parser.ChapterFile.sections(dom_001)
     }
   end
 
@@ -56,10 +62,18 @@ defmodule ChapterFileComplexTest do
     test "is correct - 72A", %{sections_72A: sections} do
       assert all?(sections, &(&1.chapter_number == "72A"))
     end
+
+    test "is correct - 001", %{sections_001: sections} do
+      assert all?(sections, &(&1.chapter_number == "1"))
+    end
   end
 
   describe "Section.kind" do
     test "is 'section' for all Sections", %{sections: sections} do
+      assert all?(sections, &(&1.kind == "section"))
+    end
+
+    test "is 'section' for all Sections - 001", %{sections_001: sections} do
       assert all?(sections, &(&1.kind == "section"))
     end
   end
