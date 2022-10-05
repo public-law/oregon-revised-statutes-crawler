@@ -93,19 +93,19 @@ defmodule ChapterFileComplexTest do
     end
 
     test "First - 72A", %{sections_72A: sections} do
-      assert first(sections).number == "72A.1010"
+      assert [%{number: "72A.1010"} | _] = sections
     end
 
     test "Last - 72A", %{sections_72A: sections} do
-      assert last(sections).number == "72A.5310"
+      assert [%{number: "72A.5310"} | _] = reverse(sections)
     end
 
     test "First - 001", %{sections_001: sections} do
-      assert first(sections).number == "1.001"
+      assert [%{number: "1.001"} | _] = sections
     end
 
     test "Last - 001", %{sections_001: sections} do
-      assert last(sections).number == "1.860"
+      assert [%{number: "1.860"} | _] = reverse(sections)
     end
   end
 
