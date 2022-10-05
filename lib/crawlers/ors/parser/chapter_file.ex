@@ -4,6 +4,8 @@ import String, except: [reverse: 1, slice: 2]
 alias Crawlers.ORS.Models.Section
 alias Util
 
+require Logger
+
 defmodule Parser.ChapterFile do
   def parse(%{body: html}), do: parse(html)
 
@@ -36,7 +38,8 @@ defmodule Parser.ChapterFile do
 
     reduce(processed_sections, [], fn e, acc ->
       case e do
-        {:error, _msg} ->
+        {:error, msg} ->
+          Logger.error(msg)
           acc
 
         {:ok, section} ->

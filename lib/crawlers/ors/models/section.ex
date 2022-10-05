@@ -22,7 +22,7 @@ defmodule Crawlers.ORS.Models.Section do
       String.length(struct.name) == 0 ->
         {:error, "Name can't be blank."}
 
-      !(struct.number =~ ~r/^[[:alnum:]]{3,4}\.[[:alnum:]]{3,4}$/) ->
+      !(struct.number =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}$/) ->
         {:error, "Malformed number: \"#{struct.number}\""}
 
       true ->
