@@ -18,3 +18,6 @@ config :crawly,
 
 config :mix_test_watch,
   clear: true
+
+config :logger,
+  level: :info
