@@ -2,8 +2,11 @@ defmodule ChaptersTest do
   @moduledoc """
   Test the ORS crawler.
   """
-  import List
   use ExUnit.Case, async: true
+  import List
+  import Enum
+
+  alias Crawlers.ORS.Models.Chapter
 
   setup_all do
     api_result =
@@ -16,13 +19,24 @@ defmodule ChaptersTest do
   end
 
   test "finds the correct # of Chapters", %{chapters: chapters} do
-    assert Enum.count(chapters) == 688
+    chapter_count = 688
+    former_provision_count = 107
+
+    assert count(chapters) == chapter_count - former_provision_count
+  end
+
+  test "Former provisions chapters are not returned", %{chapters: chapters} do
+    names =
+      chapters
+      |> map(& &1.name)
+
+    assert all?(names, &(&1 != "(Former Provisions)"))
   end
 
   test "Chapter 1 name", %{chapters: chapters} do
     first_chapter = first(chapters)
 
-    assert first_chapter.name == "Courts and Judicial Officers Generally"
+    assert %Chapter{name: "Courts and Judicial Officers Generally"} = first_chapter
   end
 
   test "Chapter 1 number", %{chapters: chapters} do

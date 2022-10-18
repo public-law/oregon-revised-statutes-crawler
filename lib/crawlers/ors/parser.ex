@@ -1,5 +1,6 @@
 import Enum, only: [at: 2, filter: 2, map: 2, uniq: 1]
 import String, except: [at: 2, filter: 2]
+require Logger
 
 alias Crawlers.ORS.Models.Volume
 alias Crawlers.ORS.Models.Title
@@ -41,14 +42,26 @@ defmodule Parser do
 
   @spec chapters(any) :: [Chapter]
   def chapters(api_data) do
-    api_data
-    |> map(fn c ->
-      %Chapter{
-        name: Map.fetch!(c, "ORS_x0020_Chapter_x0020_Title"),
-        number: Map.fetch!(c, "Title") |> capture(~r/Chapter (\w+)/) |> trim_leading("0"),
-        title_number: Map.fetch!(c, "ORS_x0020_Chapter") |> capture(~r/^([^.]+)/),
-        url: "https://www.oregonlegislature.gov" <> Map.fetch!(c, "TitleURL")
-      }
+    parse_results =
+      api_data
+      |> map(fn c ->
+        Chapter.new(
+          name: Map.fetch!(c, "ORS_x0020_Chapter_x0020_Title"),
+          number: Map.fetch!(c, "Title") |> capture(~r/Chapter (\w+)/) |> trim_leading("0"),
+          title_number: Map.fetch!(c, "ORS_x0020_Chapter") |> capture(~r/^([^.]+)/),
+          url: "https://www.oregonlegislature.gov" <> Map.fetch!(c, "TitleURL")
+        )
+      end)
+
+    Enum.reduce(parse_results, [], fn e, acc ->
+      case e do
+        {:error, msg} ->
+          Logger.debug(msg)
+          acc
+
+        {:ok, chapter} ->
+          acc ++ [chapter]
+      end
     end)
   end
 

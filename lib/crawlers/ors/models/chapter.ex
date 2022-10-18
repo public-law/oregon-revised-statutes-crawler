@@ -3,6 +3,7 @@ defmodule Crawlers.ORS.Models.Chapter do
   An ORS Chapter.
   """
   use TypedStruct
+  use Domo, skip_defaults: true
 
   typedstruct enforce: true do
     @typedoc "An ORS Chapter"
@@ -13,4 +14,23 @@ defmodule Crawlers.ORS.Models.Chapter do
     field :title_number, String.t()
     field :url, String.t()
   end
+
+  precond t: &validate_struct/1
+
+  defp validate_struct(struct) do
+    cond do
+      String.length(struct.name) == 0 ->
+        {:error, "Name can't be blank."}
+
+      struct.name == "(Former Provisions)" ->
+        {:error, "Former Provisions chapters are not valid."}
+
+      !(struct.number =~ ~r/^[[:alnum:]]{1,4}$/) ->
+        {:error, "Malformed number: \"#{struct.number}\""}
+
+      true ->
+        :ok
+    end
+  end
+
 end
