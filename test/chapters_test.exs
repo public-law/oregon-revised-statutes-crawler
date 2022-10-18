@@ -3,6 +3,7 @@ defmodule ChaptersTest do
   Test the ORS crawler.
   """
   import List
+  import Enum
   use ExUnit.Case, async: true
 
   setup_all do
@@ -20,8 +21,9 @@ defmodule ChaptersTest do
   end
 
   test "Former provisions chapters are not returned", %{chapters: chapters} do
-    names = Enum.map(chapters, &(&1.name))
-    assert Enum.all?(names, &(&1 != "(Former Provisions)"))
+    names = chapters |> map(& &1.name)
+
+    assert all?(names, &(&1 != "(Former Provisions)"))
   end
 
   test "Chapter 1 name", %{chapters: chapters} do
