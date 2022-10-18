@@ -17,11 +17,16 @@ defmodule ChaptersTest do
   end
 
   test "finds the correct # of Chapters", %{chapters: chapters} do
-    assert Enum.count(chapters) == 686
+    chapter_count = 688
+    former_provision_count = 107
+
+    assert count(chapters) == chapter_count - former_provision_count
   end
 
   test "Former provisions chapters are not returned", %{chapters: chapters} do
-    names = chapters |> map(& &1.name)
+    names =
+      chapters
+      |> map(& &1.name)
 
     assert all?(names, &(&1 != "(Former Provisions)"))
   end
