@@ -1,9 +1,8 @@
 import Config
 
 config :crawly,
-  closespider_timeout: nil,
+  closespider_timeout: 1,
   concurrent_requests_per_domain: 8,
-  # closespider_itemcount: 100,
   middlewares: [
     Crawly.Middlewares.DomainFilter,
     Crawly.Middlewares.UniqueRequest,
@@ -13,8 +12,9 @@ config :crawly,
     # {Crawly.Pipelines.Validate, fields: [:name]},
     # {Crawly.Pipelines.DuplicatesFilter, item_id: :title},
     Crawly.Pipelines.JSONEncoder,
-    {Crawly.Pipelines.WriteToFile, extension: "jl", folder: "./tmp"}
-  ]
+    {Crawly.Pipelines.WriteToFile, extension: "jsonl", folder: "./tmp"}
+  ],
+  on_spider_closed_callback: fn _, _, _ -> System.halt(1) end
 
 config :mix_test_watch,
   clear: true
