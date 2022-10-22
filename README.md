@@ -14,3 +14,9 @@ The output contains one line per statute object:
 etc.
 
 We've made the data from the last run available here: https://github.com/public-law/datasets/blob/master/UnitedStates/Oregon/ors.jsonl
+
+## To run the spider
+
+``` bash
+iex -S mix run -e "Crawly.Engine.start_spider(Spider)"
+```
