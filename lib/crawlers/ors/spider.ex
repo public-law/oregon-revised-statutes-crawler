@@ -5,9 +5,10 @@ defmodule Spider do
   use Crawly.Spider
   alias Parser.ChapterFile
 
-  @ors_home_page "https://www.oregonlegislature.gov/bills_laws/Pages/ORS.aspx"
-  @chapter_root "https://www.oregonlegislature.gov/bills_laws/ors/"
+  @ors_home_page   "https://www.oregonlegislature.gov/bills_laws/Pages/ORS.aspx"
+  @chapter_root    "https://www.oregonlegislature.gov/bills_laws/ors/"
   @annos_home_page "https://www.oregonlegislature.gov/bills_laws/Pages/Annotations.aspx"
+
 
   @impl Crawly.Spider
   def base_url, do: "https://www.oregonlegislature.gov/"
