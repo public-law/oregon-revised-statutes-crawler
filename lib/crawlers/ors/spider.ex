@@ -3,7 +3,10 @@ defmodule Spider do
   The Spider module is responsible for crawling the ORS website.
   """
   use Crawly.Spider
+
+  alias Parser.AnnoHomePage
   alias Parser.ChapterFile
+
 
   @ors_home_page   "https://www.oregonlegislature.gov/bills_laws/Pages/ORS.aspx"
   @chapter_root    "https://www.oregonlegislature.gov/bills_laws/ors/"
@@ -32,5 +35,4 @@ defmodule Spider do
   def parse_item(%{request_url: @annos_home_page} = response) do
     AnnoHomePage.parse(response)
   end
-
 end
