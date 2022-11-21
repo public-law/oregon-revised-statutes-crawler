@@ -57,7 +57,7 @@ defmodule Parser do
           number: Map.fetch!(c, "Title") |> capture(~r/Chapter (\w+)/) |> trim_leading("0"),
           title_number: Map.fetch!(c, "ORS_x0020_Chapter") |> capture(~r/^([^.]+)/),
           url: "https://www.oregonlegislature.gov" <> Map.fetch!(c, "TitleURL"),
-          anno_url: Regex.replace(~r/ors\/ors/, "https://www.oregonlegislature.gov" <> Map.fetch!(c, "TitleURL"), "ors/ano")
+          anno_url: replace("https://www.oregonlegislature.gov" <> Map.fetch!(c, "TitleURL"), "ors/ors", "ors/ano")
         )
       end)
 
