@@ -5,4 +5,8 @@ defmodule Parser.AnnotationFile do
 
   def parse(_) do
   end
+
+  def annotations(_) do
+    []
+  end
 end
