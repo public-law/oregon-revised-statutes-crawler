@@ -86,4 +86,10 @@ defmodule ChaptersTest do
 
     assert last_chapter.url == "https://www.oregonlegislature.gov/bills_laws/ors/ors838.html"
   end
+
+  test "Last Chapter Annotation URL", %{chapters: chapters} do
+    last_chapter = last(chapters)
+
+    assert last_chapter.anno_url == "https://www.oregonlegislature.gov/bills_laws/ors/ano838.html"
+  end
 end
