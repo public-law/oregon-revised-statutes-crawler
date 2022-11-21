@@ -23,6 +23,12 @@ defmodule Crawlers.ORS.Models.Chapter do
       String.length(struct.name) == 0 ->
         {:error, "Name can't be blank."}
 
+      String.length(struct.url) == 0 ->
+        {:error, "URL can't be blank."}
+
+      String.length(struct.anno_url) == 0 ->
+        {:error, "Annotation URL can't be blank."}
+
       struct.name == "(Former Provisions)" ->
         {:error, "Former Provisions chapters are not valid."}
 
