@@ -13,6 +13,7 @@ defmodule Crawlers.ORS.Models.Chapter do
     field :number, String.t()
     field :title_number, String.t()
     field :url, String.t()
+    field :anno_url, String.t()
   end
 
   precond t: &validate_struct/1
