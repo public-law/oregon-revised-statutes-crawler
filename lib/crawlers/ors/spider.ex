@@ -4,21 +4,20 @@ defmodule Spider do
   """
   use Crawly.Spider
 
-  alias Parser.AnnoHomePage
+  alias Parser.AnnotationFile
   alias Parser.ChapterFile
 
 
   @ors_home_page   "https://www.oregonlegislature.gov/bills_laws/Pages/ORS.aspx"
-  @chapter_root    "https://www.oregonlegislature.gov/bills_laws/ors/"
-  @annos_home_page "https://www.oregonlegislature.gov/bills_laws/Pages/Annotations.aspx"
-
+  @chapter_root    "https://www.oregonlegislature.gov/bills_laws/ors/ors"
+  @anno_root       "https://www.oregonlegislature.gov/bills_laws/ors/ano"
 
   @impl Crawly.Spider
   def base_url, do: "https://www.oregonlegislature.gov/"
 
   @impl Crawly.Spider
   def init do
-    [start_urls: [@ors_home_page, @annos_home_page]]
+    [start_urls: [@ors_home_page]]
   end
 
   @impl Crawly.Spider
@@ -32,7 +31,9 @@ defmodule Spider do
     ChapterFile.parse(response)
   end
 
-  def parse_item(%{request_url: @annos_home_page} = response) do
-    AnnoHomePage.parse(response)
+  def parse_item(%{request_url: @anno_root <> _} = response) do
+    Logger.info("Parsing #{response.request_url}...")
+
+    AnnotationFile.parse(response)
   end
 end
