@@ -47,17 +47,20 @@ defmodule Parser do
     }
   end
 
+
   @spec chapters(any) :: [Chapter]
   def chapters(api_data) do
     parse_results =
       api_data
       |> map(fn c ->
+        url = "https://www.oregonlegislature.gov" <> Map.fetch!(c, "TitleURL")
+
         Chapter.new(
           name: Map.fetch!(c, "ORS_x0020_Chapter_x0020_Title"),
           number: Map.fetch!(c, "Title") |> capture(~r/Chapter (\w+)/) |> trim_leading("0"),
           title_number: Map.fetch!(c, "ORS_x0020_Chapter") |> capture(~r/^([^.]+)/),
-          url: "https://www.oregonlegislature.gov" <> Map.fetch!(c, "TitleURL"),
-          anno_url: replace("https://www.oregonlegislature.gov" <> Map.fetch!(c, "TitleURL"), "ors/ors", "ors/ano")
+          url: url,
+          anno_url: replace(url, "ors/ors", "ors/ano")
         )
       end)
 
@@ -72,6 +75,7 @@ defmodule Parser do
       end
     end)
   end
+
 
   @spec titles(Floki.html_tree()) :: [Title.t()]
   def titles(document) do
