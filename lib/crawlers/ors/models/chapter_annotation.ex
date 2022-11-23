@@ -6,6 +6,7 @@ defmodule Crawlers.ORS.Models.ChapterAnnotation do
   use Domo, skip_defaults: true
 
   import Crawlers.String
+  import Crawlers.ORS.Models.Chapter, only: [invalid_chapter_number?: 1]
 
 
   typedstruct enforce: true do
@@ -17,6 +18,7 @@ defmodule Crawlers.ORS.Models.ChapterAnnotation do
     field :chapter_number, String.t()
   end
 
+
   precond t: &validate_struct/1
 
   defp validate_struct(struct) do
@@ -24,8 +26,8 @@ defmodule Crawlers.ORS.Models.ChapterAnnotation do
       empty?(struct.name) ->
         {:error, "Name can't be blank."}
 
-      !(struct.number =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}$/) ->
-        {:error, "Malformed number: \"#{struct.number}\""}
+      invalid_chapter_number?(struct.number) ->
+        {:error, "Malformed number: \"#{struct.chapter_number}\""}
 
       true ->
         :ok

@@ -17,6 +17,7 @@ defmodule Crawlers.ORS.Models.Chapter do
     field :anno_url, String.t()
   end
 
+
   precond t: &validate_struct/1
 
   defp validate_struct(struct) do
