@@ -5,6 +5,7 @@ defmodule AnnotationFileTest do
   use ExUnit.Case, async: true
   import TestHelper
   import Enum
+  alias Parser.AnnotationFile
 
 
   setup_all do
@@ -13,7 +14,7 @@ defmodule AnnotationFileTest do
       |> fixture_file(cp1252: true)
       |> Floki.parse_document!()
 
-    %{annotations: Parser.AnnotationFile.annotations(dom)}
+    %{annotations: AnnotationFile.annotations(dom)}
   end
 
 
