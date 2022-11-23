@@ -6,8 +6,6 @@ defmodule AnnotationFileTest do
   import TestHelper
   import Enum
 
-  alias Crawlers.ORS.Models.Annotation
-
 
   setup_all do
     dom =
@@ -15,13 +13,17 @@ defmodule AnnotationFileTest do
       |> fixture_file(cp1252: true)
       |> Floki.parse_document!()
 
-
     %{annotations: Parser.AnnotationFile.annotations(dom)}
   end
 
+
   test "finds the correct # of Annotations", %{annotations: annos} do
-    assert count(annos) == 19
+    chapter_annotations = 1
+    section_annotations = 19
+
+    assert count(annos) == chapter_annotations + section_annotations
   end
+
 
   # test "Former provisions chapters are not returned", %{chapters: chapters} do
   #   names =

@@ -12,4 +12,9 @@ defmodule Crawlers.String do
   def captures(string, regex) do
     Regex.run(regex, string, capture: :all_but_first)
   end
+
+  @spec empty?(binary) :: boolean()
+  def empty?(s) do
+    String.length(s) == 0
+  end
 end
