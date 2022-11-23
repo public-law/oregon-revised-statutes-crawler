@@ -34,7 +34,7 @@ defmodule Crawlers.ORS.Models.Section do
 
 
 
-  def invalid_section_number?(n) do
+  def invalid_section_number?(n) when is_bitstring(n) do
     !(n =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}$/)
   end
 

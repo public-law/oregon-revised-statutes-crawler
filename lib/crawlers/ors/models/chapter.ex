@@ -4,6 +4,7 @@ defmodule Crawlers.ORS.Models.Chapter do
   """
   use TypedStruct
   use Domo, skip_defaults: true
+  import Crawlers.String
 
   typedstruct enforce: true do
     @typedoc "An ORS Chapter"
@@ -20,24 +21,29 @@ defmodule Crawlers.ORS.Models.Chapter do
 
   defp validate_struct(struct) do
     cond do
-      String.length(struct.name) == 0 ->
+      empty?(struct.name) ->
         {:error, "Name can't be blank."}
 
-      String.length(struct.url) == 0 ->
+      empty?(struct.url) ->
         {:error, "URL can't be blank."}
 
-      String.length(struct.anno_url) == 0 ->
+      empty?(struct.anno_url) ->
         {:error, "Annotation URL can't be blank."}
 
       struct.name == "(Former Provisions)" ->
         {:error, "Former Provisions chapters are not valid."}
 
-      !(struct.number =~ ~r/^[[:alnum:]]{1,4}$/) ->
-        {:error, "Malformed number: \"#{struct.number}\""}
+      invalid_chapter_number?(struct.number) ->
+        {:error, "Malformed chapter number: \"#{struct.number}\""}
 
       true ->
         :ok
     end
+  end
+
+
+  def invalid_chapter_number?(n) when is_bitstring(n) do
+    !(n =~ ~r/^[[:alnum:]]{1,4}$/)
   end
 
 end
