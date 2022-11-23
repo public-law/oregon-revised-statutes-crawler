@@ -1,21 +1,21 @@
-defmodule Crawlers.ORS.Models.ChapterAnnotation do
+defmodule Crawlers.ORS.Models.SectionAnnotation do
   @moduledoc """
-  An annotation on a chapter.
+  An annotation on a section.
   """
   use TypedStruct
   use Domo, skip_defaults: true
 
   import Crawlers.String
-  import Crawlers.ORS.Models.Chapter, only: [invalid_chapter_number?: 1]
+  import Crawlers.ORS.Models.Section, only: [invalid_section_number?: 1]
 
 
   typedstruct enforce: true do
     @typedoc "An ORS Annotation for a Chapter"
 
-    field :kind, String.t(), default: "chapter annotation"
+    field :kind, String.t(), default: "section annotation"
     field :heading, String.t()
     field :text, String.t()
-    field :chapter_number, String.t()
+    field :section_number, String.t()
   end
 
 
@@ -29,8 +29,8 @@ defmodule Crawlers.ORS.Models.ChapterAnnotation do
       empty?(struct.text) ->
         {:error, "Text can't be blank."}
 
-      invalid_chapter_number?(struct.number) ->
-        {:error, "Malformed number: \"#{struct.chapter_number}\""}
+      invalid_section_number?(struct.section_number) ->
+        {:error, "Malformed number: \"#{struct.section_number}\""}
 
       true ->
         :ok
