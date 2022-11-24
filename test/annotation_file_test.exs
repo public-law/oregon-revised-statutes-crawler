@@ -7,24 +7,18 @@ defmodule AnnotationFileTest do
   import Enum
   alias Parser.AnnotationFile
 
-
   setup_all do
     dom =
       "ano001.html"
       |> fixture_file(cp1252: true)
       |> Floki.parse_document!()
 
-    %{annotations: AnnotationFile.annotations(dom)}
+    %{chapter_annotations: AnnotationFile.chapter_annotations(dom)}
   end
 
-
-  test "finds the correct # of Annotations", %{annotations: annos} do
-    chapter_annotations = 1
-    section_annotations = 19
-
-    assert count(annos) == chapter_annotations + section_annotations
+  test "finds the correct # of Chapter Annotations", %{chapter_annotations: annos} do
+    assert count(annos) == 1
   end
-
 
   # test "Former provisions chapters are not returned", %{chapters: chapters} do
   #   names =

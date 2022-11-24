@@ -60,7 +60,8 @@ defmodule ChaptersTest do
   test "Chapter 1 Annotation URL", %{chapters: chapters} do
     first_chapter = first(chapters)
 
-    assert first_chapter.anno_url == "https://www.oregonlegislature.gov/bills_laws/ors/ano001.html"
+    assert first_chapter.anno_url ==
+             "https://www.oregonlegislature.gov/bills_laws/ors/ano001.html"
   end
 
   test "Last Chapter name", %{chapters: chapters} do
