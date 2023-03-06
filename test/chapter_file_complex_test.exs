@@ -121,7 +121,7 @@ defmodule ChapterFileComplexTest do
 
     test "Weird truncated name", %{sections_001: sections} do
       sec_1_005 = Enum.find(sections, &(&1.number == "1.005"))
-      assert sec_1_005.name == "Credit card transactions for fees, security deposits, fines and other court-imposed obligations"
+      assert sec_1_005.name == "Credit card transactions for fees, security deposits, fines and other court-imposed obligations; rules"
     end
   end
 
