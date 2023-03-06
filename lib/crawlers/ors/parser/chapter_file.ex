@@ -102,8 +102,7 @@ defmodule Parser.ChapterFile do
     heading_p
     |> Floki.text()
     |> trim
-    |> split("\r\n")
-    |> take(2)
+    |> split("\r\n", parts: 2)
     |> cleanup
     |> then(fn [num, name] -> %{number: num, name: name} end)
   end
@@ -118,7 +117,7 @@ defmodule Parser.ChapterFile do
   def extract_heading_text(_), do: ""
 
   defp cleanup([number, name]) do
-    [number, List.first(split(name, "."))]
+    [number, replace_rn(List.first(split(name, ".")))]
   end
 
   defp cleanup([number]) when is_binary(number) do
@@ -138,5 +137,9 @@ defmodule Parser.ChapterFile do
     b_elem = Floki.find(element, "b")
 
     b_elem != [] && trim(Floki.text(b_elem)) != "Note:"
+  end
+
+  defp replace_rn(text) do
+    replace(text, "\r\n", " ")
   end
 end
