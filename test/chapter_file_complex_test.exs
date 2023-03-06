@@ -118,6 +118,11 @@ defmodule ChapterFileComplexTest do
     test "Last", %{sections: sections} do
       assert last(sections).name == "Civil penalties"
     end
+
+    test "Weird truncated name", %{sections_001: sections} do
+      sec_1_005 = Enum.find(sections, &(&1.number == "1.005"))
+      assert sec_1_005.name == "Credit card transactions for fees, security deposits, fines and other court-imposed obligations"
+    end
   end
 
   describe "Section text" do
