@@ -18,12 +18,14 @@ defmodule ChaptersTest do
     %{chapters: Parser.chapters(api_result)}
   end
 
+
   test "finds the correct # of Chapters", %{chapters: chapters} do
     chapter_count = 688
     former_provision_count = 107
 
     assert count(chapters) == chapter_count - former_provision_count
   end
+
 
   test "Former provisions chapters are not returned", %{chapters: chapters} do
     names =
@@ -32,6 +34,7 @@ defmodule ChaptersTest do
 
     assert all?(names, &(&1 != "(Former Provisions)"))
   end
+
 
   test "Chapter 1 name", %{chapters: chapters} do
     first_chapter = first(chapters)
