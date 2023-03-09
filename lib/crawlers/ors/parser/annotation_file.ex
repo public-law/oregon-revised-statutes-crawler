@@ -29,26 +29,26 @@ defmodule Parser.AnnotationFile do
   def parse(_) do
   end
 
+  @spec section_annotations(Floki.html_tree()) :: [SectionAnnotation.t()]
+  def section_annotations(dom) do
+    dom
+    |> Floki.find("p")
+    |> Enum.map(&Floki.text/1)
+    |> Util.group_with(&section_heading?/1)
+  end
+
   @spec chapter_annotations(Floki.html_tree()) :: [ChapterAnnotation.t()]
   def chapter_annotations(_dom) do
     []
   end
 
-  @spec section_annotations(Floki.html_tree()) :: [SectionAnnotation.t()]
-  def section_annotations(dom) do
-    annotations =
-      dom
-      |> Floki.find("p")
-      |> Enum.map(&Floki.text/1)
-      |> Util.group_with(&section_heading?/1)
-
-    annotations
-  end
-
   #
-  # E.g.: "      2.570"
+  # Examples:
+  #   "      2.570"
+  #   "      2.570 to 2.580"
   #
   defp section_heading?(paragraph) when is_binary(paragraph) do
-    paragraph =~ ~r/^.     \w+\.\w+$/
+    cleaned = String.replace(paragraph, "\r\n", " ")
+    cleaned =~ ~r/^      \w+\.\w+( to \w+\.\w+)?$/
   end
 end
