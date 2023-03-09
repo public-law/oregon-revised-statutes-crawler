@@ -49,4 +49,9 @@ defmodule Util do
   def clean_no_break_spaces(text) do
     String.replace(text, <<194, 160>>, " ")
   end
+
+  @spec clean_windows_line_endings(binary) :: binary
+  def clean_windows_line_endings(text) do
+    String.replace(text, "\r\n", " ")
+  end
 end

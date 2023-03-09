@@ -25,6 +25,7 @@ defmodule Parser.AnnotationFile do
   """
   alias Crawlers.ORS.Models.ChapterAnnotation
   alias Crawlers.ORS.Models.SectionAnnotation
+  import Util
 
   def parse(_) do
   end
@@ -48,7 +49,7 @@ defmodule Parser.AnnotationFile do
   #   "      2.570 to 2.580"
   #
   defp section_heading?(paragraph) when is_binary(paragraph) do
-    cleaned = String.replace(paragraph, "\r\n", " ")
+    cleaned = clean_windows_line_endings(paragraph)
     cleaned =~ ~r/^      \w+\.\w+( to \w+\.\w+)?$/
   end
 end
