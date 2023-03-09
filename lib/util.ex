@@ -50,8 +50,8 @@ defmodule Util do
     String.replace(text, <<194, 160>>, " ")
   end
 
-  @spec clean_windows_line_endings(binary) :: binary
-  def clean_windows_line_endings(text) do
-    String.replace(text, "\r\n", " ")
+  @spec convert_windows_line_endings(binary) :: binary
+  def convert_windows_line_endings(text) do
+    String.replace(text, "\r\n", "\n")
   end
 end
