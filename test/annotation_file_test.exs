@@ -23,7 +23,9 @@ defmodule AnnotationFileTest do
 
     %{
       chapter_annotations_001: AnnotationFile.chapter_annotations(dom_001),
-      chapter_annotations_002: AnnotationFile.chapter_annotations(dom_002)
+      chapter_annotations_002: AnnotationFile.chapter_annotations(dom_002),
+      section_annotations_001: AnnotationFile.section_annotations(dom_001),
+      section_annotations_002: AnnotationFile.section_annotations(dom_002)
     }
   end
 
