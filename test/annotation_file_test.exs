@@ -4,6 +4,7 @@ defmodule AnnotationFileTest do
   """
   use ExUnit.Case, async: true
   import TestHelper
+  import Util
   import Enum
   alias Parser.AnnotationFile
 
@@ -11,11 +12,13 @@ defmodule AnnotationFileTest do
     dom_001 =
       "ano001.html"
       |> fixture_file(cp1252: true)
+      |> then(&clean_no_break_spaces/1)
       |> Floki.parse_document!()
 
     dom_002 =
       "ano002.html"
       |> fixture_file(cp1252: true)
+      |> then(&clean_no_break_spaces/1)
       |> Floki.parse_document!()
 
     %{
@@ -23,7 +26,6 @@ defmodule AnnotationFileTest do
       chapter_annotations_002: AnnotationFile.chapter_annotations(dom_002)
     }
   end
-
 
   test "finds one Chapter Annotation", %{chapter_annotations_001: annos} do
     assert count(annos) == 1

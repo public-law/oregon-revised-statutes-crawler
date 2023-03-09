@@ -40,4 +40,13 @@ defmodule Util do
   def cp1252_to_utf8(text) do
     :erlyconv.to_unicode(:cp1252, text)
   end
+
+  @doc """
+  In UTF-8 character value C2 A0 (194 160) is defined as
+  NO-BREAK SPACE.
+  """
+  @spec clean_no_break_spaces(binary) :: binary
+  def clean_no_break_spaces(text) do
+    String.replace(text, <<194, 160>>, " ")
+  end
 end

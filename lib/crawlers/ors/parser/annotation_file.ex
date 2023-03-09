@@ -5,10 +5,8 @@ defmodule Parser.AnnotationFile do
   import String, only: [replace: 3]
   alias Crawlers.ORS.Models.ChapterAnnotation
 
-
   def parse(_) do
   end
-
 
   @spec chapter_annotations(Floki.html_tree()) :: [ChapterAnnotation.t()]
   def chapter_annotations(dom) do
@@ -16,14 +14,12 @@ defmodule Parser.AnnotationFile do
       dom
       |> Floki.find("p")
       |> Enum.map(&Floki.text/1)
-      |> Enum.map(fn s -> replace(s, <<194, 160>>, " ") end)
       |> Util.group_with(&section_heading?/1)
 
     annotations |> dbg
 
     []
   end
-
 
   #
   # E.g.: "      2.570"
