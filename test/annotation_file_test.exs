@@ -45,6 +45,12 @@ defmodule AnnotationFileTest do
     assert count(annos) == 4
   end
 
+  test "Section number", %{section_annotations_001: annos} do
+    first_anno = List.first(annos)
+
+    assert first_anno.section_number == "1.001"
+  end
+
   # test "Former provisions chapters are not returned", %{chapters: chapters} do
   #   names =
   #     chapters
