@@ -44,11 +44,11 @@ defmodule Parser.AnnotationFile do
     []
   end
 
-  #
-  # Examples:
-  #   "      2.570"
-  #   "      2.570 to 2.580"
-  #
+  @doc """
+    Examples:
+      "      2.570"
+      "      2.570 to 2.580"
+  """
   @spec section_heading?(binary) :: boolean
   def section_heading?(paragraph) when is_binary(paragraph) do
     paragraph
