@@ -23,8 +23,8 @@ defmodule Parser.AnnotationFile do
   All the annotations are listed at
   https://www.oregonlegislature.gov/bills_laws/Pages/Annotations.aspx
   """
-  import String, only: [replace: 3]
   alias Crawlers.ORS.Models.ChapterAnnotation
+  alias Crawlers.ORS.Models.SectionAnnotation
 
   def parse(_) do
   end
