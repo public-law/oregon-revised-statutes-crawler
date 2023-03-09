@@ -36,6 +36,7 @@ defmodule Parser.AnnotationFile do
     |> Floki.find("p")
     |> Enum.map(&Floki.text/1)
     |> Util.group_with(&section_heading?/1)
+    |> Enum.map(&make_section_annotation/1)
   end
 
   @spec chapter_annotations(Floki.html_tree()) :: [ChapterAnnotation.t()]
@@ -53,5 +54,12 @@ defmodule Parser.AnnotationFile do
     paragraph
     |> convert_windows_line_endings()
     |> String.match?(~r/^      \w+\.\w+(\sto\s\w+\.\w+)?$/)
+  end
+
+  defp make_section_annotation(strings) do
+    %SectionAnnotation{
+      section_number: List.first(strings) |> String.trim(),
+      text: List.last(strings)
+    }
   end
 end
