@@ -49,7 +49,8 @@ defmodule Parser.AnnotationFile do
   #   "      2.570 to 2.580"
   #
   defp section_heading?(paragraph) when is_binary(paragraph) do
-    cleaned = convert_windows_line_endings(paragraph)
-    cleaned =~ ~r/^      \w+\.\w+(\sto\s\w+\.\w+)?$/
+    paragraph
+    |> convert_windows_line_endings()
+    |> String.match?(~r/^      \w+\.\w+(\sto\s\w+\.\w+)?$/)
   end
 end
