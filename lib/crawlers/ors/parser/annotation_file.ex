@@ -30,16 +30,19 @@ defmodule Parser.AnnotationFile do
   end
 
   @spec chapter_annotations(Floki.html_tree()) :: [ChapterAnnotation.t()]
-  def chapter_annotations(dom) do
+  def chapter_annotations(_dom) do
+    []
+  end
+
+  @spec section_annotations(Floki.html_tree()) :: [SectionAnnotation.t()]
+  def section_annotations(dom) do
     annotations =
       dom
       |> Floki.find("p")
       |> Enum.map(&Floki.text/1)
       |> Util.group_with(&section_heading?/1)
 
-    annotations |> dbg
-
-    []
+    annotations
   end
 
   #

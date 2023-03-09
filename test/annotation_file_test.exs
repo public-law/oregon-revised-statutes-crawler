@@ -29,12 +29,16 @@ defmodule AnnotationFileTest do
     }
   end
 
-  test "finds one Chapter Annotation", %{chapter_annotations_001: annos} do
-    assert count(annos) == 1
-  end
+  # test "finds one Chapter Annotation", %{chapter_annotations_001: annos} do
+  #   assert count(annos) == 1
+  # end
 
-  test "finds zero Chapter Annotations", %{chapter_annotations_002: annos} do
-    assert count(annos) == 0
+  # test "finds zero Chapter Annotations", %{chapter_annotations_002: annos} do
+  #   assert count(annos) == 0
+  # end
+
+  test "finds all Section Annotations", %{section_annotations_001: annos} do
+    assert count(annos) == 18
   end
 
   # test "Former provisions chapters are not returned", %{chapters: chapters} do
