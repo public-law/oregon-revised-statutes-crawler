@@ -60,7 +60,13 @@ defmodule AnnotationFileTest do
            ]
   end
 
-  # test "Section text - 2", %{section_annotations_002: [a | _]} do
-  #   assert a.text == ...
-  # end
+  @tag :skip
+  test "Section text - 2", %{section_annotations_002: [first | _]} do
+    assert first.text_blocks == [
+             "<h2>Notes of Decisions</h2>",
+             "<p>The Housing Authority is an agency for purposes of jurisdiction under this section. Housing Authority v. Bahr, 25 Or App 117, 548 P2d 514 (1976)</p>",
+             "<h2>Law Review Citations</h2>",
+             "<p>51 OLR 651 (1972); 50 WLR 291 (2014)</p>"
+           ]
+  end
 end
