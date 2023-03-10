@@ -4,7 +4,6 @@ defmodule Crawlers.ORS.Models.SectionAnnotation do
   """
   use TypedStruct
   use Domo, skip_defaults: true
-  import Crawlers.String
 
   typedstruct enforce: true do
     @typedoc "An ORS Annotation Record"
@@ -18,7 +17,7 @@ defmodule Crawlers.ORS.Models.SectionAnnotation do
 
   defp validate_struct(struct) do
     cond do
-      empty?(struct.text_blocks) ->
+      Enum.empty?(struct.text_blocks) ->
         {:error, "Text can't be blank."}
 
       !section_heading?(struct.section_number) ->

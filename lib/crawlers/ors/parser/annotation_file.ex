@@ -45,9 +45,9 @@ defmodule Parser.AnnotationFile do
   end
 
   defp make_section_annotation(strings) do
-    %SectionAnnotation{
+    SectionAnnotation.new(
       section_number: List.first(strings) |> String.trim(),
       text_blocks: strings
-    }
+    )
   end
 end
