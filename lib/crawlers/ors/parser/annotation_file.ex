@@ -56,7 +56,7 @@ defmodule Parser.AnnotationFile do
   defp parse_text_blocks(strings) do
     strings
     |> filter_text_blocks()
-    |> Enum.reduce([], fn string, acc -> acc ++ make_block(string) end)
+    |> Enum.flat_map(&make_block/1)
   end
 
 
