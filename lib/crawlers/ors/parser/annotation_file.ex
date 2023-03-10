@@ -64,7 +64,7 @@ defmodule Parser.AnnotationFile do
   defp make_block(string) do
     case string do
       "NOTES OF DECISIONS" ->              ["<h2>Notes of Decisions</h2>"]
-      "LAW REVIEW CITATIONS: " <> cites -> ["<h2>Law Review Citations</h2>"] ++ make_block(cites)
+      "LAW REVIEW CITATIONS: " <> cites -> ["<h2>Law Review Citations</h2>", "<p>#{cites}</p>"]
       _ ->                                 ["<p>#{string}</p>"]
     end
   end
