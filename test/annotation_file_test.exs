@@ -29,14 +29,6 @@ defmodule AnnotationFileTest do
     }
   end
 
-  # test "finds one Chapter Annotation", %{chapter_annotations_001: annos} do
-  #   assert count(annos) == 1
-  # end
-
-  # test "finds zero Chapter Annotations", %{chapter_annotations_002: annos} do
-  #   assert count(annos) == 0
-  # end
-
   test "finds all Section Annotations in 001", %{section_annotations_001: annos} do
     assert count(annos) == 18
   end
@@ -69,4 +61,12 @@ defmodule AnnotationFileTest do
              "<p>51 OLR 651 (1972); 50 WLR 291 (2014)</p>"
            ]
   end
+
+  # test "finds one Chapter Annotation", %{chapter_annotations_001: annos} do
+  #   assert count(annos) == 1
+  # end
+
+  # test "finds zero Chapter Annotations", %{chapter_annotations_002: annos} do
+  #   assert count(annos) == 0
+  # end
 end

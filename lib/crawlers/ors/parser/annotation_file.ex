@@ -35,8 +35,9 @@ defmodule Parser.AnnotationFile do
     dom
     |> Floki.find("p")
     |> Enum.map(&Floki.text/1)
-    |> Util.group_with(&SectionAnnotation.section_heading?/1)
+    |> Util.group_with(&raw_section_heading?/1)
     |> Enum.map(&make_section_annotation/1)
+    |> Enum.map(fn {:ok, section} -> section end)
   end
 
   @spec chapter_annotations(Floki.html_tree()) :: [ChapterAnnotation.t()]
@@ -49,5 +50,17 @@ defmodule Parser.AnnotationFile do
       section_number: List.first(strings) |> String.trim(),
       text_blocks: strings
     )
+  end
+
+  @doc """
+    Examples:
+      "      2.570"
+      "      2.570 to 2.580"
+  """
+  @spec raw_section_heading?(binary) :: boolean
+  defp raw_section_heading?(paragraph) when is_binary(paragraph) do
+    paragraph
+    |> Util.convert_windows_line_endings()
+    |> String.match?(~r/^      \w+\.\w+(\sto\s\w+\.\w+)?$/)
   end
 end

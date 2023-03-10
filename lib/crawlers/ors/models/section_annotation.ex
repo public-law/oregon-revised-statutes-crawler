@@ -37,6 +37,7 @@ defmodule Crawlers.ORS.Models.SectionAnnotation do
   def section_heading?(paragraph) when is_binary(paragraph) do
     paragraph
     |> Util.convert_windows_line_endings()
-    |> String.match?(~r/^      \w+\.\w+(\sto\s\w+\.\w+)?$/)
+    # |> Util.normalize_whitespace()
+    |> String.match?(~r/^\w+\.\w+(\sto\s\w+\.\w+)?$/)
   end
 end
