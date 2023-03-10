@@ -23,6 +23,12 @@ iex -S mix run -e "Crawly.Engine.start_spider(Spider)"
 
 ## To auto-run tests
 
-``` bash
+```bash
 fswatch lib test | mix test --listen-on-stdin
+```
+
+### Clear before each run
+
+```bash
+fswatch lib test | xargs -I {} sh -c 'clear && mix test'
 ```

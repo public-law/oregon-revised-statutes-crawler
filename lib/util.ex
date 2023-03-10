@@ -34,7 +34,7 @@ defmodule Util do
     reverse(result_reversed)
   end
 
-  @spec cp1252_to_utf8(binary) :: binary | char_list | char | {:error, :not_supported_charset}
+  @spec cp1252_to_utf8(binary) :: binary
   @doc """
   Convenience wrapper for Elixir arg ordering.
   """
