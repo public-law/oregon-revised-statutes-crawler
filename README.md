@@ -20,3 +20,9 @@ We've made the data from the last run available here: https://github.com/public-
 ``` bash
 iex -S mix run -e "Crawly.Engine.start_spider(Spider)"
 ```
+
+## To auto-run tests
+
+``` bash
+fswatch lib test | mix test --listen-on-stdin
+```
