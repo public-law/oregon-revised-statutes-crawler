@@ -55,6 +55,23 @@ defmodule Parser.AnnotationFile do
 
   defp parse_text_blocks(strings) do
     strings
+    |> filter_text_blocks()
+    |> Enum.reduce([], fn string, acc -> acc ++ make_block(string) end)
+  end
+
+
+  # Make a finished HTML block from a raw input string.
+  defp make_block(string) do
+    case string do
+      "NOTES OF DECISIONS" -> ["<h2>Notes of Decisions</h2>"]
+      _ ->                    ["<p>#{string}</p>"]
+    end
+  end
+
+
+  # Return the list of text blocks that we want to keep.
+  defp filter_text_blocks(strings) do
+    strings
     |> Enum.drop(2)
     |> Enum.map(&normalize_whitespace/1)
     |> Enum.reject(&blank?/1)
