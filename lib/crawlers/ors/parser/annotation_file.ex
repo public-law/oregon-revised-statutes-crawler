@@ -30,7 +30,19 @@ defmodule Parser.AnnotationFile do
   import Util
 
 
-  def parse(_) do
+  @spec parse(%{:body => binary}) :: Crawly.ParsedItem.t()
+  def parse(%{body: html}) do
+    document =
+      html
+      |> cp1252_to_utf8()
+      |> clean_no_break_spaces()
+      |> convert_windows_line_endings()
+      |> Floki.parse_document!()
+
+    %Elixir.Crawly.ParsedItem{
+      items: section_annotations(document),
+      requests: []
+    }
   end
 
 
