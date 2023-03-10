@@ -12,13 +12,13 @@ defmodule AnnotationFileTest do
     dom_001 =
       "ano001.html"
       |> fixture_file(cp1252: true)
-      |> then(&clean_no_break_spaces/1)
+      |> clean_no_break_spaces()
       |> Floki.parse_document!()
 
     dom_002 =
       "ano002.html"
       |> fixture_file(cp1252: true)
-      |> then(&clean_no_break_spaces/1)
+      |> clean_no_break_spaces()
       |> Floki.parse_document!()
 
     %{
