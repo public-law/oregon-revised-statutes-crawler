@@ -25,10 +25,14 @@ defmodule Parser.AnnotationFile do
   """
   alias Crawlers.ORS.Models.ChapterAnnotation
   alias Crawlers.ORS.Models.SectionAnnotation
+
+  import Crawlers.String
   import Util
+
 
   def parse(_) do
   end
+
 
   @spec section_annotations(Floki.html_tree()) :: [SectionAnnotation.t()]
   def section_annotations(dom) do
@@ -40,23 +44,34 @@ defmodule Parser.AnnotationFile do
     |> Enum.map(fn {:ok, section} -> section end)
   end
 
+
+  defp make_section_annotation(strings) do
+    SectionAnnotation.new(
+      section_number: List.first(strings) |> normalize_whitespace(),
+      text_blocks: strings |> parse_text_blocks()
+    )
+  end
+
+
+  defp parse_text_blocks(strings) do
+    strings
+    |> Enum.drop(2)
+    |> Enum.map(&normalize_whitespace/1)
+    |> Enum.reject(&blank?/1)
+  end
+
+
   @spec chapter_annotations(Floki.html_tree()) :: [ChapterAnnotation.t()]
   def chapter_annotations(_dom) do
     []
   end
 
-  defp make_section_annotation(strings) do
-    SectionAnnotation.new(
-      section_number: List.first(strings) |> normalize_whitespace(),
-      text_blocks: strings
-    )
-  end
 
-  @doc """
-    Examples:
-      "      2.570"
-      "      2.570 to 2.580"
-  """
+  #
+  #  Examples:
+  #    "      2.570"
+  #    "      2.570 to 2.580"
+  #
   @spec raw_section_heading?(binary) :: boolean
   defp raw_section_heading?(paragraph) when is_binary(paragraph) do
     paragraph

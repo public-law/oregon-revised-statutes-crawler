@@ -13,12 +13,14 @@ defmodule AnnotationFileTest do
       "ano001.html"
       |> fixture_file(cp1252: true)
       |> clean_no_break_spaces()
+      |> convert_windows_line_endings()
       |> Floki.parse_document!()
 
     dom_002 =
       "ano002.html"
       |> fixture_file(cp1252: true)
       |> clean_no_break_spaces()
+      |> convert_windows_line_endings()
       |> Floki.parse_document!()
 
     %{
@@ -52,7 +54,6 @@ defmodule AnnotationFileTest do
            ]
   end
 
-  @tag :skip
   test "Section text - 2", %{section_annotations_002: [first | _]} do
     assert first.text_blocks == [
              "<h2>Notes of Decisions</h2>",
