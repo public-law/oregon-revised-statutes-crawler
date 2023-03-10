@@ -105,7 +105,6 @@ defmodule Parser.AnnotationFile do
   @spec raw_section_heading?(binary) :: boolean
   defp raw_section_heading?(paragraph) when is_binary(paragraph) do
     paragraph
-    |> Util.convert_windows_line_endings()
     |> String.match?(~r/^      \w+\.\w+(\sto\s\w+\.\w+)?$/)
   end
 end
