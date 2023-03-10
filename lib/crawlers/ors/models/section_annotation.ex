@@ -28,16 +28,14 @@ defmodule Crawlers.ORS.Models.SectionAnnotation do
     end
   end
 
-  @doc """
-    Examples:
-      "      2.570"
-      "      2.570 to 2.580"
-  """
+  #
+  #  Examples:
+  #    "      2.570"
+  #    "      2.570 to 2.580"
+  #
   @spec section_heading?(binary) :: boolean
-  def section_heading?(paragraph) when is_binary(paragraph) do
+  defp section_heading?(paragraph) when is_binary(paragraph) do
     paragraph
-    |> Util.convert_windows_line_endings()
-    # |> Util.normalize_whitespace()
-    |> String.match?(~r/^\w+\.\w+(\sto\s\w+\.\w+)?$/)
+    |> String.match?(~r/^\w+\.\w+( to \w+\.\w+)?$/)
   end
 end

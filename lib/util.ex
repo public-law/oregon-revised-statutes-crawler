@@ -41,6 +41,15 @@ defmodule Util do
     :erlyconv.to_unicode(:cp1252, text)
   end
 
+  @spec normalize_whitespace(binary) :: binary
+  def normalize_whitespace(text) do
+    text
+    |> convert_windows_line_endings()
+    |> clean_no_break_spaces()
+    |> clean_multiple_spaces()
+    |> String.trim()
+  end
+
   @doc """
   In UTF-8 character value C2 A0 (194 160) is defined as
   NO-BREAK SPACE.
@@ -53,5 +62,10 @@ defmodule Util do
   @spec convert_windows_line_endings(binary) :: binary
   def convert_windows_line_endings(text) do
     String.replace(text, "\r\n", "\n")
+  end
+
+  @spec clean_multiple_spaces(binary) :: binary
+  def clean_multiple_spaces(text) do
+    String.replace(text, ~r/\s+/, " ")
   end
 end
