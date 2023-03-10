@@ -4,23 +4,21 @@ defmodule Crawlers.ORS.Models.SectionAnnotation do
   """
   use TypedStruct
   use Domo, skip_defaults: true
-
   import Crawlers.String
-  import Parser.AnnotationFile, only: [section_heading?: 1]
 
   typedstruct enforce: true do
     @typedoc "An ORS Annotation Record"
 
     field :kind, String.t(), default: "section annotation"
     field :section_number, String.t()
-    field :text, String.t()
+    field :text_blocks, [String.t()]
   end
 
   precond t: &validate_struct/1
 
   defp validate_struct(struct) do
     cond do
-      empty?(struct.text) ->
+      empty?(struct.text_blocks) ->
         {:error, "Text can't be blank."}
 
       !section_heading?(struct.section_number) ->
@@ -29,5 +27,17 @@ defmodule Crawlers.ORS.Models.SectionAnnotation do
       true ->
         :ok
     end
+  end
+
+  @doc """
+    Examples:
+      "      2.570"
+      "      2.570 to 2.580"
+  """
+  @spec section_heading?(binary) :: boolean
+  def section_heading?(paragraph) when is_binary(paragraph) do
+    paragraph
+    |> Util.convert_windows_line_endings()
+    |> String.match?(~r/^      \w+\.\w+(\sto\s\w+\.\w+)?$/)
   end
 end

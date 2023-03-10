@@ -53,11 +53,14 @@ defmodule AnnotationFileTest do
     assert a.section_number == "2.510"
   end
 
-  test "Section text - 1", %{section_annotations_001: [a | _]} do
-    assert a.text == "<h2>Law Review Citations: 53 OLR 436 (1974)</h2>"
+  test "Section text - 1", %{section_annotations_001: [first | _]} do
+    assert first.text_blocks == [
+             "<h2>Law Review Citations</h2>",
+             "<p>50 WLR 291 (2014)</p>"
+           ]
   end
 
   # test "Section text - 2", %{section_annotations_002: [a | _]} do
-  #   assert a.text == "2.510"
+  #   assert a.text == ...
   # end
 end
