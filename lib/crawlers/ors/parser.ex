@@ -7,6 +7,7 @@ alias Crawlers.ORS.Models.Title
 alias Crawlers.ORS.Models.Chapter
 import Crawlers.String, only: [capture: 2, captures: 2]
 
+
 defmodule Parser do
   @moduledoc """
   The Parser module is responsible for converting the response from the spider.
@@ -24,8 +25,8 @@ defmodule Parser do
   def parse_home_page(html) when is_bitstring(html) do
     document = Floki.parse_document!(html)
 
-    volumes = volumes(document)
-    titles = titles(document)
+    volumes  = volumes(document)
+    titles   = titles(document)
     chapters = chapters(AllChapters.request())
 
     chapter_reqs =
@@ -34,22 +35,32 @@ defmodule Parser do
       |> Enum.reverse()
       |> map(&Crawly.Utils.request_from_url/1)
 
+    anno_reqs =
+      chapters
+      |> map(fn c -> c.anno_url end)
+      |> Enum.reverse()
+      |> map(&Crawly.Utils.request_from_url/1)
+
     %Elixir.Crawly.ParsedItem{
       items: volumes ++ titles ++ chapters,
-      requests: chapter_reqs
+      requests: chapter_reqs ++ anno_reqs
     }
   end
+
 
   @spec chapters(any) :: [Chapter]
   def chapters(api_data) do
     parse_results =
       api_data
       |> map(fn c ->
+        url = "https://www.oregonlegislature.gov" <> Map.fetch!(c, "TitleURL")
+
         Chapter.new(
           name: Map.fetch!(c, "ORS_x0020_Chapter_x0020_Title"),
           number: Map.fetch!(c, "Title") |> capture(~r/Chapter (\w+)/) |> trim_leading("0"),
           title_number: Map.fetch!(c, "ORS_x0020_Chapter") |> capture(~r/^([^.]+)/),
-          url: "https://www.oregonlegislature.gov" <> Map.fetch!(c, "TitleURL")
+          url: url,
+          anno_url: replace(url, "ors/ors", "ors/ano")
         )
       end)
 
@@ -64,6 +75,7 @@ defmodule Parser do
       end
     end)
   end
+
 
   @spec titles(Floki.html_tree()) :: [Title.t()]
   def titles(document) do

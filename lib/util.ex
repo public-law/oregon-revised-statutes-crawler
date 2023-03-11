@@ -34,10 +34,39 @@ defmodule Util do
     reverse(result_reversed)
   end
 
+  @spec cp1252_to_utf8(binary) :: binary
   @doc """
   Convenience wrapper for Elixir arg ordering.
   """
-  def cp1252_to_utf8(text) do
+  def cp1252_to_utf8(text) when is_binary(text) do
     :erlyconv.to_unicode(:cp1252, text)
+  end
+
+  @spec normalize_whitespace(binary) :: binary
+  def normalize_whitespace(text) when is_binary(text) do
+    text
+    |> convert_windows_line_endings()
+    |> clean_no_break_spaces()
+    |> clean_multiple_spaces()
+    |> String.trim()
+  end
+
+  @doc """
+  In UTF-8 character value C2 A0 (194 160) is defined as
+  NO-BREAK SPACE.
+  """
+  @spec clean_no_break_spaces(binary) :: binary
+  def clean_no_break_spaces(text) when is_binary(text) do
+    String.replace(text, <<194, 160>>, " ")
+  end
+
+  @spec convert_windows_line_endings(binary) :: binary
+  def convert_windows_line_endings(text) when is_binary(text) do
+    String.replace(text, "\r\n", "\n")
+  end
+
+  @spec clean_multiple_spaces(binary) :: binary
+  def clean_multiple_spaces(text) when is_binary(text) do
+    String.replace(text, ~r/\s+/, " ")
   end
 end

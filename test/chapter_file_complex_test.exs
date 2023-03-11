@@ -38,7 +38,7 @@ defmodule ChapterFileComplexTest do
     # The context data for the tests.
     %{
       sub_chapters: Parser.ChapterFile.sub_chapters(dom),
-      sections: Parser.ChapterFile.sections(dom),
+      sections:     Parser.ChapterFile.sections(dom),
       sections_72A: Parser.ChapterFile.sections(dom_72A),
       sections_001: Parser.ChapterFile.sections(dom_001)
     }

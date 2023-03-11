@@ -18,12 +18,14 @@ defmodule ChaptersTest do
     %{chapters: Parser.chapters(api_result)}
   end
 
+
   test "finds the correct # of Chapters", %{chapters: chapters} do
     chapter_count = 688
     former_provision_count = 107
 
     assert count(chapters) == chapter_count - former_provision_count
   end
+
 
   test "Former provisions chapters are not returned", %{chapters: chapters} do
     names =
@@ -32,6 +34,7 @@ defmodule ChaptersTest do
 
     assert all?(names, &(&1 != "(Former Provisions)"))
   end
+
 
   test "Chapter 1 name", %{chapters: chapters} do
     first_chapter = first(chapters)
@@ -57,6 +60,13 @@ defmodule ChaptersTest do
     assert first_chapter.url == "https://www.oregonlegislature.gov/bills_laws/ors/ors001.html"
   end
 
+  test "Chapter 1 Annotation URL", %{chapters: chapters} do
+    first_chapter = first(chapters)
+
+    assert first_chapter.anno_url ==
+             "https://www.oregonlegislature.gov/bills_laws/ors/ano001.html"
+  end
+
   test "Last Chapter name", %{chapters: chapters} do
     last_chapter = last(chapters)
 
@@ -79,5 +89,11 @@ defmodule ChaptersTest do
     last_chapter = last(chapters)
 
     assert last_chapter.url == "https://www.oregonlegislature.gov/bills_laws/ors/ors838.html"
+  end
+
+  test "Last Chapter Annotation URL", %{chapters: chapters} do
+    last_chapter = last(chapters)
+
+    assert last_chapter.anno_url == "https://www.oregonlegislature.gov/bills_laws/ors/ano838.html"
   end
 end

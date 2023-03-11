@@ -5,6 +5,8 @@ defmodule Crawlers.ORS.Models.Section do
   use TypedStruct
   use Domo, skip_defaults: true
 
+  import Crawlers.String
+
   typedstruct enforce: true do
     @typedoc "An ORS Section"
 
@@ -19,15 +21,21 @@ defmodule Crawlers.ORS.Models.Section do
 
   defp validate_struct(struct) do
     cond do
-      String.length(struct.name) == 0 ->
+      empty?(struct.name) ->
         {:error, "Name can't be blank."}
 
-      !(struct.number =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}$/) ->
+      invalid_section_number?(struct.number) ->
         {:error, "Malformed number: \"#{struct.number}\""}
 
       true ->
         :ok
     end
+  end
+
+
+
+  def invalid_section_number?(n) when is_bitstring(n) do
+    !(n =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}$/)
   end
 
 end

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+MIX_ENV=test
+
+mix compile --all-warnings --warnings-as-errors && mix test --warnings-as-errors

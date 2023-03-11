@@ -26,10 +26,10 @@ defmodule Crawlers.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:credo, "> 0.0.0"},
       {:crawly, "~> 0.14.0"},
-      {:domo, "~> 1.5"},
+      {:credo, "> 0.0.0"},
       {:dialyxir, "> 1.0.0", runtime: false},
+      {:domo, "~> 1.5"},
       {:erlyconv, github: "eugenehr/erlyconv"},
       {:floki, "~> 0.33.0"},
       {:httpoison, "~> 1.7"},
