@@ -38,21 +38,16 @@ defmodule Util do
 
   @spec cat_oks(list, function) :: list
   @doc """
-  Takes a list of `:ok|:eror` and returns a list of all the `:ok` values. Invokes
-  the given function on each error tuple.
+  Takes a list of `:ok|:error` and returns a list of all the `:ok` values. Invokes
+  the given function on each error message.
   See https://downloads.haskell.org/~ghc/6.12.2/docs/html/libraries/base-4.2.0.1/Data-Maybe.html#v%3AcatMaybes
   """
   def cat_oks(list, fun) do
     list
-    |> reduce([], fn
-      {:error, msg}, acc ->
-        fun.(msg)
-        acc
-
-      {:ok, section}, acc ->
-        [section | acc]
+    |> Enum.flat_map(fn
+      {:ok, result} -> [result]
+      {:error, msg} -> fun.(msg); []
     end)
-    |> reverse()
   end
 
 
@@ -63,6 +58,7 @@ defmodule Util do
   def cp1252_to_utf8(text) when is_binary(text) do
     :erlyconv.to_unicode(:cp1252, text)
   end
+
 
   @spec normalize_whitespace(binary) :: binary
   def normalize_whitespace(text) when is_binary(text) do
