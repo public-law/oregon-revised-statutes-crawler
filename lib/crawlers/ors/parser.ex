@@ -64,16 +64,7 @@ defmodule Parser do
         )
       end)
 
-    Enum.reduce(parse_results, [], fn e, acc ->
-      case e do
-        {:error, msg} ->
-          Logger.debug(msg)
-          acc
-
-        {:ok, chapter} ->
-          acc ++ [chapter]
-      end
-    end)
+    Util.cat_oks(parse_results, &Logger.info/1)
   end
 
 

@@ -5,6 +5,7 @@ defmodule Util do
   Utility functions.
   """
 
+  @spec group_with(list, function) :: list
   @doc """
   Group a list of elements into sub-lists, where each sub-list is
   led by an element that satisfies the predicate. It skips initial
@@ -37,6 +38,8 @@ defmodule Util do
 
   @spec cat_oks(list, function) :: list
   @doc """
+  Takes a list of `:ok|:eror` and returns a list of all the `:ok` values. Invokes
+  the given function on each error tuple.
   See https://downloads.haskell.org/~ghc/6.12.2/docs/html/libraries/base-4.2.0.1/Data-Maybe.html#v%3AcatMaybes
   """
   def cat_oks(list, fun) do
