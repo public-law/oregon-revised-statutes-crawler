@@ -36,8 +36,9 @@ defmodule Parser.ChapterFile do
       |> Floki.filter_out("span:fl-contains('repealed by')")
       |> Util.group_with(&first_section_paragraph?/1)
 
-    processed_sections = map(raw_sections, &new_section/1)
-    Util.cat_oks(processed_sections, &Logger.warn/1)
+    raw_sections
+    |> map(&new_section/1)
+    |> Util.cat_oks(&Logger.warn/1)
   end
 
 
