@@ -39,7 +39,7 @@ defmodule Parser.ChapterFile do
     reduce(processed_sections, [], fn e, acc ->
       case e do
         {:error, msg} ->
-          Logger.debug(msg)
+          Logger.warn(msg)
           acc
 
         {:ok, section} ->
