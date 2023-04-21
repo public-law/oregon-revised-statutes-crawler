@@ -18,12 +18,14 @@ defmodule Parser.ChapterFile do
     }
   end
 
+
   @moduledoc """
   Parse a chapter file.
   """
   def sub_chapters(_) do
     []
   end
+
 
   @spec sections(Floki.html_tree()) :: [Section.t()]
   def sections(dom) do
@@ -35,18 +37,9 @@ defmodule Parser.ChapterFile do
       |> Util.group_with(&first_section_paragraph?/1)
 
     processed_sections = map(raw_sections, &new_section/1)
-
-    reduce(processed_sections, [], fn e, acc ->
-      case e do
-        {:error, msg} ->
-          Logger.warn(msg)
-          acc
-
-        {:ok, section} ->
-          acc ++ [section]
-      end
-    end)
+    Util.cat_oks(processed_sections, &Logger.warn/1)
   end
+
 
   @spec new_section(list) :: {:error, any} | {:ok, Section.t()}
   def new_section(elements) do

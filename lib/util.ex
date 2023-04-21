@@ -34,6 +34,25 @@ defmodule Util do
     reverse(result_reversed)
   end
 
+
+  @spec cat_oks(list, function) :: list
+  @doc """
+  See https://downloads.haskell.org/~ghc/6.12.2/docs/html/libraries/base-4.2.0.1/Data-Maybe.html#v%3AcatMaybes
+  """
+  def cat_oks(list, fun) do
+    list
+    |> reduce([], fn
+      {:error, msg}, acc ->
+        fun.(msg)
+        acc
+
+      {:ok, section}, acc ->
+        [section | acc]
+    end)
+    |> reverse()
+  end
+
+
   @spec cp1252_to_utf8(binary) :: binary
   @doc """
   Convenience wrapper for Elixir arg ordering.
