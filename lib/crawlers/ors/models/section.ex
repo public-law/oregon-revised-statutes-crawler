@@ -24,6 +24,9 @@ defmodule Crawlers.ORS.Models.Section do
       empty?(struct.name) ->
         {:error, "Name can't be blank."}
 
+      empty?(struct.text) ->
+        {:error, "Text can't be blank."}
+
       invalid_section_number?(struct.number) ->
         {:error, "Malformed number: \"#{struct.number}\""}
 
@@ -32,10 +35,7 @@ defmodule Crawlers.ORS.Models.Section do
     end
   end
 
-
-
   def invalid_section_number?(n) when is_bitstring(n) do
     !(n =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}$/)
   end
-
 end

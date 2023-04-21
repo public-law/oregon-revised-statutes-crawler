@@ -150,12 +150,12 @@ defmodule ChapterFileComplexTest do
     end
 
     test "1.745", %{sections_001: sections} do
-      # The problem seems to be: New lines are used as a delimiter in the initial <p>.
-      # Instead, the <b> and not-<b> should be used.
+      # https://github.com/public-law/website/issues/1319
       sec_1_745 =
         sections
         |> find(fn s -> s.number == "1.745" end)
 
+      assert sec_1_745
       assert sec_1_745.text ==
                "All provisions of law relating to pleading, practice and procedure, including provisions relating to form and service of summons and process and personal and in rem jurisdiction, in all civil proceedings in courts of this state are deemed to be rules of court and remain in effect as such until and except to the extent they are modified, superseded or repealed by rules which become effective under ORS 1.735. [1977 c.890 §5; 1979 c.284 §2]"
     end
