@@ -1,6 +1,6 @@
 defmodule ChapterFileComplexTest do
   @moduledoc """
-  Test a 'complex' Chapter File, 837. It's complex because it has:
+  Test 'complex' Chapter Files, 837 & 001. They're complex because it has:
 
   * Sub-chapters,
   * Sub-sub-chapters,
