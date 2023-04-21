@@ -38,7 +38,7 @@ defmodule ChapterFileComplexTest do
     # The context data for the tests.
     %{
       sub_chapters: Parser.ChapterFile.sub_chapters(dom),
-      sections: Parser.ChapterFile.sections(dom),
+      sections:     Parser.ChapterFile.sections(dom),
       sections_72A: Parser.ChapterFile.sections(dom_72A),
       sections_001: Parser.ChapterFile.sections(dom_001)
     }
@@ -127,6 +127,7 @@ defmodule ChapterFileComplexTest do
     end
   end
 
+
   describe "Section text" do
     test "First", %{sections: sections} do
       assert first(sections).text ==
@@ -137,6 +138,7 @@ defmodule ChapterFileComplexTest do
       assert last(sections).text ==
                "<p>(1) Except as provided in subsection (2) of this section, in addition to any other penalty provided by law, the Director of the Oregon Department of Aviation may impose a civil penalty not to exceed $720 for each violation of any provision of this chapter or any rule adopted, or order issued, under this chapter.</p><p>(2) The director may impose a civil penalty not to exceed $2,500 for violation of ORS 837.080 or any rule adopted, or order issued, under this chapter to enforce ORS 837.080.</p><p>(3) The director shall impose civil penalties under this section in the manner provided in ORS 183.745. [2013 c.403 §2]</p>"
     end
+
 
     test "72A.5295", %{sections_72A: sections} do
       # The problem seems to be: New lines are used as a delimiter in the initial <p>.
@@ -149,6 +151,8 @@ defmodule ChapterFileComplexTest do
                "<p>In addition to any other recovery permitted by this chapter or other law, the lessor may recover from the lessee an amount that will fully compensate the lessor for any loss of or damage to the lessor’s residual interest in the goods caused by the default of the lessee. [1993 c.646 §21]</p>"
     end
 
+
+    @tag :focus
     test "1.745", %{sections_001: sections} do
       # https://github.com/public-law/website/issues/1319
       sec_1_745 =

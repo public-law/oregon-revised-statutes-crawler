@@ -68,6 +68,7 @@ defmodule Parser.ChapterFile do
     )
   end
 
+
   #
   # A typical section heading looks like this:
   #   "838.005\r\nDefinitions."
@@ -91,6 +92,7 @@ defmodule Parser.ChapterFile do
     }
   end
 
+
   @spec extract_heading_metadata(Floki.html_tree()) :: %{name: any, number: any}
   def extract_heading_metadata(heading_p) do
     heading_p
@@ -101,6 +103,7 @@ defmodule Parser.ChapterFile do
     |> then(fn [num, name] -> %{number: num, name: name} end)
   end
 
+
   @spec extract_heading_text(any) :: binary
   def extract_heading_text({"p", _attrs, [_meta_data, text_elems]}) do
     Floki.text(text_elems)
@@ -108,7 +111,9 @@ defmodule Parser.ChapterFile do
     |> trim
   end
 
+
   def extract_heading_text(_), do: ""
+
 
   defp cleanup([number, name]) do
     [number, replace_rn(List.first(split(name, ".")))]
@@ -127,10 +132,12 @@ defmodule Parser.ChapterFile do
     |> trim_trailing("<p></p>")
   end
 
+
   defp first_section_paragraph?(element) do
     b_elem = Floki.find(element, "b")
     b_elem != [] && trim(Floki.text(b_elem)) != "Note:"
   end
+
 
   defp replace_rn(text) do
     replace(text, "\r\n", " ")
