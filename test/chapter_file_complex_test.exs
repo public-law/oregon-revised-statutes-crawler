@@ -115,6 +115,7 @@ defmodule ChapterFileComplexTest do
                "Exemptions of certain aircraft from requirements of registration; rules"
     end
 
+
     test "Last", %{sections: sections} do
       assert last(sections).name == "Civil penalties"
     end
@@ -124,6 +125,18 @@ defmodule ChapterFileComplexTest do
 
       assert sec_1_005.name ==
                "Credit card transactions for fees, security deposits, fines and other court-imposed obligations; rules"
+    end
+
+
+    @tag :focus
+    test "1.745", %{sections_001: sections} do
+      # https://github.com/public-law/website/issues/1319
+      sec_1_745 =
+        sections
+        |> find(fn s -> s.number == "1.745" end)
+
+      assert sec_1_745
+      assert sec_1_745.name == "Laws on civil pleading, practice and procedure deemed rules of court until changed"
     end
   end
 
@@ -152,7 +165,6 @@ defmodule ChapterFileComplexTest do
     end
 
 
-    @tag :focus
     test "1.745", %{sections_001: sections} do
       # https://github.com/public-law/website/issues/1319
       sec_1_745 =
