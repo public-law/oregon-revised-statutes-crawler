@@ -23,19 +23,19 @@ defmodule Crawlers.ORS.Models.Chapter do
   defp validate_struct(struct) do
     cond do
       empty?(struct.name) ->
-        {:error, "Name can't be blank."}
+        {:error, "Ch. #{struct.number}: Name can't be blank."}
 
       empty?(struct.url) ->
-        {:error, "URL can't be blank."}
+        {:error, "Ch. #{struct.number}: URL can't be blank."}
 
       empty?(struct.anno_url) ->
-        {:error, "Annotation URL can't be blank."}
+        {:error, "Ch. #{struct.number}: Annotation URL can't be blank."}
 
       struct.name == "(Former Provisions)" ->
-        {:error, "Former Provisions chapters are not valid."}
+        {:error, "Ch. #{struct.number}: Former Provisions chapters are not valid."}
 
       invalid_chapter_number?(struct.number) ->
-        {:error, "Malformed chapter number: \"#{struct.number}\""}
+        {:error, "Ch. ...: Malformed chapter number: '#{struct.number}'"}
 
       true ->
         :ok
@@ -46,5 +46,4 @@ defmodule Crawlers.ORS.Models.Chapter do
   def invalid_chapter_number?(n) when is_bitstring(n) do
     !(n =~ ~r/^[[:alnum:]]{1,4}$/)
   end
-
 end

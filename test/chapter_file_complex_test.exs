@@ -1,6 +1,6 @@
 defmodule ChapterFileComplexTest do
   @moduledoc """
-  Test a 'complex' Chapter File, 837. It's complex because it has:
+  Test 'complex' Chapter Files, 837 & 001. They're complex because it has:
 
   * Sub-chapters,
   * Sub-sub-chapters,
@@ -115,15 +115,30 @@ defmodule ChapterFileComplexTest do
                "Exemptions of certain aircraft from requirements of registration; rules"
     end
 
+
     test "Last", %{sections: sections} do
       assert last(sections).name == "Civil penalties"
     end
 
     test "Weird truncated name", %{sections_001: sections} do
       sec_1_005 = Enum.find(sections, &(&1.number == "1.005"))
-      assert sec_1_005.name == "Credit card transactions for fees, security deposits, fines and other court-imposed obligations; rules"
+
+      assert sec_1_005.name ==
+               "Credit card transactions for fees, security deposits, fines and other court-imposed obligations; rules"
+    end
+
+
+    test "1.745", %{sections_001: sections} do
+      # https://github.com/public-law/website/issues/1319
+      sec_1_745 =
+        sections
+        |> find(fn s -> s.number == "1.745" end)
+
+      assert sec_1_745
+      assert sec_1_745.name == "Laws on civil pleading, practice and procedure deemed rules of court until changed"
     end
   end
+
 
   describe "Section text" do
     test "First", %{sections: sections} do
@@ -136,6 +151,7 @@ defmodule ChapterFileComplexTest do
                "<p>(1) Except as provided in subsection (2) of this section, in addition to any other penalty provided by law, the Director of the Oregon Department of Aviation may impose a civil penalty not to exceed $720 for each violation of any provision of this chapter or any rule adopted, or order issued, under this chapter.</p><p>(2) The director may impose a civil penalty not to exceed $2,500 for violation of ORS 837.080 or any rule adopted, or order issued, under this chapter to enforce ORS 837.080.</p><p>(3) The director shall impose civil penalties under this section in the manner provided in ORS 183.745. [2013 c.403 §2]</p>"
     end
 
+
     test "72A.5295", %{sections_72A: sections} do
       # The problem seems to be: New lines are used as a delimiter in the initial <p>.
       # Instead, the <b> and not-<b> should be used.
@@ -145,6 +161,18 @@ defmodule ChapterFileComplexTest do
 
       assert sec_5295.text ==
                "<p>In addition to any other recovery permitted by this chapter or other law, the lessor may recover from the lessee an amount that will fully compensate the lessor for any loss of or damage to the lessor’s residual interest in the goods caused by the default of the lessee. [1993 c.646 §21]</p>"
+    end
+
+
+    test "1.745", %{sections_001: sections} do
+      # https://github.com/public-law/website/issues/1319
+      sec_1_745 =
+        sections
+        |> find(fn s -> s.number == "1.745" end)
+
+      assert sec_1_745
+      assert sec_1_745.text ==
+               "<p>All provisions of law relating to pleading, practice and procedure, including provisions relating to form and service of summons and process and personal and in rem jurisdiction, in all civil proceedings in courts of this state are deemed to be rules of court and remain in effect as such until and except to the extent they are modified, superseded or repealed by rules which become effective under ORS 1.735. [1977 c.890 §5; 1979 c.284 §2]</p>"
     end
   end
 end

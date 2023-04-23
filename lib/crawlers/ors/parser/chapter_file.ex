@@ -18,6 +18,7 @@ defmodule Parser.ChapterFile do
     }
   end
 
+
   @moduledoc """
   Parse a chapter file.
   """
@@ -25,28 +26,27 @@ defmodule Parser.ChapterFile do
     []
   end
 
+
   @spec sections(Floki.html_tree()) :: [Section.t()]
   def sections(dom) do
-    raw_sections =
+    paragraphs =
       dom
       |> Floki.find("p")
+
+    filtered_paragraphs =
+      paragraphs
       |> Floki.filter_out("[align=center]")
-      |> Floki.filter_out("span:fl-contains('repealed by')")
+      |> Floki.filter_out("span:fl-contains('; repealed by')")
+
+    lists_of_paragraphs =
+      filtered_paragraphs
       |> Util.group_with(&first_section_paragraph?/1)
 
-    processed_sections = map(raw_sections, &new_section/1)
-
-    reduce(processed_sections, [], fn e, acc ->
-      case e do
-        {:error, msg} ->
-          Logger.debug(msg)
-          acc
-
-        {:ok, section} ->
-          acc ++ [section]
-      end
-    end)
+    lists_of_paragraphs
+    |> map(&new_section/1)
+    |> Util.cat_oks(&Logger.warn/1)
   end
+
 
   @spec new_section(list) :: {:error, any} | {:ok, Section.t()}
   def new_section(elements) do
@@ -74,6 +74,7 @@ defmodule Parser.ChapterFile do
     )
   end
 
+
   #
   # A typical section heading looks like this:
   #   "838.005\r\nDefinitions."
@@ -97,6 +98,11 @@ defmodule Parser.ChapterFile do
     }
   end
 
+
+  @doc """
+  The number and name are contained in `<b></b>`. The number is followed
+  by `\\r\\n` and the name. The name runs until a period.
+  """
   @spec extract_heading_metadata(Floki.html_tree()) :: %{name: any, number: any}
   def extract_heading_metadata(heading_p) do
     heading_p
@@ -107,17 +113,23 @@ defmodule Parser.ChapterFile do
     |> then(fn [num, name] -> %{number: num, name: name} end)
   end
 
+
+  #
+  #
+  #
   @spec extract_heading_text(any) :: binary
   def extract_heading_text({"p", _attrs, [_meta_data, text_elems]}) do
     Floki.text(text_elems)
-    |> replace("\r\n", " ")
+    |> replace_rn()
     |> trim
   end
 
+
   def extract_heading_text(_), do: ""
 
+
   defp cleanup([number, name]) do
-    [number, replace_rn(List.first(split(name, ".")))]
+    [number, List.first(split(replace_rn(name), "."))]
   end
 
   defp cleanup([number]) when is_binary(number) do
@@ -126,17 +138,19 @@ defmodule Parser.ChapterFile do
 
   defp cleanup(text) when is_binary(text) do
     text
-    |> replace("\r\n", " ")
+    |> replace_rn()
     |> Util.clean_no_break_spaces()
     |> replace(~r/  +/, " ")
     |> replace("<p> ", "<p>")
     |> trim_trailing("<p></p>")
   end
 
+
   defp first_section_paragraph?(element) do
     b_elem = Floki.find(element, "b")
-    b_elem != [] && trim(Floki.text(b_elem)) != "Note:"
+    (b_elem != []) && (trim(Floki.text(b_elem)) != "Note:")
   end
+
 
   defp replace_rn(text) do
     replace(text, "\r\n", " ")

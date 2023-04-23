@@ -50,7 +50,6 @@ defmodule Parser do
 
   @spec chapters(any) :: [Chapter]
   def chapters(api_data) do
-    parse_results =
       api_data
       |> map(fn c ->
         url = "https://www.oregonlegislature.gov" <> Map.fetch!(c, "TitleURL")
@@ -63,17 +62,7 @@ defmodule Parser do
           anno_url: replace(url, "ors/ors", "ors/ano")
         )
       end)
-
-    Enum.reduce(parse_results, [], fn e, acc ->
-      case e do
-        {:error, msg} ->
-          Logger.debug(msg)
-          acc
-
-        {:ok, chapter} ->
-          acc ++ [chapter]
-      end
-    end)
+      |> Util.cat_oks(&Logger.info/1)
   end
 
 
