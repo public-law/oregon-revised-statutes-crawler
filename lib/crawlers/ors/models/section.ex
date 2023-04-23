@@ -22,13 +22,13 @@ defmodule Crawlers.ORS.Models.Section do
   defp validate_struct(struct) do
     cond do
       empty?(struct.name) ->
-        {:error, "Name can't be blank (parsing Sec. #{struct.number})."}
+        {:error, "§ #{struct.number}: Name can't be blank."}
 
       empty?(struct.text) ->
-        {:error, "Text can't be blank (parsing Sec. #{struct.number})."}
+        {:error, "§ #{struct.number}: Text can't be blank."}
 
       invalid_section_number?(struct.number) ->
-        {:error, "Malformed number: \"#{struct.number}\""}
+        {:error, "§ ...: Malformed number: '#{struct.number}'"}
 
       true ->
         :ok
