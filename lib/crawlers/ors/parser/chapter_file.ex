@@ -80,17 +80,7 @@ defmodule Parser.ChapterFile do
   A repealed paragraph has one `<b>` and one `<span>`.
   """
   def repealed?(p) do
-    span_count =
-      p
-      |> Floki.find("span")
-      |> count()
-
-    b_count =
-      p
-      |> Floki.find("b")
-      |> count()
-
-    (span_count == 1) and (b_count == 1)
+    count(Floki.find(p, "span")) == 1 and count(Floki.find(p, "b")) == 1
   end
 
 
