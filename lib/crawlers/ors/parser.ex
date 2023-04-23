@@ -53,15 +53,21 @@ defmodule Parser do
       api_data
       |> map(fn c ->
         url = "https://www.oregonlegislature.gov" <> Map.fetch!(c, "TitleURL")
+        name = Map.fetch!(c, "ORS_x0020_Chapter_x0020_Title")
 
-        Chapter.new(
-          name: Map.fetch!(c, "ORS_x0020_Chapter_x0020_Title"),
-          number: Map.fetch!(c, "Title") |> capture(~r/Chapter (\w+)/) |> trim_leading("0"),
-          title_number: Map.fetch!(c, "ORS_x0020_Chapter") |> capture(~r/^([^.]+)/),
-          url: url,
-          anno_url: replace(url, "ors/ors", "ors/ano")
-        )
+        if name == "(Former Provisions)" do
+          nil
+        else
+          Chapter.new(
+            name: name,
+            number: Map.fetch!(c, "Title") |> capture(~r/Chapter (\w+)/) |> trim_leading("0"),
+            title_number: Map.fetch!(c, "ORS_x0020_Chapter") |> capture(~r/^([^.]+)/),
+            url: url,
+            anno_url: replace(url, "ors/ors", "ors/ano")
+          )
+        end
       end)
+      |> Enum.reject(&is_nil/1)
       |> Util.cat_oks(&Logger.info/1)
   end
 
