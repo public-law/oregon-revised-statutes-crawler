@@ -167,7 +167,9 @@ defmodule Parser.ChapterFile do
 
   defp first_section_paragraph?(element) do
     b_elem = Floki.find(element, "b")
-    (b_elem != []) && (trim(Floki.text(b_elem)) != "Note:")
+    (b_elem != [])
+      && (trim(Floki.text(b_elem)) != "Note:")
+      && (! starts_with?(trim(Floki.text(b_elem)), "Sec."))
   end
 
 
