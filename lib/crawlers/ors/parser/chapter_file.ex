@@ -36,7 +36,7 @@ defmodule Parser.ChapterFile do
     filtered_paragraphs =
       paragraphs
       |> Floki.filter_out("[align=center]")
-      |> Floki.filter_out("span:fl-contains('; repealed by')")
+      |> Enum.reject(&repealed?/1)
 
     lists_of_paragraphs =
       filtered_paragraphs
@@ -72,6 +72,25 @@ defmodule Parser.ChapterFile do
       text: full_text,
       chapter_number: heading.number |> split(".") |> List.first()
     )
+  end
+
+
+
+  @doc """
+  A repealed paragraph has one `<b>` and one `<span>`.
+  """
+  def repealed?(p) do
+    span_count =
+      p
+      |> Floki.find("span")
+      |> count()
+
+    b_count =
+      p
+      |> Floki.find("b")
+      |> count()
+
+    (span_count == 1) and (b_count == 1)
   end
 
 
