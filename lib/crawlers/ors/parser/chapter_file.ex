@@ -75,13 +75,21 @@ defmodule Parser.ChapterFile do
   end
 
 
-
   @spec repealed?(Floki.html_tree()) :: boolean
   @doc """
-  A repealed paragraph has one `<b>` and one `<span>`.
+  A repealed paragraph has one `<b>` and the second `<span>` consists only
+  of bracketed text containing "repealed by".
   """
   def repealed?(p) do
-    count(Floki.find(p, "span")) == 1 and count(Floki.find(p, "b")) == 1
+    b_count = count(Floki.find(p, "b"))
+
+    if b_count == 1 do
+      [_span1, span2] = Floki.find(p, "span")
+      span_text = Floki.text(span2)
+      replace_rn(span_text) =~ ~r/ \[.*repealed by/
+    else
+      false
+    end
   end
 
 
@@ -116,6 +124,7 @@ defmodule Parser.ChapterFile do
   @spec extract_heading_metadata(Floki.html_tree()) :: %{name: any, number: any}
   def extract_heading_metadata(heading_p) do
     heading_p
+    |> Floki.find("b")
     |> Floki.text()
     |> trim
     |> split("\r\n", parts: 2)
