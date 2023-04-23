@@ -76,6 +76,7 @@ defmodule Parser.ChapterFile do
 
 
 
+  @spec repealed?(Floki.html_tree()) :: boolean
   @doc """
   A repealed paragraph has one `<b>` and one `<span>`.
   """
