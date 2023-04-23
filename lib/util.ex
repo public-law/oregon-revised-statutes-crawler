@@ -51,6 +51,13 @@ defmodule Util do
   end
 
 
+  def node_has_text?(node, text) do
+    node
+    |> Floki.text()
+    |> String.contains?(text)
+  end
+
+
   @spec cp1252_to_utf8(binary) :: binary
   @doc """
   Convenience wrapper for Elixir arg ordering.
