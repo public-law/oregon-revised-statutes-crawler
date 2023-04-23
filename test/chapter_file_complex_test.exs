@@ -164,7 +164,6 @@ defmodule ChapterFileComplexTest do
     end
 
 
-    @tag :focus
     test "1.745", %{sections_001: sections} do
       # https://github.com/public-law/website/issues/1319
       sec_1_745 =
