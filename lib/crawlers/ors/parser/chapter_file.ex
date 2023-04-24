@@ -165,6 +165,7 @@ defmodule Parser.ChapterFile do
   end
 
 
+  # TODO: Use pattern for section number.
   defp first_section_paragraph?(element) do
     b_elem = Floki.find(element, "b")
     b_text = trim(replace_rn(Floki.text(b_elem)))
