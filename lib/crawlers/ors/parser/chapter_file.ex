@@ -36,7 +36,7 @@ defmodule Parser.ChapterFile do
     filtered_paragraphs =
       paragraphs
       |> Floki.filter_out("[align=center]")
-      |> Floki.filter_out("span:fl-contains('; repealed by')")
+      |> Enum.reject(&repealed?/1)
 
     lists_of_paragraphs =
       filtered_paragraphs
@@ -75,6 +75,24 @@ defmodule Parser.ChapterFile do
   end
 
 
+  @spec repealed?(Floki.html_tree()) :: boolean
+  @doc """
+  A repealed paragraph has one `<b>` and the second `<span>` consists only
+  of bracketed text containing "repealed by".
+  """
+  def repealed?(p) do
+    b_count = count(Floki.find(p, "b"))
+
+    if b_count == 1 do
+      [_span1, span2] = Floki.find(p, "span")
+      span_text = Floki.text(span2)
+      replace_rn(span_text) =~ ~r/ \[.*(repealed by|renumbered)/i
+    else
+      false
+    end
+  end
+
+
   #
   # A typical section heading looks like this:
   #   "838.005\r\nDefinitions."
@@ -106,6 +124,7 @@ defmodule Parser.ChapterFile do
   @spec extract_heading_metadata(Floki.html_tree()) :: %{name: any, number: any}
   def extract_heading_metadata(heading_p) do
     heading_p
+    |> Floki.find("b")
     |> Floki.text()
     |> trim
     |> split("\r\n", parts: 2)
@@ -146,9 +165,13 @@ defmodule Parser.ChapterFile do
   end
 
 
+  # TODO: DRY up. Move the regex to the Section model.
   defp first_section_paragraph?(element) do
     b_elem = Floki.find(element, "b")
-    (b_elem != []) && (trim(Floki.text(b_elem)) != "Note:")
+    b_text = trim(replace_rn(Floki.text(b_elem)))
+
+    (b_elem != [])
+      && (b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4} /)
   end
 
 

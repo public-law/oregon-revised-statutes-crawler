@@ -28,7 +28,7 @@ defmodule Crawlers.ORS.Models.Section do
         {:error, "§ #{struct.number}: Text can't be blank."}
 
       invalid_section_number?(struct.number) ->
-        {:error, "§ ...: Malformed number: '#{struct.number}'"}
+        {:error, "§ ...: Malformed number: '#{struct.number}' in #{inspect(struct)}"}
 
       true ->
         :ok
