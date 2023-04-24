@@ -165,14 +165,13 @@ defmodule Parser.ChapterFile do
   end
 
 
-  # TODO: Use pattern for section number.
+  # TODO: DRY up. Move the regex to the Section model.
   defp first_section_paragraph?(element) do
     b_elem = Floki.find(element, "b")
     b_text = trim(replace_rn(Floki.text(b_elem)))
 
     (b_elem != [])
-      && (b_text != "Note:")
-      && (! starts_with?(b_text, "Sec."))
+      && (b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4} /)
   end
 
 
