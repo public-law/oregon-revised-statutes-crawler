@@ -81,11 +81,11 @@ defmodule ChapterFileSimpleTest do
 
   describe "Section edition" do
     test "First", %{sections: sections} do
-      assert first(sections).edition == "2021"
+      assert first(sections).edition == 2021
     end
 
     test "Last", %{sections: sections} do
-      assert last(sections).edition == "2021"
+      assert last(sections).edition == 2021
     end
   end
 end

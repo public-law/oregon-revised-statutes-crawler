@@ -15,6 +15,7 @@ defmodule Crawlers.ORS.Models.Section do
     field :number, String.t()
     field :text, String.t()
     field :chapter_number, String.t()
+    field :edition, integer()
   end
 
   precond t: &validate_struct/1
