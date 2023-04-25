@@ -35,11 +35,17 @@ defmodule ChapterFileComplexTest do
       |> fixture_file(cp1252: true)
       |> Floki.parse_document!()
 
+    dom_165 =
+      "ors165.html"
+      |> fixture_file(cp1252: true)
+      |> Floki.parse_document!()
+
     # The context data for the tests.
     %{
       sub_chapters: Parser.ChapterFile.sub_chapters(dom),
       sections:     Parser.ChapterFile.sections(dom),
       sections_72A: Parser.ChapterFile.sections(dom_72A),
+      sections_165: Parser.ChapterFile.sections(dom_165),
       sections_001: Parser.ChapterFile.sections(dom_001)
     }
   end
@@ -53,6 +59,12 @@ defmodule ChapterFileComplexTest do
     # "98" arrived at from a manual count, only current sections.
     assert count(sections) == 98
   end
+
+  test "finds the correct # of Sections - 165", %{sections_156: sections} do
+    # See https://github.com/public-law/website/issues/1340
+    assert count(sections) == 70
+  end
+
 
   # @tag :skip
   # test "finds the correct # of SubChapters", %{sub_chapters: sub_chapters} do
