@@ -178,11 +178,19 @@ defmodule ChapterFileComplexTest do
 
 
   describe "Section edition" do
-    test "First", %{sections_72A: sections} do
+    test "First 72A", %{sections_72A: sections} do
       assert first(sections).edition == 2021
     end
 
-    test "Last", %{sections_72A: sections} do
+    test "Last 72A", %{sections_72A: sections} do
+      assert last(sections).edition == 2021
+    end
+
+    test "First 001", %{sections_001: sections} do
+      assert first(sections).edition == 2021
+    end
+
+    test "Last 001", %{sections_001: sections} do
       assert last(sections).edition == 2021
     end
   end
