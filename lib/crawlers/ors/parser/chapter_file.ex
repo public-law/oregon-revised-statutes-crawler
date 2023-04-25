@@ -150,7 +150,8 @@ defmodule Parser.ChapterFile do
     |> Floki.find("b")
     |> Floki.text()
     |> trim
-    |> split("\r\n", parts: 2)
+    |> replace("\r\n", "\n")  # Hack to handle when \n is used.
+    |> split("\n", parts: 2)
     |> cleanup
     |> then(fn [num, name] -> %{number: num, name: name} end)
   end
@@ -193,16 +194,12 @@ defmodule Parser.ChapterFile do
     b_elem = Floki.find(element, "b")
     b_text =
       b_elem
-      |> dbg
       |> Floki.text()
       |> replace_rn()
       |> trim()
-      |> dbg
 
-    result = (b_elem != [])
+    (b_elem != [])
       && (b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}\s/)
-
-    IO.inspect(result)
   end
 
 
