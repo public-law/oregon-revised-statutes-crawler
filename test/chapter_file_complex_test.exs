@@ -60,7 +60,7 @@ defmodule ChapterFileComplexTest do
     assert count(sections) == 98
   end
 
-  test "finds the correct # of Sections - 165", %{sections_156: sections} do
+  test "finds the correct # of Sections - 165", %{sections_165: sections} do
     # See https://github.com/public-law/website/issues/1340
     assert count(sections) == 70
   end
