@@ -20,20 +20,20 @@ defmodule ChapterFileComplexTest do
   use ExUnit.Case, async: true
 
   setup_all do
-    dom =
-      "ors837.html"
-      |> fixture_file(cp1252: true)
-      |> Floki.parse_document!()
+    # dom =
+    #   "ors837.html"
+    #   |> fixture_file(cp1252: true)
+    #   |> Floki.parse_document!()
 
-    dom_001 =
-      "ors001.html"
-      |> fixture_file(cp1252: true)
-      |> Floki.parse_document!()
+    # dom_001 =
+    #   "ors001.html"
+    #   |> fixture_file(cp1252: true)
+    #   |> Floki.parse_document!()
 
-    dom_72A =
-      "ors072A.html"
-      |> fixture_file(cp1252: true)
-      |> Floki.parse_document!()
+    # dom_72A =
+    #   "ors072A.html"
+    #   |> fixture_file(cp1252: true)
+    #   |> Floki.parse_document!()
 
     dom_165 =
       "ors165.html"
@@ -42,11 +42,11 @@ defmodule ChapterFileComplexTest do
 
     # The context data for the tests.
     %{
-      sub_chapters: Parser.ChapterFile.sub_chapters(dom),
-      sections:     Parser.ChapterFile.sections(dom),
-      sections_72A: Parser.ChapterFile.sections(dom_72A),
-      sections_165: Parser.ChapterFile.sections(dom_165),
-      sections_001: Parser.ChapterFile.sections(dom_001)
+      # sub_chapters: Parser.ChapterFile.sub_chapters(dom),
+      # sections:     Parser.ChapterFile.sections(dom),
+      # sections_72A: Parser.ChapterFile.sections(dom_72A),
+      # sections_001: Parser.ChapterFile.sections(dom_001),
+      sections_165: Parser.ChapterFile.sections(dom_165)
     }
   end
 
@@ -60,6 +60,7 @@ defmodule ChapterFileComplexTest do
     assert count(sections) == 98
   end
 
+  @tag focus: true
   test "finds the correct # of Sections - 165", %{sections_165: sections} do
     # See https://github.com/public-law/website/issues/1340
     assert count(sections) == 70

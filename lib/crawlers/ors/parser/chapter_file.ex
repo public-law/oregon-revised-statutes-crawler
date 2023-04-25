@@ -47,6 +47,7 @@ defmodule Parser.ChapterFile do
     lists_of_paragraphs
     |> map(fn p -> new_section(p, current_edition) end)
     |> Util.cat_oks(&Logger.warn/1)
+    |> dbg
   end
 
 
@@ -190,10 +191,18 @@ defmodule Parser.ChapterFile do
   # TODO: DRY up. Move the regex to the Section model.
   defp first_section_paragraph?(element) do
     b_elem = Floki.find(element, "b")
-    b_text = trim(replace_rn(Floki.text(b_elem)))
+    b_text =
+      b_elem
+      |> dbg
+      |> Floki.text()
+      |> replace_rn()
+      |> trim()
+      |> dbg
 
-    (b_elem != [])
-      && (b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4} /)
+    result = (b_elem != [])
+      && (b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}\s/)
+
+    IO.inspect(result)
   end
 
 
