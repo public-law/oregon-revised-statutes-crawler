@@ -102,9 +102,13 @@ defmodule Parser.ChapterFile do
     b_count = count(Floki.find(p, "b"))
 
     if b_count == 1 do
-      [_span1, span2] = Floki.find(p, "span")
-      span_text = Floki.text(span2)
-      replace_rn(span_text) =~ ~r/ \[.*(repealed by|renumbered)/i
+      case Floki.find(p, "span") do
+        [_span1, span2] ->
+          span_text = Floki.text(span2) |> replace_rn()
+          span_text =~ ~r/ \[.*(repealed by|renumbered)/i
+        _ ->
+          false
+      end
     else
       false
     end
@@ -145,7 +149,8 @@ defmodule Parser.ChapterFile do
     |> Floki.find("b")
     |> Floki.text()
     |> trim
-    |> split("\r\n", parts: 2)
+    |> replace("\r\n", "\n")  # Hack to handle when \n is used.
+    |> split("\n", parts: 2)
     |> cleanup
     |> then(fn [num, name] -> %{number: num, name: name} end)
   end
@@ -186,14 +191,20 @@ defmodule Parser.ChapterFile do
   # TODO: DRY up. Move the regex to the Section model.
   defp first_section_paragraph?(element) do
     b_elem = Floki.find(element, "b")
-    b_text = trim(replace_rn(Floki.text(b_elem)))
+    b_text =
+      b_elem
+      |> Floki.text()
+      |> replace_rn()
+      |> trim()
 
     (b_elem != [])
-      && (b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4} /)
+      && (b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}\s/)
   end
 
 
   defp replace_rn(text) do
-    replace(text, "\r\n", " ")
+    text
+    |> replace("\r\n", " ")
+    |> replace("\n", " ")
   end
 end

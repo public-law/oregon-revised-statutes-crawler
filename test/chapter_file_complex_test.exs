@@ -35,12 +35,18 @@ defmodule ChapterFileComplexTest do
       |> fixture_file(cp1252: true)
       |> Floki.parse_document!()
 
+    dom_165 =
+      "ors165.html"
+      |> fixture_file(cp1252: true)
+      |> Floki.parse_document!()
+
     # The context data for the tests.
     %{
       sub_chapters: Parser.ChapterFile.sub_chapters(dom),
       sections:     Parser.ChapterFile.sections(dom),
       sections_72A: Parser.ChapterFile.sections(dom_72A),
-      sections_001: Parser.ChapterFile.sections(dom_001)
+      sections_001: Parser.ChapterFile.sections(dom_001),
+      sections_165: Parser.ChapterFile.sections(dom_165)
     }
   end
 
@@ -53,6 +59,12 @@ defmodule ChapterFileComplexTest do
     # "98" arrived at from a manual count, only current sections.
     assert count(sections) == 98
   end
+
+  test "finds the correct # of Sections - 165", %{sections_165: sections} do
+    # See https://github.com/public-law/website/issues/1340
+    assert count(sections) == 70
+  end
+
 
   # @tag :skip
   # test "finds the correct # of SubChapters", %{sub_chapters: sub_chapters} do
@@ -127,7 +139,6 @@ defmodule ChapterFileComplexTest do
                "Credit card transactions for fees, security deposits, fines and other court-imposed obligations; rules"
     end
 
-
     test "1.745", %{sections_001: sections} do
       # https://github.com/public-law/website/issues/1319
       sec_1_745 =
@@ -136,6 +147,15 @@ defmodule ChapterFileComplexTest do
 
       assert sec_1_745
       assert sec_1_745.name == "Laws on civil pleading, practice and procedure deemed rules of court until changed"
+    end
+
+    test "165.074", %{sections_165: sections} do
+      section =
+        sections
+        |> find(fn s -> s.number == "165.074" end)
+
+      assert section
+      assert section.name == "Unlawful factoring of payment card transaction"
     end
   end
 
