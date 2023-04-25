@@ -104,8 +104,8 @@ defmodule Parser.ChapterFile do
     if b_count == 1 do
       case Floki.find(p, "span") do
         [_span1, span2] ->
-          span_text = Floki.text(span2)
-          replace_rn(span_text) =~ ~r/ \[.*(repealed by|renumbered)/i
+          span_text = Floki.text(span2) |> replace_rn()
+          span_text =~ ~r/ \[.*(repealed by|renumbered)/i
         _ ->
           false
       end
