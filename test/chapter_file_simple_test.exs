@@ -78,4 +78,14 @@ defmodule ChapterFileSimpleTest do
                "<p>Refunding bonds of the same character and tenor as those replaced thereby may be issued pursuant to a resolution adopted by the district board without submitting to the electors the question of authorizing the issuance of the bonds. [Formerly 494.140]</p>"
     end
   end
+
+  describe "Section edition" do
+    test "First", %{sections: sections} do
+      assert first(sections).edition == 2021
+    end
+
+    test "Last", %{sections: sections} do
+      assert last(sections).edition == 2021
+    end
+  end
 end

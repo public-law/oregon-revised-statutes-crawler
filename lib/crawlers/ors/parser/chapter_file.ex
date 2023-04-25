@@ -42,14 +42,16 @@ defmodule Parser.ChapterFile do
       filtered_paragraphs
       |> Util.group_with(&first_section_paragraph?/1)
 
+    current_edition = edition(dom)
+
     lists_of_paragraphs
-    |> map(&new_section/1)
+    |> map(fn p -> new_section(p, current_edition) end)
     |> Util.cat_oks(&Logger.warn/1)
   end
 
 
-  @spec new_section(list) :: {:error, any} | {:ok, Section.t()}
-  def new_section(elements) do
+  @spec new_section(list, integer) :: {:error, any} | {:ok, Section.t()}
+  def new_section(elements, edition) do
     {heading_p, remaining_ps} = List.pop_at(elements, 0)
     heading = extract_heading_data(heading_p)
 
@@ -70,8 +72,24 @@ defmodule Parser.ChapterFile do
       name: heading.name,
       number: heading.number,
       text: full_text,
-      chapter_number: heading.number |> split(".") |> List.first()
+      chapter_number: heading.number |> split(".") |> List.first(),
+      edition: edition
     )
+  end
+
+
+  @spec edition(Floki.html_tree()) :: integer()
+  @doc """
+  Parse the ORS edition. E.g., 2021.
+  """
+  def edition(dom) do
+    dom
+    |> Floki.find("[align=center]")
+    |> Enum.filter(fn p -> Floki.text(p) =~ ~r/^\d{4} EDITION$/ end)
+    |> List.first()
+    |> Floki.text()
+    |> Crawlers.String.capture(~r/^(\d{4}) EDITION$/)
+    |> to_integer()
   end
 
 

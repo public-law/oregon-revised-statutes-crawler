@@ -175,4 +175,24 @@ defmodule ChapterFileComplexTest do
                "<p>All provisions of law relating to pleading, practice and procedure, including provisions relating to form and service of summons and process and personal and in rem jurisdiction, in all civil proceedings in courts of this state are deemed to be rules of court and remain in effect as such until and except to the extent they are modified, superseded or repealed by rules which become effective under ORS 1.735. [1977 c.890 §5; 1979 c.284 §2]</p>"
     end
   end
+
+
+  describe "Section edition" do
+    test "First 72A", %{sections_72A: sections} do
+      assert first(sections).edition == 2021
+    end
+
+    test "Last 72A", %{sections_72A: sections} do
+      assert last(sections).edition == 2021
+    end
+
+    test "First 001", %{sections_001: sections} do
+      assert first(sections).edition == 2021
+    end
+
+    test "Last 001", %{sections_001: sections} do
+      assert last(sections).edition == 2021
+    end
+  end
+
 end
