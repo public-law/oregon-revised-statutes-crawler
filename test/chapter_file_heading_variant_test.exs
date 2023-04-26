@@ -58,7 +58,7 @@ defmodule ChapterFileHeadingVariant do
 
     test "Last", %{sections_156: sections} do
       assert last(sections).text ==
-               "<p>(1) Except as provided in subsection (2) of this section, in addition to any other penalty provided by law, the Director of the Oregon Department of Aviation may impose a civil penalty not to exceed $720 for each violation of any provision of this chapter or any rule adopted, or order issued, under this chapter.</p><p>(2) The director may impose a civil penalty not to exceed $2,500 for violation of ORS 837.080 or any rule adopted, or order issued, under this chapter to enforce ORS 837.080.</p><p>(3) The director shall impose civil penalties under this section in the manner provided in ORS 183.745. [2013 c.403 §2]</p>"
+        "<p>Justices of the peace shall have concurrent jurisdiction over all offenses committed under ORS 167.315 to 167.333 and 167.340. [Formerly 770.260; 1985 c.662 §14; 1999 c.788 §48]</p>"
     end
   end
 end
