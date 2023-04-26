@@ -39,13 +39,14 @@ defmodule ChapterFileHeadingVariant do
   end
 
   describe "Section.name" do
-    test "156.074", %{sections_156: sections} do
+    test "156.510", %{sections_156: sections} do
+      # See https://github.com/public-law/oregon-revised-statutes-crawler/issues/16
       section =
         sections
-        |> find(fn s -> s.number == "156.074" end)
+        |> find(fn s -> s.number == "156.510" end)
 
       assert section
-      assert section.name == "Unlawful factoring of payment card transaction"
+      assert section.name == "Proceeding when crime is not within jurisdiction of justice court"
     end
   end
 
