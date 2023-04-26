@@ -35,8 +35,8 @@ defmodule ChapterFileHeadingVariant do
     test "Last", %{sections_156: sections} do
       assert last(sections).number == "156.705"
     end
-
   end
+
 
   describe "Section.name" do
     test "156.510", %{sections_156: sections} do
