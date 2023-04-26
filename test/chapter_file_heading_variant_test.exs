@@ -53,7 +53,7 @@ defmodule ChapterFileHeadingVariant do
   describe "Section text" do
     test "First", %{sections_156: sections} do
       assert first(sections).text ==
-               "<p>ORS 837.015 and 837.040 to 837.070 do not apply to:</p><p>(1) Aircraft owned by any person, firm or corporation and certificated by the appropriate federal agency for domestic or foreign scheduled air commerce;</p><p>(2) Military aircraft of the United States of America;</p><p>(3) Aircraft licensed by a foreign country with which the United States has reciprocal relations exempting aircraft registered by the United States, or any political subdivision thereof, from registration within such foreign country; or</p><p>(4) Classes of aircraft designated as exempt by rules adopted by the State Aviation Board. [Formerly 493.010; 2005 c.22 §520; 2005 c.75 §1]</p>"
+        "<p>A criminal action in a justice court is commenced and proceeded in to final determination, and the judgment therein enforced, in the manner provided in the criminal procedure statutes, except as otherwise specifically provided by statute. [Amended by 1973 c.836 §329]</p>"
     end
 
     test "Last", %{sections_156: sections} do
