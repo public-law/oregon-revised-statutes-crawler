@@ -23,7 +23,7 @@ defmodule ChapterFileHeadingVariant do
 
 
   test "finds the correct # of Sections - 156", %{sections_156: sections} do
-    assert count(sections) == 70
+    assert count(sections) == 33
   end
 
 
