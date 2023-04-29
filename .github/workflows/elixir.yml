@@ -5,6 +5,9 @@
 
 name: Elixir CI
 
+env:
+  ImageOS: ubuntu20
+
 on:
   push:
     branches: [ "master" ]
@@ -18,7 +21,7 @@ jobs:
   build:
 
     name: Build and test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu20
 
     steps:
     - uses: actions/checkout@v3
