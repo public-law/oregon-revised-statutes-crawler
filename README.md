@@ -1,3 +1,5 @@
+[![Elixir CI](https://github.com/public-law/oregon-revised-statutes-crawler/actions/workflows/elixir.yml/badge.svg)](https://github.com/public-law/oregon-revised-statutes-crawler/actions/workflows/elixir.yml)
+
 # Oregon Revised Statutes Crawler
 
 Using [the Crawly framework](https://github.com/elixir-crawly/crawly) to parse
