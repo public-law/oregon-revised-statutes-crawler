@@ -6,7 +6,7 @@
 name: Elixir CI
 
 env:
-  ImageOS: ubuntu20
+  ImageOS: ubuntu22.04
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
   build:
 
     name: Build and test
-    runs-on: ubuntu20
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v3
