@@ -174,6 +174,8 @@ defmodule ChapterFileComplexTest do
 
 
     test "at Subchapter end", %{sections_165: sections} do
+      # Test for a bug where the following Subchapter title is incorrectly
+      # appended to a section's text.
       sec_572 =
         sections
         |> find(fn s -> s.number == "165.572" end)
