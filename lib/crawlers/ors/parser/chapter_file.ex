@@ -37,6 +37,7 @@ defmodule Parser.ChapterFile do
       paragraphs
       |> Floki.filter_out("[align=center]")
       |> Enum.reject(&repealed?/1)
+      |> Enum.reject(&subchapter_heading?/1)
 
     lists_of_paragraphs =
       filtered_paragraphs
@@ -112,6 +113,16 @@ defmodule Parser.ChapterFile do
     else
       false
     end
+  end
+
+
+  @spec repealed?(Floki.html_tree()) :: boolean
+  @doc """
+  A Subchapter title heading has text which consists only of uppercase letters
+  and whitespace. It begins with an upper case string.
+  """
+  def subchapter_heading?(p) do
+    Floki.text(p) =~ ~r/^[[:upper:]]+[[:upper:][:space:]]*$/
   end
 
 
