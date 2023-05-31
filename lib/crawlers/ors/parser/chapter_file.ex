@@ -38,6 +38,7 @@ defmodule Parser.ChapterFile do
       |> Floki.filter_out("[align=center]")
       |> Enum.reject(&repealed?/1)
       |> Enum.reject(&subchapter_heading?/1)
+      |> Enum.reject(&subsubchapter_heading?/1)
 
     lists_of_paragraphs =
       filtered_paragraphs
@@ -123,6 +124,15 @@ defmodule Parser.ChapterFile do
   """
   def subchapter_heading?(p) do
     Floki.text(p) =~ ~r/^[[:upper:]]+[[:upper:][:space:]]*$/
+  end
+
+
+  @spec subsubchapter_heading?(Floki.html_tree()) :: boolean
+  @doc """
+  A Subsubchapter title heading has text in a parenthesis.
+  """
+  def subsubchapter_heading?(p) do
+    Floki.text(p) =~ ~r/^\([[:alpha:][:space:]]*\)$/
   end
 
 

@@ -185,6 +185,18 @@ defmodule ChapterFileComplexTest do
     end
 
 
+    test "at Subsubchapter end", %{sections: sections} do
+      # Test for a bug where the following Subsubchapter title is incorrectly
+      # appended to a section's text.
+      sec_100 =
+        sections
+        |> find(fn s -> s.number == "837.100" end)
+
+      assert sec_100.text ==
+        "<p>In addition to any other persons permitted to enforce violations, the Director of the Oregon Department of Aviation and any employee specifically designated by the director may issue citations for violations established under ORS 837.990 in the manner provided by ORS chapter 153. [Formerly 493.225; 1991 c.460 §11; 1999 c.1051 §114; 2011 c.597 §148]</p>"
+    end
+
+
     test "72A.5295", %{sections_72A: sections} do
       # The problem seems to be: New lines are used as a delimiter in the initial <p>.
       # Instead, the <b> and not-<b> should be used.
