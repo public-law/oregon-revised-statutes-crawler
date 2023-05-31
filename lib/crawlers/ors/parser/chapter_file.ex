@@ -116,7 +116,7 @@ defmodule Parser.ChapterFile do
   end
 
 
-  @spec repealed?(Floki.html_tree()) :: boolean
+  @spec subchapter_heading?(Floki.html_tree()) :: boolean
   @doc """
   A Subchapter title heading has text which consists only of uppercase letters
   and whitespace. It begins with an upper case string.
