@@ -174,12 +174,26 @@ defmodule ChapterFileComplexTest do
 
 
     test "at Subchapter end", %{sections_165: sections} do
+      # Test for a bug where the following Subchapter title is incorrectly
+      # appended to a section's text.
       sec_572 =
         sections
         |> find(fn s -> s.number == "165.572" end)
 
       assert sec_572.text ==
         "<p>(1) A person commits the crime of interference with making a report if the person, by removing, damaging or interfering with a telephone line, telephone or similar communication equipment, intentionally prevents or hinders another person from making a report to a law enforcement agency, a law enforcement official or an agency charged with the duty of taking public safety reports or from making an emergency call as defined in ORS 403.105.</p><p>(2) Interference with making a report is a Class A misdemeanor. [1999 c.946 §1; 2015 c.247 §30]</p>"
+    end
+
+
+    test "at Subsubchapter end", %{sections: sections} do
+      # Test for a bug where the following Subsubchapter title is incorrectly
+      # appended to a section's text.
+      sec_100 =
+        sections
+        |> find(fn s -> s.number == "837.100" end)
+
+      assert sec_100.text ==
+        "<p>In addition to any other persons permitted to enforce violations, the Director of the Oregon Department of Aviation and any employee specifically designated by the director may issue citations for violations established under ORS 837.990 in the manner provided by ORS chapter 153. [Formerly 493.225; 1991 c.460 §11; 1999 c.1051 §114; 2011 c.597 §148]</p>"
     end
 
 
