@@ -166,9 +166,20 @@ defmodule ChapterFileComplexTest do
                "<p>ORS 837.015 and 837.040 to 837.070 do not apply to:</p><p>(1) Aircraft owned by any person, firm or corporation and certificated by the appropriate federal agency for domestic or foreign scheduled air commerce;</p><p>(2) Military aircraft of the United States of America;</p><p>(3) Aircraft licensed by a foreign country with which the United States has reciprocal relations exempting aircraft registered by the United States, or any political subdivision thereof, from registration within such foreign country; or</p><p>(4) Classes of aircraft designated as exempt by rules adopted by the State Aviation Board. [Formerly 493.010; 2005 c.22 §520; 2005 c.75 §1]</p>"
     end
 
+
     test "Last", %{sections: sections} do
       assert last(sections).text ==
                "<p>(1) Except as provided in subsection (2) of this section, in addition to any other penalty provided by law, the Director of the Oregon Department of Aviation may impose a civil penalty not to exceed $720 for each violation of any provision of this chapter or any rule adopted, or order issued, under this chapter.</p><p>(2) The director may impose a civil penalty not to exceed $2,500 for violation of ORS 837.080 or any rule adopted, or order issued, under this chapter to enforce ORS 837.080.</p><p>(3) The director shall impose civil penalties under this section in the manner provided in ORS 183.745. [2013 c.403 §2]</p>"
+    end
+
+
+    test "at Subchapter end", %{sections_165: sections} do
+      sec_572 =
+        sections
+        |> find(fn s -> s.number == "165.572" end)
+
+      assert sec_572.text ==
+        "<p>(1) A person commits the crime of interference with making a report if the person, by removing, damaging or interfering with a telephone line, telephone or similar communication equipment, intentionally prevents or hinders another person from making a report to a law enforcement agency, a law enforcement official or an agency charged with the duty of taking public safety reports or from making an emergency call as defined in ORS 403.105.</p><p>(2) Interference with making a report is a Class A misdemeanor. [1999 c.946 §1; 2015 c.247 §30]</p>"
     end
 
 
