@@ -20,41 +20,17 @@ defmodule ChapterFileComplexTest do
   use ExUnit.Case, async: true
 
   setup_all do
-    dom =
-      "ors837.html"
-      |> fixture_file(cp1252: true)
-      |> Floki.parse_document!()
-
-    dom_001 =
-      "ors001.html"
-      |> fixture_file(cp1252: true)
-      |> Floki.parse_document!()
-
-    dom_72A =
-      "ors072A.html"
-      |> fixture_file(cp1252: true)
-      |> Floki.parse_document!()
-
-    dom_156 =
-      "ors156.html"
-      |> fixture_file(cp1252: true)
-      |> Floki.parse_document!()
-
-    dom_165 =
-      "ors165.html"
-      |> fixture_file(cp1252: true)
-      |> Floki.parse_document!()
-
     # The context data for the tests.
     %{
-      sub_chapters: Parser.ChapterFile.sub_chapters(dom),
-      sections:     Parser.ChapterFile.sections(dom),
-      sections_72A: Parser.ChapterFile.sections(dom_72A),
-      sections_001: Parser.ChapterFile.sections(dom_001),
-      sections_156: Parser.ChapterFile.sections(dom_156),
-      sections_165: Parser.ChapterFile.sections(dom_165)
+      sub_chapters: Parser.ChapterFile.sub_chapters(parsed_fixture("ors837.html")),
+      sections:     Parser.ChapterFile.sections(parsed_fixture("ors837.html")),
+      sections_72A: Parser.ChapterFile.sections(parsed_fixture("ors072A.html")),
+      sections_001: Parser.ChapterFile.sections(parsed_fixture("ors001.html")),
+      sections_156: Parser.ChapterFile.sections(parsed_fixture("ors156.html")),
+      sections_165: Parser.ChapterFile.sections(parsed_fixture("ors165.html"))
     }
   end
+
 
   test "finds the correct # of Sections", %{sections: sections} do
     # "38" arrived at from a manual count, only current sections.
@@ -271,5 +247,11 @@ defmodule ChapterFileComplexTest do
   """
   def get_section(number, collection) do
     collection |> find(fn s -> s.number == number end)
+  end
+
+  def parsed_fixture(filename) do
+    filename
+      |> fixture_file(cp1252: true)
+      |> Floki.parse_document!()
   end
 end
