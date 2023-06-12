@@ -247,7 +247,7 @@ defmodule ChapterFileComplexTest do
   end
 
 
-  describe "Malformed section" do
+  describe "Malformed section bugfix" do
     # https://github.com/public-law/website/issues/1360
 
     test "finds the correct # of Sections", %{sections_156: sections} do
