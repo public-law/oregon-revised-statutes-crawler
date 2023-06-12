@@ -147,18 +147,14 @@ defmodule ChapterFileComplexTest do
 
     test "1.745", %{sections_001: sections} do
       # https://github.com/public-law/website/issues/1319
-      sec_1_745 =
-        sections
-        |> find(fn s -> s.number == "1.745" end)
+      sec_1_745 = get_section("1.745", sections)
 
       assert sec_1_745
       assert sec_1_745.name == "Laws on civil pleading, practice and procedure deemed rules of court until changed"
     end
 
     test "165.074", %{sections_165: sections} do
-      section =
-        sections
-        |> find(fn s -> s.number == "165.074" end)
+      section = get_section("165.074", sections)
 
       assert section
       assert section.name == "Unlawful factoring of payment card transaction"
@@ -182,9 +178,7 @@ defmodule ChapterFileComplexTest do
     test "at Subchapter end", %{sections_165: sections} do
       # Test for a bug where the following Subchapter title is incorrectly
       # appended to a section's text.
-      sec_572 =
-        sections
-        |> find(fn s -> s.number == "165.572" end)
+      sec_572 = get_section("165.572", sections)
 
       assert sec_572.text ==
         "<p>(1) A person commits the crime of interference with making a report if the person, by removing, damaging or interfering with a telephone line, telephone or similar communication equipment, intentionally prevents or hinders another person from making a report to a law enforcement agency, a law enforcement official or an agency charged with the duty of taking public safety reports or from making an emergency call as defined in ORS 403.105.</p><p>(2) Interference with making a report is a Class A misdemeanor. [1999 c.946 §1; 2015 c.247 §30]</p>"
@@ -194,9 +188,7 @@ defmodule ChapterFileComplexTest do
     test "at Subsubchapter end", %{sections: sections} do
       # Test for a bug where the following Subsubchapter title is incorrectly
       # appended to a section's text.
-      sec_100 =
-        sections
-        |> find(fn s -> s.number == "837.100" end)
+      sec_100 = get_section("837.100", sections)
 
       assert sec_100.text ==
         "<p>In addition to any other persons permitted to enforce violations, the Director of the Oregon Department of Aviation and any employee specifically designated by the director may issue citations for violations established under ORS 837.990 in the manner provided by ORS chapter 153. [Formerly 493.225; 1991 c.460 §11; 1999 c.1051 §114; 2011 c.597 §148]</p>"
@@ -206,9 +198,7 @@ defmodule ChapterFileComplexTest do
     test "72A.5295", %{sections_72A: sections} do
       # The problem seems to be: New lines are used as a delimiter in the initial <p>.
       # Instead, the <b> and not-<b> should be used.
-      sec_5295 =
-        sections
-        |> find(fn s -> s.number == "72A.5295" end)
+      sec_5295 = get_section("72A.5295", sections)
 
       assert sec_5295.text ==
                "<p>In addition to any other recovery permitted by this chapter or other law, the lessor may recover from the lessee an amount that will fully compensate the lessor for any loss of or damage to the lessor’s residual interest in the goods caused by the default of the lessee. [1993 c.646 §21]</p>"
@@ -217,9 +207,7 @@ defmodule ChapterFileComplexTest do
 
     test "1.745", %{sections_001: sections} do
       # https://github.com/public-law/website/issues/1319
-      sec_1_745 =
-        sections
-        |> find(fn s -> s.number == "1.745" end)
+      sec_1_745 = get_section("1.745", sections)
 
       assert sec_1_745
       assert sec_1_745.text ==
