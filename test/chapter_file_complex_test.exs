@@ -51,6 +51,7 @@ defmodule ChapterFileComplexTest do
       sections:     Parser.ChapterFile.sections(dom),
       sections_72A: Parser.ChapterFile.sections(dom_72A),
       sections_001: Parser.ChapterFile.sections(dom_001),
+      sections_156: Parser.ChapterFile.sections(dom_156),
       sections_165: Parser.ChapterFile.sections(dom_165)
     }
   end
@@ -242,6 +243,13 @@ defmodule ChapterFileComplexTest do
 
     test "Last 001", %{sections_001: sections} do
       assert last(sections).edition == 2021
+    end
+  end
+
+  describe "Malformed section" do
+    test "finds the correct # of Sections", %{sections_156: sections} do
+      # "33" arrived at from a manual count, only current sections
+      assert count(sections) == 33
     end
   end
 
