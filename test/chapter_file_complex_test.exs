@@ -249,9 +249,21 @@ defmodule ChapterFileComplexTest do
 
   describe "Malformed section" do
     # https://github.com/public-law/website/issues/1360
+
     test "finds the correct # of Sections", %{sections_156: sections} do
       # "33" arrived at from a manual count, only current sections
       assert count(sections) == 33
     end
+
+    test "156.460 text shows only its own content", %{sections_156: sections} do
+      sec_156_460 =
+        sections
+        |> find(fn s -> s.number == "156.460" end)
+
+      assert sec_156_460
+      assert sec_156_460.text ==
+        "<p>When committed, the defendant shall be delivered to the custody of the proper officer by any peace officer to whom the justice may deliver the commitment, first indorsing thereon, substantially, as follows: “I hereby authorize and command E. F. to deliver this commitment, together with the defendant therein named, to the custody of the sheriff of the County of ______.”</p>"
+    end
+
   end
 end
