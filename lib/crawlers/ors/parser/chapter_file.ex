@@ -195,9 +195,11 @@ defmodule Parser.ChapterFile do
     [number, List.first(split(replace_rn(name), "."))]
   end
 
+
   defp cleanup([number]) when is_binary(number) do
     [number, ""]
   end
+
 
   defp cleanup(text) when is_binary(text) do
     text
@@ -219,7 +221,7 @@ defmodule Parser.ChapterFile do
       |> trim()
 
     (b_elem != [])
-      && (b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}\s/)
+      && ((b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}\s/) || b_text =~ ~r/^[[:alpha:]]/)
   end
 
 
