@@ -265,5 +265,15 @@ defmodule ChapterFileComplexTest do
         "<p>When committed, the defendant shall be delivered to the custody of the proper officer by any peace officer to whom the justice may deliver the commitment, first indorsing thereon, substantially, as follows: “I hereby authorize and command E. F. to deliver this commitment, together with the defendant therein named, to the custody of the sheriff of the County of ______.”</p>"
     end
 
+    test "156.510 text is there", %{sections_156: sections} do
+      sec_156_510 =
+        sections
+        |> find(fn s -> s.number == "156.510" end)
+
+      assert sec_156_510
+      assert sec_156_510.text ==
+        "<p>If in the course of the trial it appears to the justice that the defendant has committed a crime not within the jurisdiction of a justice court, the justice shall dismiss the action, state in the entry the reasons therefor, hold the defendant upon the warrant of arrest and proceed to examine the charge as upon an information of the commission of crime.</p>"
+    end
+
   end
 end
