@@ -246,11 +246,12 @@ defmodule ChapterFileComplexTest do
     end
   end
 
+
   describe "Malformed section" do
+    # https://github.com/public-law/website/issues/1360
     test "finds the correct # of Sections", %{sections_156: sections} do
       # "33" arrived at from a manual count, only current sections
       assert count(sections) == 33
     end
   end
-
 end
