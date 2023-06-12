@@ -256,9 +256,7 @@ defmodule ChapterFileComplexTest do
     end
 
     test "156.460 text shows only its own content", %{sections_156: sections} do
-      sec_156_460 =
-        sections
-        |> find(fn s -> s.number == "156.460" end)
+      sec_156_460 = get_section("156.460", sections)
 
       assert sec_156_460
       assert sec_156_460.text ==
@@ -266,14 +264,24 @@ defmodule ChapterFileComplexTest do
     end
 
     test "156.510 text is there", %{sections_156: sections} do
-      sec_156_510 =
-        sections
-        |> find(fn s -> s.number == "156.510" end)
+      sec_156_510 = get_section("156.510", sections)
 
       assert sec_156_510
       assert sec_156_510.text ==
         "<p>If in the course of the trial it appears to the justice that the defendant has committed a crime not within the jurisdiction of a justice court, the justice shall dismiss the action, state in the entry the reasons therefor, hold the defendant upon the warrant of arrest and proceed to examine the charge as upon an information of the commission of crime.</p>"
     end
 
+  end
+
+
+  #
+  # Helpers
+  #
+
+  @doc """
+  Search for a section in a list of them.
+  """
+  def get_section(number, collection) do
+    collection |> find(fn s -> s.number == number end)
   end
 end
