@@ -153,7 +153,16 @@ defmodule Parser.ChapterFile do
         }
   def extract_heading_data(heading_p) do
     metadata = extract_heading_metadata(heading_p)
-    maybe_heading_text = extract_heading_text(heading_p)
+    maybe_heading_text =
+      cond do
+        type_1_first_section_paragraph?(heading_p) ->
+          extract_heading_text_type_1(heading_p)
+
+        type_2_first_section_paragraph?(heading_p) ->
+          extract_heading_text_type_2(heading_p)
+
+        true -> "Unknown heading type"
+      end
 
     %{
       name: metadata.name,
@@ -238,16 +247,18 @@ defmodule Parser.ChapterFile do
   end
 
 
-  #
-  #
-  #
-  @spec extract_heading_text(any) :: binary
-  def extract_heading_text({"p", _attrs, [_meta_data, text_elems]}) do
+  @spec extract_heading_text_type_1(any) :: binary
+  def extract_heading_text_type_1({"p", _, [_meta_data, text_elems]}) do
     Html.text_in(text_elems)
   end
 
+  def extract_heading_text_type_1(_),  do: ""
 
-  def extract_heading_text(_), do: "Text goes here."
+
+  @spec extract_heading_text_type_2(any) :: binary
+  def extract_heading_text_type_2({"p", _, [{"span", _, [_number_node, _name_node, body_node]}]}) do
+    String.trim(body_node)
+  end
 
 
   defp cleanup([number, name]) do
