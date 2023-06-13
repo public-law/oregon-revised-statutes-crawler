@@ -7,7 +7,7 @@ defmodule Html do
   def text_in(node) do
     node
     |> Floki.text()
-    |> Util.replace_rn()
+    |> Util.remove_newlines()
     |> String.trim()
   end
 end

@@ -16,7 +16,10 @@ defmodule Parser.ChapterFile do
   def parse(%{body: html}), do: parse(html)
 
   def parse(html) when is_bitstring(html) do
-    document = Floki.parse_document!(Util.cp1252_to_utf8(html))
+    document =
+      html
+      |> Util.convert_from_windows_text()
+      |> Floki.parse_document!()
 
     %Elixir.Crawly.ParsedItem{
       items: sections(document),
@@ -109,7 +112,7 @@ defmodule Parser.ChapterFile do
     if b_count == 1 do
       case Floki.find(p, "span") do
         [_span1, span2] ->
-          span_text = Floki.text(span2) |> Util.replace_rn()
+          span_text = Floki.text(span2) |> Util.remove_newlines()
           span_text =~ ~r/ \[.*(repealed by|renumbered)/i
         _ ->
           false
@@ -212,7 +215,7 @@ defmodule Parser.ChapterFile do
     |> Floki.find("b")
     |> Floki.text()
     |> trim()
-    |> Util.replace_rn()
+    |> Util.remove_newlines()
     |> split(" ", parts: 2)
     |> cleanup
     |> then(fn [num, name] -> %{number: num, name: name} end)
@@ -261,12 +264,12 @@ defmodule Parser.ChapterFile do
 
   @spec extract_heading_text_type_2({<<_::8>>, any, [{<<_::32>>, any, [...]}, ...]}) :: binary
   def extract_heading_text_type_2({"p", _, [{"span", _, [_number_text, _name_node, body_text]}]}) do
-    Util.replace_rn(String.trim(body_text))
+    Util.remove_newlines(String.trim(body_text))
   end
 
 
   defp cleanup([number, name]) do
-    [number, Util.remove_trailing_period(Util.replace_rn(name))]
+    [number, Util.remove_trailing_period(Util.remove_newlines(name))]
   end
 
 
@@ -277,7 +280,7 @@ defmodule Parser.ChapterFile do
 
   defp cleanup(text) when is_binary(text) do
     text
-    |> Util.replace_rn()
+    |> Util.remove_newlines()
     |> Util.clean_no_break_spaces()
     |> replace(~r/  +/, " ")
     |> replace("<p> ", "<p>")

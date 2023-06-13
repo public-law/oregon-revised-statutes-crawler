@@ -58,6 +58,15 @@ defmodule Util do
   end
 
 
+  @spec convert_from_windows_text(binary) :: binary
+  def convert_from_windows_text(text) do
+    text
+    |> Util.cp1252_to_utf8()
+    |> Util.convert_windows_line_endings()
+    |> Util.clean_no_break_spaces()
+end
+
+
   @spec cp1252_to_utf8(binary) :: binary
   @doc """
   Convenience wrapper for Elixir arg ordering.
@@ -90,6 +99,13 @@ defmodule Util do
     String.replace(text, "\r\n", "\n")
   end
 
+  @spec remove_newlines(binary) :: binary
+  def remove_newlines(text) do
+    text
+    |> String.replace("\n", " ")
+    |> clean_multiple_spaces()
+  end
+
   @spec clean_multiple_spaces(binary) :: binary
   def clean_multiple_spaces(text) when is_binary(text) do
     String.replace(text, ~r/\s+/, " ")
@@ -98,12 +114,5 @@ defmodule Util do
   @spec remove_trailing_period(binary) :: binary
   def remove_trailing_period(text) when is_binary(text) do
     String.replace(text, ~r/\.$/, "")
-  end
-
-  @spec replace_rn(binary) :: binary
-  def replace_rn(text) do
-    text
-    |> String.replace("\r\n", " ")
-    |> String.replace("\n", " ")
   end
 end
