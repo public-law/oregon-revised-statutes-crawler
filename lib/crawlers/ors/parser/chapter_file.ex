@@ -224,19 +224,15 @@ defmodule Parser.ChapterFile do
           </span>
         </p>
   """
-  @spec extract_heading_metadata_type_2(Floki.html_tree) :: %{name: any, number: any}
-  def extract_heading_metadata_type_2(heading_p) do
+  def extract_heading_metadata_type_2({"p", _, [{"span", _, [number_node, name_node, _body_node]}]}) do
     name =
-      heading_p
-      |> Floki.find("b")
+      name_node
       |> Floki.text()
       |> Util.remove_trailing_period()
 
     number =
-      heading_p
-      |> Html.text_in()
-      |> String.split(" ")
-      |> List.first()
+      number_node
+      |> String.trim()
 
     %{name: name, number: number}
   end
