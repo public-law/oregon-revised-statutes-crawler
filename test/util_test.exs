@@ -3,7 +3,7 @@ defmodule UtilTest do
   Test Util module.
   """
 
-  import Util, only: [group_with: 2, remove_trailing_period: 1]
+  import Util
 
   use ExUnit.Case, async: true
   doctest Util

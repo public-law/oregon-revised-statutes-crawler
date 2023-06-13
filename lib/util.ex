@@ -98,8 +98,8 @@ defmodule Util do
 
   @spec convert_windows_line_endings(binary) :: binary
   @doc """
-  iex> convert_windows_line_endings("line 1\r\nline 2")
-  "line 1\nline 2"
+  iex> convert_windows_line_endings("line 1\\r\\nline 2")
+  "line 1\\nline 2"
   """
   def convert_windows_line_endings(text) when is_binary(text) do
     String.replace(text, "\r\n", "\n")
@@ -108,10 +108,10 @@ defmodule Util do
 
   @spec remove_newlines(binary) :: binary
   @doc """
-  iex> remove_newlines("a\nb\nc")
+  iex> remove_newlines("a\\nb\\nc")
   "a b c"
 
-  iex> remove_newlines("a \nb")
+  iex> remove_newlines("a \\nb")
   "a b"
   """
   def remove_newlines(text) do
