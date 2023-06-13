@@ -196,7 +196,7 @@ defmodule Parser.ChapterFile do
 
   @spec extract_heading_metadata_type_2(Floki.html_tree) :: %{name: any, number: any}
   def extract_heading_metadata_type_2(_heading_p) do
-    %{name: "Name goes here", number: "999.999"}
+    %{name: "Name goes here", number: "156.510"}
   end
 
 
@@ -209,7 +209,7 @@ defmodule Parser.ChapterFile do
   end
 
 
-  def extract_heading_text(_), do: ""
+  def extract_heading_text(_), do: "Text goes here."
 
 
   defp cleanup([number, name]) do

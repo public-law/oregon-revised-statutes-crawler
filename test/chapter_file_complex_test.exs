@@ -235,6 +235,13 @@ defmodule ChapterFileComplexTest do
         "<p>If in the course of the trial it appears to the justice that the defendant has committed a crime not within the jurisdiction of a justice court, the justice shall dismiss the action, state in the entry the reasons therefor, hold the defendant upon the warrant of arrest and proceed to examine the charge as upon an information of the commission of crime.</p>"
     end
 
+    test "156.510 name is correct", %{sections_156: sections} do
+      sec_156_510 = get_section("156.510", sections)
+
+      assert sec_156_510
+      assert sec_156_510.name ==
+        "Proceeding when crime is not within jurisdiction of justice court"
+    end
   end
 
 
