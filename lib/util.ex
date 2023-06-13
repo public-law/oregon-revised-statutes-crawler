@@ -64,7 +64,7 @@ defmodule Util do
     |> Util.cp1252_to_utf8()
     |> Util.convert_windows_line_endings()
     |> Util.clean_no_break_spaces()
-end
+  end
 
 
   @spec cp1252_to_utf8(binary) :: binary
@@ -85,6 +85,7 @@ end
     |> String.trim()
   end
 
+
   @doc """
   In UTF-8 character value C2 A0 (194 160) is defined as
   NO-BREAK SPACE.
@@ -94,24 +95,53 @@ end
     String.replace(text, <<194, 160>>, " ")
   end
 
+
   @spec convert_windows_line_endings(binary) :: binary
+  @doc """
+  iex> convert_windows_line_endings("line 1\r\nline 2")
+  "line 1\nline 2"
+  """
   def convert_windows_line_endings(text) when is_binary(text) do
     String.replace(text, "\r\n", "\n")
   end
 
+
   @spec remove_newlines(binary) :: binary
+  @doc """
+  iex> remove_newlines("a\nb\nc")
+  "a b c"
+
+  iex> remove_newlines("a \nb")
+  "a b"
+  """
   def remove_newlines(text) do
     text
     |> String.replace("\n", " ")
     |> clean_multiple_spaces()
   end
 
+
   @spec clean_multiple_spaces(binary) :: binary
+  @doc """
+  iex> clean_multiple_spaces("a  b         c")
+  "a b c"
+
+  iex> clean_multiple_spaces("abc")
+  "abc"
+  """
   def clean_multiple_spaces(text) when is_binary(text) do
     String.replace(text, ~r/\s+/, " ")
   end
 
+
   @spec remove_trailing_period(binary) :: binary
+  @doc """
+  iex> remove_trailing_period("Hello.")
+  "Hello"
+
+  iex> remove_trailing_period("Hello")
+  "Hello"
+  """
   def remove_trailing_period(text) when is_binary(text) do
     String.replace(text, ~r/\.$/, "")
   end

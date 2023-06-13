@@ -13,6 +13,7 @@ defmodule Parser.ChapterFile do
 
   @section_number_regex ~r/^[[:digit:]][[:alnum:]]{0,3}\.[[:alnum:]]{3,4}\s/
 
+  @spec parse(binary | %{:body => binary}) :: Crawly.ParsedItem.t
   def parse(%{body: html}), do: parse(html)
 
   def parse(html) when is_bitstring(html) do
@@ -33,7 +34,7 @@ defmodule Parser.ChapterFile do
   end
 
 
-  @spec sections(Floki.html_tree) :: [Section.t()]
+  @spec sections(Floki.html_tree) :: [Section.t]
   def sections(dom) do
     paragraphs =
       dom
@@ -58,7 +59,7 @@ defmodule Parser.ChapterFile do
   end
 
 
-  @spec new_section(list, integer) :: {:error, any} | {:ok, Section.t()}
+  @spec new_section(list, integer) :: {:error, any} | {:ok, Section.t}
   def new_section(elements, edition) do
     {heading_p, remaining_ps} = List.pop_at(elements, 0)
     heading = extract_heading_data(heading_p)

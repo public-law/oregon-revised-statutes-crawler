@@ -8,16 +8,6 @@ defmodule UtilTest do
   use ExUnit.Case, async: true
   doctest Util
 
-  describe "remove_trailing_period/1" do
-    test "removes trailing period" do
-      assert remove_trailing_period("Hello.") == "Hello"
-    end
-
-    test "does not remove trailing period if not present" do
-      assert remove_trailing_period("Hello") == "Hello"
-    end
-  end
-
 
   describe "group_with/2" do
     test "1" do
