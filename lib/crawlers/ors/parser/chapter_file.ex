@@ -205,9 +205,7 @@ defmodule Parser.ChapterFile do
   #
   @spec extract_heading_text(any) :: binary
   def extract_heading_text({"p", _attrs, [_meta_data, text_elems]}) do
-    Floki.text(text_elems)
-    |> Html.replace_rn()
-    |> trim
+    Html.text_in(text_elems)
   end
 
 
