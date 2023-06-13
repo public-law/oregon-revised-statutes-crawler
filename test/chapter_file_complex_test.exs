@@ -27,7 +27,8 @@ defmodule ChapterFileComplexTest do
       sections_72A: Parser.ChapterFile.sections(parsed_fixture("ors072A.html")),
       sections_001: Parser.ChapterFile.sections(parsed_fixture("ors001.html")),
       sections_156: Parser.ChapterFile.sections(parsed_fixture("ors156.html")),
-      sections_165: Parser.ChapterFile.sections(parsed_fixture("ors165.html"))
+      sections_165: Parser.ChapterFile.sections(parsed_fixture("ors165.html")),
+      sections_275: Parser.ChapterFile.sections(parsed_fixture("ors275.html"))
     }
   end
 
@@ -241,6 +242,30 @@ defmodule ChapterFileComplexTest do
       assert sec_156_510
       assert sec_156_510.name ==
         "Proceeding when crime is not within jurisdiction of justice court"
+    end
+  end
+
+
+  describe "275.020 bugfix" do
+    test "the section was parsed", %{sections_275: sections} do
+      sec_275_020 = get_section("275.020", sections)
+
+      assert sec_275_020
+    end
+
+    test "it has the correct name", %{sections_275: sections} do
+      sec_275_020 = get_section("275.020", sections)
+
+      assert sec_275_020
+      assert sec_275_020.name == "Form and effect of conveyance to county"
+    end
+
+    test "it has the correct text", %{sections_275: sections} do
+      sec_275_020 = get_section("275.020", sections)
+
+      assert sec_275_020
+      assert sec_275_020.text ==
+        "<p>All real or personal estate conveyed by any form of conveyance, and duly acknowledged and recorded, to the inhabitants of any county, or to the county treasurer, or to any committee or other persons for the use of such county, shall be deemed the property of such county. All such conveyances shall have the same force and effect as if made to the inhabitants of such county by their corporate name.</p>"
     end
   end
 
