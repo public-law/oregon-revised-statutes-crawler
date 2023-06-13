@@ -7,6 +7,11 @@ alias Util
 require Logger
 
 defmodule Parser.ChapterFile do
+  @moduledoc """
+  Parse a chapter file.
+  """
+
+
   def parse(%{body: html}), do: parse(html)
 
   def parse(html) when is_bitstring(html) do
@@ -19,15 +24,12 @@ defmodule Parser.ChapterFile do
   end
 
 
-  @moduledoc """
-  Parse a chapter file.
-  """
   def sub_chapters(_) do
     []
   end
 
 
-  @spec sections(Floki.html_tree()) :: [Section.t()]
+  @spec sections(Floki.html_tree) :: [Section.t()]
   def sections(dom) do
     paragraphs =
       dom
@@ -80,7 +82,7 @@ defmodule Parser.ChapterFile do
   end
 
 
-  @spec edition(Floki.html_tree()) :: integer()
+  @spec edition(Floki.html_tree) :: integer
   @doc """
   Parse the ORS edition. E.g., 2021.
   """
@@ -95,7 +97,7 @@ defmodule Parser.ChapterFile do
   end
 
 
-  @spec repealed?(Floki.html_tree()) :: boolean
+  @spec repealed?(Floki.html_tree) :: boolean
   @doc """
   A repealed paragraph has one `<b>` and the second `<span>` consists only
   of bracketed text containing "repealed by".
@@ -117,7 +119,7 @@ defmodule Parser.ChapterFile do
   end
 
 
-  @spec subchapter_heading?(Floki.html_tree()) :: boolean
+  @spec subchapter_heading?(Floki.html_tree) :: boolean
   @doc """
   A Subchapter title heading has text which consists only of uppercase letters
   and whitespace. It begins with an upper case string.
@@ -127,7 +129,7 @@ defmodule Parser.ChapterFile do
   end
 
 
-  @spec subsubchapter_heading?(Floki.html_tree()) :: boolean
+  @spec subsubchapter_heading?(Floki.html_tree) :: boolean
   @doc """
   A Subsubchapter title heading has text in a parenthesis.
   """
@@ -143,7 +145,7 @@ defmodule Parser.ChapterFile do
   # Or this:
   #   "838.025\r\nElection laws apply.\r\n(1) ORS chapter 255 governs the following:"
   #
-  @spec extract_heading_data(Floki.html_tree()) :: %{
+  @spec extract_heading_data(Floki.html_tree) :: %{
           :maybe_text => binary(),
           :name => binary(),
           :number => binary()
@@ -164,7 +166,7 @@ defmodule Parser.ChapterFile do
   The number and name are contained in `<b></b>`. The number is followed
   by `\\r\\n` and the name. The name runs until a period.
   """
-  @spec extract_heading_metadata(Floki.html_tree()) :: %{name: any, number: any}
+  @spec extract_heading_metadata(Floki.html_tree) :: %{name: any, number: any}
   def extract_heading_metadata(heading_p) do
     heading_p
     |> Floki.find("b")
