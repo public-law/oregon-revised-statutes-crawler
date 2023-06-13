@@ -239,7 +239,7 @@ defmodule Parser.ChapterFile do
 
   @spec type_1_first_section_paragraph?(binary) :: boolean
   def type_1_first_section_paragraph?(b_text) do
-    b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}\s/
+    b_text =~ ~r/^[[:digit:]][[:alnum:]]{0,3}\.[[:alnum:]]{3,4}\s/
   end
 
 
