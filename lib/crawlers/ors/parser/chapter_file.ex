@@ -214,23 +214,29 @@ defmodule Parser.ChapterFile do
   # A predicate that determines if the DOM element is a first paragraph.
   # It's in this file and not the Section Model because it's specific to
   # how a Section is formatted in this particular HTML document.
-  defp first_section_paragraph?(element) do
-    b_elem = Floki.find(element, "b")
-    if b_elem == [] do
-      false
-    else
-      b_text =
-        b_elem
-        |> Floki.text()
-        |> replace_rn()
-        |> trim()
-
-      ((b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}\s/) || b_text =~ ~r/^[[:alpha:]]/)
+  @spec first_section_paragraph?(Floki.html_tree) :: boolean
+  def first_section_paragraph?(p_elem) do
+    case Floki.find(p_elem, "b") do
+      [] ->
+        false
+      b_elem ->
+        first_section_paragraph?(p_elem, b_elem)
     end
   end
 
 
-  defp replace_rn(text) do
+  @spec first_section_paragraph?(Floki.html_tree, Floki.html_tree) :: boolean
+  def first_section_paragraph?(p_elem, b_elem) do
+    b_text =
+      b_elem
+      |> Floki.text()
+      |> replace_rn()
+      |> trim()
+    ((b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}\s/) || b_text =~ ~r/^[[:alpha:]]/)
+  end
+
+
+  def replace_rn(text) do
     text
     |> replace("\r\n", " ")
     |> replace("\n", " ")
