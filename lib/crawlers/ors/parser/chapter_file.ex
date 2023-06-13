@@ -227,12 +227,19 @@ defmodule Parser.ChapterFile do
 
   @spec first_section_paragraph?(Floki.html_tree, Floki.html_tree) :: boolean
   def first_section_paragraph?(p_elem, b_elem) do
-    b_text =
-      b_elem
-      |> Floki.text()
-      |> replace_rn()
-      |> trim()
+    b_text = text_in(b_elem)
+    p_text = text_in(p_elem)
+
     ((b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}\s/) || b_text =~ ~r/^[[:alpha:]]/)
+  end
+
+
+  @spec text_in(Floki.html_tree) :: binary
+  def text_in(node) do
+    node
+    |> Floki.text()
+    |> replace_rn()
+    |> trim()
   end
 
 
