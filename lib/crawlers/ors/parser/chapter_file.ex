@@ -169,6 +169,20 @@ defmodule Parser.ChapterFile do
   """
   @spec extract_heading_metadata(Floki.html_tree) :: %{name: any, number: any}
   def extract_heading_metadata(heading_p) do
+    cond do
+      type_1_first_section_paragraph?(heading_p) ->
+        extract_heading_metadata_type_1(heading_p)
+
+      type_2_first_section_paragraph?(heading_p) ->
+        extract_heading_metadata_type_2(heading_p)
+
+      true -> raise "Unknown heading type"
+    end
+  end
+
+
+  @spec extract_heading_metadata_type_1(Floki.html_tree) :: %{name: any, number: any}
+  def extract_heading_metadata_type_1(heading_p) do
     heading_p
     |> Floki.find("b")
     |> Floki.text()
@@ -177,6 +191,12 @@ defmodule Parser.ChapterFile do
     |> split("\n", parts: 2)
     |> cleanup
     |> then(fn [num, name] -> %{number: num, name: name} end)
+  end
+
+
+  @spec extract_heading_metadata_type_2(Floki.html_tree) :: %{name: any, number: any}
+  def extract_heading_metadata_type_2(_heading_p) do
+    %{name: "Name goes here", number: "999.999"}
   end
 
 
