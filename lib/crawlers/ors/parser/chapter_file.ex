@@ -211,9 +211,9 @@ defmodule Parser.ChapterFile do
     heading_p
     |> Floki.find("b")
     |> Floki.text()
-    |> trim
-    |> replace("\r\n", "\n")  # Hack to handle when \n is used.
-    |> split("\n", parts: 2)
+    |> trim()
+    |> Html.replace_rn()
+    |> split(" ", parts: 2)
     |> cleanup
     |> then(fn [num, name] -> %{number: num, name: name} end)
   end
