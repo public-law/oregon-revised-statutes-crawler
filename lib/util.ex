@@ -94,4 +94,8 @@ defmodule Util do
   def clean_multiple_spaces(text) when is_binary(text) do
     String.replace(text, ~r/\s+/, " ")
   end
+
+  def remove_trailing_period(text) when is_binary(text) do
+    String.replace(text, ~r/\.$/, "")
+  end
 end

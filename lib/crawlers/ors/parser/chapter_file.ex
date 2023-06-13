@@ -195,8 +195,13 @@ defmodule Parser.ChapterFile do
 
 
   @spec extract_heading_metadata_type_2(Floki.html_tree) :: %{name: any, number: any}
-  def extract_heading_metadata_type_2(_heading_p) do
-    %{name: "Name goes here", number: "156.510"}
+  def extract_heading_metadata_type_2(heading_p) do
+    b_text = Html.text_in(Floki.find(heading_p, "b"))
+    p_text = Html.text_in(heading_p)
+
+    # (b_text =~ ~r/^[[:alpha:]]/) && (p_text =~ @section_number_regex)
+
+    %{name: b_text, number: "156.510"}
   end
 
 
