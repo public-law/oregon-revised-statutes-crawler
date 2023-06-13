@@ -232,6 +232,19 @@ defmodule Parser.ChapterFile do
     b_text = Html.text_in(b_elem)
     p_text = Html.text_in(p_elem)
 
-    ((b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}\s/) || b_text =~ ~r/^[[:alpha:]]/)
+    type_1_first_section_paragraph?(b_text) ||
+      type_2_first_section_paragraph?(b_text, p_text)
+  end
+
+
+  @spec type_1_first_section_paragraph?(binary) :: boolean
+  def type_1_first_section_paragraph?(b_text) do
+    b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}\s/
+  end
+
+
+  @spec type_2_first_section_paragraph?(binary, binary) :: boolean
+  def type_2_first_section_paragraph?(b_text, p_text) do
+    (b_text =~ ~r/^[[:alpha:]]/) && (p_text =~ ~r/^[[:alnum:]]/)
   end
 end
