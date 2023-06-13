@@ -147,9 +147,9 @@ defmodule Parser.ChapterFile do
   #   "838.025\r\nElection laws apply.\r\n(1) ORS chapter 255 governs the following:"
   #
   @spec extract_heading_data(Floki.html_tree) :: %{
-          :maybe_text => binary(),
-          :name => binary(),
-          :number => binary()
+          :maybe_text => binary,
+          :name => binary,
+          :number => binary
         }
   def extract_heading_data(heading_p) do
     metadata = extract_heading_metadata(heading_p)
@@ -167,7 +167,7 @@ defmodule Parser.ChapterFile do
   The number and name are contained in `<b></b>`. The number is followed
   by `\\r\\n` and the name. The name runs until a period.
   """
-  @spec extract_heading_metadata(Floki.html_tree) :: %{name: any, number: any}
+  @spec extract_heading_metadata(Floki.html_tree) :: %{name: binary, number: binary}
   def extract_heading_metadata(heading_p) do
     cond do
       type_1_first_section_paragraph?(heading_p) ->
@@ -197,7 +197,7 @@ defmodule Parser.ChapterFile do
         </p>
 
   """
-  @spec extract_heading_metadata_type_1(Floki.html_tree) :: %{name: any, number: any}
+  @spec extract_heading_metadata_type_1(Floki.html_tree) :: %{name: binary, number: binary}
   def extract_heading_metadata_type_1(heading_p) do
     heading_p
     |> Floki.find("b")
