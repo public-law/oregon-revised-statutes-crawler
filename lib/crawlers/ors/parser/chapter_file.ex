@@ -7,6 +7,12 @@ alias Util
 require Logger
 
 defmodule Parser.ChapterFile do
+  @moduledoc """
+  Parse a chapter file.
+  """
+
+  @section_number_regex ~r/^[[:digit:]][[:alnum:]]{0,3}\.[[:alnum:]]{3,4}\s/
+
   def parse(%{body: html}), do: parse(html)
 
   def parse(html) when is_bitstring(html) do
@@ -19,15 +25,12 @@ defmodule Parser.ChapterFile do
   end
 
 
-  @moduledoc """
-  Parse a chapter file.
-  """
   def sub_chapters(_) do
     []
   end
 
 
-  @spec sections(Floki.html_tree()) :: [Section.t()]
+  @spec sections(Floki.html_tree) :: [Section.t()]
   def sections(dom) do
     paragraphs =
       dom
@@ -80,7 +83,7 @@ defmodule Parser.ChapterFile do
   end
 
 
-  @spec edition(Floki.html_tree()) :: integer()
+  @spec edition(Floki.html_tree) :: integer
   @doc """
   Parse the ORS edition. E.g., 2021.
   """
@@ -95,7 +98,7 @@ defmodule Parser.ChapterFile do
   end
 
 
-  @spec repealed?(Floki.html_tree()) :: boolean
+  @spec repealed?(Floki.html_tree) :: boolean
   @doc """
   A repealed paragraph has one `<b>` and the second `<span>` consists only
   of bracketed text containing "repealed by".
@@ -106,7 +109,7 @@ defmodule Parser.ChapterFile do
     if b_count == 1 do
       case Floki.find(p, "span") do
         [_span1, span2] ->
-          span_text = Floki.text(span2) |> replace_rn()
+          span_text = Floki.text(span2) |> Html.replace_rn()
           span_text =~ ~r/ \[.*(repealed by|renumbered)/i
         _ ->
           false
@@ -117,7 +120,7 @@ defmodule Parser.ChapterFile do
   end
 
 
-  @spec subchapter_heading?(Floki.html_tree()) :: boolean
+  @spec subchapter_heading?(Floki.html_tree) :: boolean
   @doc """
   A Subchapter title heading has text which consists only of uppercase letters
   and whitespace. It begins with an upper case string.
@@ -127,7 +130,7 @@ defmodule Parser.ChapterFile do
   end
 
 
-  @spec subsubchapter_heading?(Floki.html_tree()) :: boolean
+  @spec subsubchapter_heading?(Floki.html_tree) :: boolean
   @doc """
   A Subsubchapter title heading has text in a parenthesis.
   """
@@ -143,14 +146,23 @@ defmodule Parser.ChapterFile do
   # Or this:
   #   "838.025\r\nElection laws apply.\r\n(1) ORS chapter 255 governs the following:"
   #
-  @spec extract_heading_data(Floki.html_tree()) :: %{
-          :maybe_text => binary(),
-          :name => binary(),
-          :number => binary()
+  @spec extract_heading_data(Floki.html_tree) :: %{
+          :maybe_text => binary,
+          :name => binary,
+          :number => binary
         }
   def extract_heading_data(heading_p) do
     metadata = extract_heading_metadata(heading_p)
-    maybe_heading_text = extract_heading_text(heading_p)
+    maybe_heading_text =
+      cond do
+        type_1_first_section_paragraph?(heading_p) ->
+          extract_heading_text_type_1(heading_p)
+
+        type_2_first_section_paragraph?(heading_p) ->
+          extract_heading_text_type_2(heading_p)
+
+        true -> "Unknown heading type"
+      end
 
     %{
       name: metadata.name,
@@ -164,8 +176,38 @@ defmodule Parser.ChapterFile do
   The number and name are contained in `<b></b>`. The number is followed
   by `\\r\\n` and the name. The name runs until a period.
   """
-  @spec extract_heading_metadata(Floki.html_tree()) :: %{name: any, number: any}
+  @spec extract_heading_metadata(Floki.html_tree) :: %{name: binary, number: binary}
   def extract_heading_metadata(heading_p) do
+    cond do
+      type_1_first_section_paragraph?(heading_p) ->
+        extract_heading_metadata_type_1(heading_p)
+
+      type_2_first_section_paragraph?(heading_p) ->
+        extract_heading_metadata_type_2(heading_p)
+
+      true -> raise "Unknown heading type"
+    end
+  end
+
+
+  @doc """
+          <p class=MsoNormal style='margin-bottom:0in;line-height:normal;text-autospace:
+        none'>
+            <b>
+                <span style='font-size:12.0pt;font-family:"Times New Roman",serif'>      156.520
+                Function of district attorney in justice court.</span>
+            </b>
+            <span style='font-size:12.0pt;font-family:"Times New Roman",serif'> The district
+            attorney may prosecute an action and if requested by the court shall prosecute
+            an action in a justice court and attend an examination before a magistrate,
+            either in person or by someone appointed by the district attorney for that
+            purpose, and in any case the district attorney shall control the proceedings on
+            behalf of the state. [Amended by 1981 c.863 §1]</span>
+        </p>
+
+  """
+  @spec extract_heading_metadata_type_1(Floki.html_tree) :: %{name: binary, number: binary}
+  def extract_heading_metadata_type_1(heading_p) do
     heading_p
     |> Floki.find("b")
     |> Floki.text()
@@ -177,31 +219,65 @@ defmodule Parser.ChapterFile do
   end
 
 
-  #
-  #
-  #
-  @spec extract_heading_text(any) :: binary
-  def extract_heading_text({"p", _attrs, [_meta_data, text_elems]}) do
-    Floki.text(text_elems)
-    |> replace_rn()
-    |> trim
+  @spec extract_heading_metadata_type_2({<<_::8>>, any, [{<<_::32>>, any, [...]}, ...]}) :: %{
+          name: binary,
+          number: binary
+        }
+  @doc """
+        <p class=MsoNormal style='margin-bottom:0in;line-height:normal;text-autospace:none'>
+          <span style='font-size:12.0pt;font-family:"Times New Roman",serif'>
+                    156.510
+              <b>Proceeding when crime is not within jurisdiction of justice court.</b>
+                If in
+              the course of the trial it appears to the justice that the defendant has
+              committed a crime not within the jurisdiction of a justice court, the justice
+              shall dismiss the action, state in the entry the reasons therefor, hold the
+              defendant upon the warrant of arrest and proceed to examine the charge as upon
+              an information of the commission of crime.
+          </span>
+        </p>
+  """
+  def extract_heading_metadata_type_2({"p", _, [{"span", _, [number_node, name_node, _body_node]}]}) do
+    name =
+      name_node
+      |> Floki.text()
+      |> Util.remove_trailing_period()
+
+    number =
+      number_node
+      |> String.trim()
+
+    %{name: name, number: number}
   end
 
 
-  def extract_heading_text(_), do: ""
+  @spec extract_heading_text_type_1(any) :: binary
+  def extract_heading_text_type_1({"p", _, [_meta_data, text_elems]}) do
+    Html.text_in(text_elems)
+  end
+
+  def extract_heading_text_type_1(_),  do: ""
+
+
+  @spec extract_heading_text_type_2({<<_::8>>, any, [{<<_::32>>, any, [...]}, ...]}) :: binary
+  def extract_heading_text_type_2({"p", _, [{"span", _, [_number_text, _name_node, body_text]}]}) do
+    Html.replace_rn(String.trim(body_text))
+  end
 
 
   defp cleanup([number, name]) do
-    [number, List.first(split(replace_rn(name), "."))]
+    [number, Util.remove_trailing_period(Html.replace_rn(name))]
   end
+
 
   defp cleanup([number]) when is_binary(number) do
     [number, ""]
   end
 
+
   defp cleanup(text) when is_binary(text) do
     text
-    |> replace_rn()
+    |> Html.replace_rn()
     |> Util.clean_no_break_spaces()
     |> replace(~r/  +/, " ")
     |> replace("<p> ", "<p>")
@@ -209,23 +285,28 @@ defmodule Parser.ChapterFile do
   end
 
 
-  # TODO: DRY up. Move the regex to the Section model.
-  defp first_section_paragraph?(element) do
-    b_elem = Floki.find(element, "b")
-    b_text =
-      b_elem
-      |> Floki.text()
-      |> replace_rn()
-      |> trim()
-
-    (b_elem != [])
-      && (b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}\s/)
+  # A predicate that determines if the DOM element is a first paragraph.
+  # It's in this file and not the Section Model because it's specific to
+  # how a Section is formatted in this particular HTML document.
+  @spec first_section_paragraph?(Floki.html_tree) :: boolean
+  def first_section_paragraph?(p_elem) do
+    type_1_first_section_paragraph?(p_elem) || type_2_first_section_paragraph?(p_elem)
   end
 
 
-  defp replace_rn(text) do
-    text
-    |> replace("\r\n", " ")
-    |> replace("\n", " ")
+  @spec type_1_first_section_paragraph?(Floki.html_tree) :: boolean
+  def type_1_first_section_paragraph?(p_elem) do
+    b_text = Html.text_in(Floki.find(p_elem, "b"))
+
+    b_text =~ @section_number_regex
+  end
+
+
+  @spec type_2_first_section_paragraph?(Floki.html_tree) :: boolean
+  def type_2_first_section_paragraph?(p_elem) do
+    b_text = Html.text_in(Floki.find(p_elem, "b"))
+    p_text = Html.text_in(p_elem)
+
+    (b_text =~ ~r/^[[:alpha:]]/) && (p_text =~ @section_number_regex)
   end
 end

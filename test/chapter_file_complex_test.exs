@@ -20,35 +20,17 @@ defmodule ChapterFileComplexTest do
   use ExUnit.Case, async: true
 
   setup_all do
-    dom =
-      "ors837.html"
-      |> fixture_file(cp1252: true)
-      |> Floki.parse_document!()
-
-    dom_001 =
-      "ors001.html"
-      |> fixture_file(cp1252: true)
-      |> Floki.parse_document!()
-
-    dom_72A =
-      "ors072A.html"
-      |> fixture_file(cp1252: true)
-      |> Floki.parse_document!()
-
-    dom_165 =
-      "ors165.html"
-      |> fixture_file(cp1252: true)
-      |> Floki.parse_document!()
-
     # The context data for the tests.
     %{
-      sub_chapters: Parser.ChapterFile.sub_chapters(dom),
-      sections:     Parser.ChapterFile.sections(dom),
-      sections_72A: Parser.ChapterFile.sections(dom_72A),
-      sections_001: Parser.ChapterFile.sections(dom_001),
-      sections_165: Parser.ChapterFile.sections(dom_165)
+      sub_chapters: Parser.ChapterFile.sub_chapters(parsed_fixture("ors837.html")),
+      sections:     Parser.ChapterFile.sections(parsed_fixture("ors837.html")),
+      sections_72A: Parser.ChapterFile.sections(parsed_fixture("ors072A.html")),
+      sections_001: Parser.ChapterFile.sections(parsed_fixture("ors001.html")),
+      sections_156: Parser.ChapterFile.sections(parsed_fixture("ors156.html")),
+      sections_165: Parser.ChapterFile.sections(parsed_fixture("ors165.html"))
     }
   end
+
 
   test "finds the correct # of Sections", %{sections: sections} do
     # "38" arrived at from a manual count, only current sections.
@@ -121,19 +103,19 @@ defmodule ChapterFileComplexTest do
     end
   end
 
+
   describe "Section.name" do
     test "First", %{sections: sections} do
       assert first(sections).name ==
                "Exemptions of certain aircraft from requirements of registration; rules"
     end
 
-
     test "Last", %{sections: sections} do
       assert last(sections).name == "Civil penalties"
     end
 
     test "Weird truncated name", %{sections_001: sections} do
-      sec_1_005 = Enum.find(sections, &(&1.number == "1.005"))
+      sec_1_005 = get_section("1.005", sections)
 
       assert sec_1_005.name ==
                "Credit card transactions for fees, security deposits, fines and other court-imposed obligations; rules"
@@ -141,18 +123,14 @@ defmodule ChapterFileComplexTest do
 
     test "1.745", %{sections_001: sections} do
       # https://github.com/public-law/website/issues/1319
-      sec_1_745 =
-        sections
-        |> find(fn s -> s.number == "1.745" end)
+      sec_1_745 = get_section("1.745", sections)
 
       assert sec_1_745
       assert sec_1_745.name == "Laws on civil pleading, practice and procedure deemed rules of court until changed"
     end
 
     test "165.074", %{sections_165: sections} do
-      section =
-        sections
-        |> find(fn s -> s.number == "165.074" end)
+      section = get_section("165.074", sections)
 
       assert section
       assert section.name == "Unlawful factoring of payment card transaction"
@@ -176,9 +154,7 @@ defmodule ChapterFileComplexTest do
     test "at Subchapter end", %{sections_165: sections} do
       # Test for a bug where the following Subchapter title is incorrectly
       # appended to a section's text.
-      sec_572 =
-        sections
-        |> find(fn s -> s.number == "165.572" end)
+      sec_572 = get_section("165.572", sections)
 
       assert sec_572.text ==
         "<p>(1) A person commits the crime of interference with making a report if the person, by removing, damaging or interfering with a telephone line, telephone or similar communication equipment, intentionally prevents or hinders another person from making a report to a law enforcement agency, a law enforcement official or an agency charged with the duty of taking public safety reports or from making an emergency call as defined in ORS 403.105.</p><p>(2) Interference with making a report is a Class A misdemeanor. [1999 c.946 §1; 2015 c.247 §30]</p>"
@@ -188,9 +164,7 @@ defmodule ChapterFileComplexTest do
     test "at Subsubchapter end", %{sections: sections} do
       # Test for a bug where the following Subsubchapter title is incorrectly
       # appended to a section's text.
-      sec_100 =
-        sections
-        |> find(fn s -> s.number == "837.100" end)
+      sec_100 = get_section("837.100", sections)
 
       assert sec_100.text ==
         "<p>In addition to any other persons permitted to enforce violations, the Director of the Oregon Department of Aviation and any employee specifically designated by the director may issue citations for violations established under ORS 837.990 in the manner provided by ORS chapter 153. [Formerly 493.225; 1991 c.460 §11; 1999 c.1051 §114; 2011 c.597 §148]</p>"
@@ -200,9 +174,7 @@ defmodule ChapterFileComplexTest do
     test "72A.5295", %{sections_72A: sections} do
       # The problem seems to be: New lines are used as a delimiter in the initial <p>.
       # Instead, the <b> and not-<b> should be used.
-      sec_5295 =
-        sections
-        |> find(fn s -> s.number == "72A.5295" end)
+      sec_5295 = get_section("72A.5295", sections)
 
       assert sec_5295.text ==
                "<p>In addition to any other recovery permitted by this chapter or other law, the lessor may recover from the lessee an amount that will fully compensate the lessor for any loss of or damage to the lessor’s residual interest in the goods caused by the default of the lessee. [1993 c.646 §21]</p>"
@@ -211,9 +183,7 @@ defmodule ChapterFileComplexTest do
 
     test "1.745", %{sections_001: sections} do
       # https://github.com/public-law/website/issues/1319
-      sec_1_745 =
-        sections
-        |> find(fn s -> s.number == "1.745" end)
+      sec_1_745 = get_section("1.745", sections)
 
       assert sec_1_745
       assert sec_1_745.text ==
@@ -240,4 +210,55 @@ defmodule ChapterFileComplexTest do
     end
   end
 
+
+  describe "Malformed section bugfix" do
+    # https://github.com/public-law/website/issues/1360
+
+    test "finds the correct # of Sections", %{sections_156: sections} do
+      # "33" arrived at from a manual count, only current sections
+      assert count(sections) == 33
+    end
+
+    test "156.460 text shows only its own content", %{sections_156: sections} do
+      sec_156_460 = get_section("156.460", sections)
+
+      assert sec_156_460
+      assert sec_156_460.text ==
+        "<p>When committed, the defendant shall be delivered to the custody of the proper officer by any peace officer to whom the justice may deliver the commitment, first indorsing thereon, substantially, as follows: “I hereby authorize and command E. F. to deliver this commitment, together with the defendant therein named, to the custody of the sheriff of the County of ______.”</p>"
+    end
+
+    test "156.510 text is correct", %{sections_156: sections} do
+      sec_156_510 = get_section("156.510", sections)
+
+      assert sec_156_510
+      assert sec_156_510.text ==
+        "<p>If in the course of the trial it appears to the justice that the defendant has committed a crime not within the jurisdiction of a justice court, the justice shall dismiss the action, state in the entry the reasons therefor, hold the defendant upon the warrant of arrest and proceed to examine the charge as upon an information of the commission of crime.</p>"
+    end
+
+    test "156.510 name is correct", %{sections_156: sections} do
+      sec_156_510 = get_section("156.510", sections)
+
+      assert sec_156_510
+      assert sec_156_510.name ==
+        "Proceeding when crime is not within jurisdiction of justice court"
+    end
+  end
+
+
+  #
+  # Helpers
+  #
+
+  @doc """
+  Search for a section in a list of them.
+  """
+  def get_section(number, collection) do
+    collection |> find(fn s -> s.number == number end)
+  end
+
+  def parsed_fixture(filename) do
+    filename
+      |> fixture_file(cp1252: true)
+      |> Floki.parse_document!()
+  end
 end
