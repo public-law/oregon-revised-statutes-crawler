@@ -11,6 +11,7 @@ defmodule Parser.ChapterFile do
   Parse a chapter file.
   """
 
+  @section_number_regex ~r/^[[:digit:]][[:alnum:]]{0,3}\.[[:alnum:]]{3,4}\s/
 
   def parse(%{body: html}), do: parse(html)
 
@@ -218,35 +219,23 @@ defmodule Parser.ChapterFile do
   # how a Section is formatted in this particular HTML document.
   @spec first_section_paragraph?(Floki.html_tree) :: boolean
   def first_section_paragraph?(p_elem) do
-    case Floki.find(p_elem, "b") do
-      [] ->
-        false
-      b_elem ->
-        first_section_paragraph?(p_elem, b_elem)
-    end
+    type_1_first_section_paragraph?(p_elem) || type_2_first_section_paragraph?(p_elem)
   end
 
 
-  @spec first_section_paragraph?(Floki.html_tree, Floki.html_tree) :: boolean
-  def first_section_paragraph?(p_elem, b_elem) do
-    b_text = Html.text_in(b_elem)
-    p_text = Html.text_in(p_elem)
+  @spec type_1_first_section_paragraph?(Floki.html_tree) :: boolean
+  def type_1_first_section_paragraph?(p_elem) do
+    b_text = Html.text_in(Floki.find(p_elem, "b"))
 
-    type_1_first_section_paragraph?(b_text) ||
-      type_2_first_section_paragraph?(b_text, p_text)
-  end
-
-
-  @section_number_regex ~r/^[[:digit:]][[:alnum:]]{0,3}\.[[:alnum:]]{3,4}\s/
-
-  @spec type_1_first_section_paragraph?(binary) :: boolean
-  def type_1_first_section_paragraph?(b_text) do
     b_text =~ @section_number_regex
   end
 
 
-  @spec type_2_first_section_paragraph?(binary, binary) :: boolean
-  def type_2_first_section_paragraph?(b_text, p_text) do
+  @spec type_2_first_section_paragraph?(Floki.html_tree) :: boolean
+  def type_2_first_section_paragraph?(p_elem) do
+    b_text = Html.text_in(Floki.find(p_elem, "b"))
+    p_text = Html.text_in(p_elem)
+
     (b_text =~ ~r/^[[:alpha:]]/) && (p_text =~ @section_number_regex)
   end
 end
