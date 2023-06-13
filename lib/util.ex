@@ -99,4 +99,11 @@ defmodule Util do
   def remove_trailing_period(text) when is_binary(text) do
     String.replace(text, ~r/\.$/, "")
   end
+
+  @spec replace_rn(binary) :: binary
+  def replace_rn(text) do
+    text
+    |> String.replace("\r\n", " ")
+    |> String.replace("\n", " ")
+  end
 end

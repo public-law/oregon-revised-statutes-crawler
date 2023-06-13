@@ -109,7 +109,7 @@ defmodule Parser.ChapterFile do
     if b_count == 1 do
       case Floki.find(p, "span") do
         [_span1, span2] ->
-          span_text = Floki.text(span2) |> Html.replace_rn()
+          span_text = Floki.text(span2) |> Util.replace_rn()
           span_text =~ ~r/ \[.*(repealed by|renumbered)/i
         _ ->
           false
@@ -212,7 +212,7 @@ defmodule Parser.ChapterFile do
     |> Floki.find("b")
     |> Floki.text()
     |> trim()
-    |> Html.replace_rn()
+    |> Util.replace_rn()
     |> split(" ", parts: 2)
     |> cleanup
     |> then(fn [num, name] -> %{number: num, name: name} end)
@@ -261,12 +261,12 @@ defmodule Parser.ChapterFile do
 
   @spec extract_heading_text_type_2({<<_::8>>, any, [{<<_::32>>, any, [...]}, ...]}) :: binary
   def extract_heading_text_type_2({"p", _, [{"span", _, [_number_text, _name_node, body_text]}]}) do
-    Html.replace_rn(String.trim(body_text))
+    Util.replace_rn(String.trim(body_text))
   end
 
 
   defp cleanup([number, name]) do
-    [number, Util.remove_trailing_period(Html.replace_rn(name))]
+    [number, Util.remove_trailing_period(Util.replace_rn(name))]
   end
 
 
@@ -277,7 +277,7 @@ defmodule Parser.ChapterFile do
 
   defp cleanup(text) when is_binary(text) do
     text
-    |> Html.replace_rn()
+    |> Util.replace_rn()
     |> Util.clean_no_break_spaces()
     |> replace(~r/  +/, " ")
     |> replace("<p> ", "<p>")

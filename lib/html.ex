@@ -7,14 +7,7 @@ defmodule Html do
   def text_in(node) do
     node
     |> Floki.text()
-    |> replace_rn()
+    |> Util.replace_rn()
     |> String.trim()
-  end
-
-  @spec replace_rn(binary) :: binary
-  def replace_rn(text) do
-    text
-    |> String.replace("\r\n", " ")
-    |> String.replace("\n", " ")
   end
 end
