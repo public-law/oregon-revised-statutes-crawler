@@ -181,6 +181,22 @@ defmodule Parser.ChapterFile do
   end
 
 
+  @doc """
+          <p class=MsoNormal style='margin-bottom:0in;line-height:normal;text-autospace:
+        none'>
+            <b>
+                <span style='font-size:12.0pt;font-family:"Times New Roman",serif'>      156.520
+                Function of district attorney in justice court.</span>
+            </b>
+            <span style='font-size:12.0pt;font-family:"Times New Roman",serif'> The district
+            attorney may prosecute an action and if requested by the court shall prosecute
+            an action in a justice court and attend an examination before a magistrate,
+            either in person or by someone appointed by the district attorney for that
+            purpose, and in any case the district attorney shall control the proceedings on
+            behalf of the state. [Amended by 1981 c.863 §1]</span>
+        </p>
+
+  """
   @spec extract_heading_metadata_type_1(Floki.html_tree) :: %{name: any, number: any}
   def extract_heading_metadata_type_1(heading_p) do
     heading_p
@@ -194,9 +210,27 @@ defmodule Parser.ChapterFile do
   end
 
 
+  @doc """
+        <p class=MsoNormal style='margin-bottom:0in;line-height:normal;text-autospace:none'>
+          <span style='font-size:12.0pt;font-family:"Times New Roman",serif'>
+                    156.510
+              <b>Proceeding when crime is not within jurisdiction of justice court.</b>
+                If in
+              the course of the trial it appears to the justice that the defendant has
+              committed a crime not within the jurisdiction of a justice court, the justice
+              shall dismiss the action, state in the entry the reasons therefor, hold the
+              defendant upon the warrant of arrest and proceed to examine the charge as upon
+              an information of the commission of crime.
+          </span>
+        </p>
+  """
   @spec extract_heading_metadata_type_2(Floki.html_tree) :: %{name: any, number: any}
   def extract_heading_metadata_type_2(heading_p) do
-    name =   Html.text_in(Floki.find(heading_p, "b")) |> Util.remove_trailing_period()
+    name =
+      heading_p
+      |> Floki.find("b")
+      |> Floki.text()
+      |> Util.remove_trailing_period()
 
     number =
       heading_p
