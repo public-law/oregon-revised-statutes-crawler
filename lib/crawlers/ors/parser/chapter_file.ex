@@ -219,6 +219,10 @@ defmodule Parser.ChapterFile do
   end
 
 
+  @spec extract_heading_metadata_type_2({<<_::8>>, any, [{<<_::32>>, any, [...]}, ...]}) :: %{
+          name: binary,
+          number: binary
+        }
   @doc """
         <p class=MsoNormal style='margin-bottom:0in;line-height:normal;text-autospace:none'>
           <span style='font-size:12.0pt;font-family:"Times New Roman",serif'>
@@ -255,9 +259,9 @@ defmodule Parser.ChapterFile do
   def extract_heading_text_type_1(_),  do: ""
 
 
-  @spec extract_heading_text_type_2(any) :: binary
-  def extract_heading_text_type_2({"p", _, [{"span", _, [_number_node, _name_node, body_node]}]}) do
-    String.trim(body_node)
+  @spec extract_heading_text_type_2({<<_::8>>, any, [{<<_::32>>, any, [...]}, ...]}) :: binary
+  def extract_heading_text_type_2({"p", _, [{"span", _, [_number_text, _name_node, body_text]}]}) do
+    Html.replace_rn(String.trim(body_text))
   end
 
 
