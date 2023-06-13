@@ -218,7 +218,7 @@ defmodule Parser.ChapterFile do
 
 
   defp cleanup([number, name]) do
-    [number, List.first(split(Html.replace_rn(name), "."))]
+    [number, Util.remove_trailing_period(Html.replace_rn(name))]
   end
 
 
