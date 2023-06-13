@@ -245,6 +245,6 @@ defmodule Parser.ChapterFile do
 
   @spec type_2_first_section_paragraph?(binary, binary) :: boolean
   def type_2_first_section_paragraph?(b_text, p_text) do
-    (b_text =~ ~r/^[[:alpha:]]/) && (p_text =~ ~r/^[[:digit:]]/)
+    (b_text =~ ~r/^[[:alpha:]]/) && (p_text =~ ~r/^[[:digit:]][[:alnum:]]{0,3}\.[[:alnum:]]{3,4}\s/)
   end
 end
