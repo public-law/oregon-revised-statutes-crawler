@@ -106,7 +106,7 @@ defmodule Parser.ChapterFile do
     if b_count == 1 do
       case Floki.find(p, "span") do
         [_span1, span2] ->
-          span_text = Floki.text(span2) |> replace_rn()
+          span_text = Floki.text(span2) |> Html.replace_rn()
           span_text =~ ~r/ \[.*(repealed by|renumbered)/i
         _ ->
           false
@@ -183,7 +183,7 @@ defmodule Parser.ChapterFile do
   @spec extract_heading_text(any) :: binary
   def extract_heading_text({"p", _attrs, [_meta_data, text_elems]}) do
     Floki.text(text_elems)
-    |> replace_rn()
+    |> Html.replace_rn()
     |> trim
   end
 
@@ -192,7 +192,7 @@ defmodule Parser.ChapterFile do
 
 
   defp cleanup([number, name]) do
-    [number, List.first(split(replace_rn(name), "."))]
+    [number, List.first(split(Html.replace_rn(name), "."))]
   end
 
 
@@ -203,7 +203,7 @@ defmodule Parser.ChapterFile do
 
   defp cleanup(text) when is_binary(text) do
     text
-    |> replace_rn()
+    |> Html.replace_rn()
     |> Util.clean_no_break_spaces()
     |> replace(~r/  +/, " ")
     |> replace("<p> ", "<p>")
@@ -227,25 +227,9 @@ defmodule Parser.ChapterFile do
 
   @spec first_section_paragraph?(Floki.html_tree, Floki.html_tree) :: boolean
   def first_section_paragraph?(p_elem, b_elem) do
-    b_text = text_in(b_elem)
-    p_text = text_in(p_elem)
+    b_text = Html.text_in(b_elem)
+    p_text = Html.text_in(p_elem)
 
     ((b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}\s/) || b_text =~ ~r/^[[:alpha:]]/)
-  end
-
-
-  @spec text_in(Floki.html_tree) :: binary
-  def text_in(node) do
-    node
-    |> Floki.text()
-    |> replace_rn()
-    |> trim()
-  end
-
-
-  def replace_rn(text) do
-    text
-    |> replace("\r\n", " ")
-    |> replace("\n", " ")
   end
 end
