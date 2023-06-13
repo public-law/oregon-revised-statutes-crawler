@@ -3,20 +3,10 @@ defmodule UtilTest do
   Test Util module.
   """
 
-  import Util, only: [group_with: 2, remove_trailing_period: 1]
+  import Util
 
   use ExUnit.Case, async: true
   doctest Util
-
-  describe "remove_trailing_period/1" do
-    test "removes trailing period" do
-      assert remove_trailing_period("Hello.") == "Hello"
-    end
-
-    test "does not remove trailing period if not present" do
-      assert remove_trailing_period("Hello") == "Hello"
-    end
-  end
 
 
   describe "group_with/2" do
