@@ -227,7 +227,7 @@ defmodule ChapterFileComplexTest do
         "<p>When committed, the defendant shall be delivered to the custody of the proper officer by any peace officer to whom the justice may deliver the commitment, first indorsing thereon, substantially, as follows: “I hereby authorize and command E. F. to deliver this commitment, together with the defendant therein named, to the custody of the sheriff of the County of ______.”</p>"
     end
 
-    test "156.510 text is there", %{sections_156: sections} do
+    test "156.510 text is correct", %{sections_156: sections} do
       sec_156_510 = get_section("156.510", sections)
 
       assert sec_156_510
