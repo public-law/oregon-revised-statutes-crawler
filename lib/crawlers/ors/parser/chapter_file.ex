@@ -211,17 +211,22 @@ defmodule Parser.ChapterFile do
   end
 
 
-  # TODO: DRY up. Move the regex to the Section model.
+  # A predicate that determines if the DOM element is a first paragraph.
+  # It's in this file and not the Section Model because it's specific to
+  # how a Section is formatted in this particular HTML document.
   defp first_section_paragraph?(element) do
     b_elem = Floki.find(element, "b")
-    b_text =
-      b_elem
-      |> Floki.text()
-      |> replace_rn()
-      |> trim()
+    if b_elem == [] do
+      false
+    else
+      b_text =
+        b_elem
+        |> Floki.text()
+        |> replace_rn()
+        |> trim()
 
-    (b_elem != [])
-      && ((b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}\s/) || b_text =~ ~r/^[[:alpha:]]/)
+      ((b_text =~ ~r/^[[:alnum:]]{1,4}\.[[:alnum:]]{3,4}\s/) || b_text =~ ~r/^[[:alpha:]]/)
+    end
   end
 
 
