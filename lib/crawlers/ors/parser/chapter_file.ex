@@ -196,8 +196,13 @@ defmodule Parser.ChapterFile do
 
   @spec extract_heading_metadata_type_2(Floki.html_tree) :: %{name: any, number: any}
   def extract_heading_metadata_type_2(heading_p) do
-    name = Html.text_in(Floki.find(heading_p, "b")) |> Util.remove_trailing_period()
-    number = Html.text_in(heading_p) |> String.split(" ") |> List.first()
+    name =   Html.text_in(Floki.find(heading_p, "b")) |> Util.remove_trailing_period()
+
+    number =
+      heading_p
+      |> Html.text_in()
+      |> String.split(" ")
+      |> List.first()
 
     %{name: name, number: number}
   end
