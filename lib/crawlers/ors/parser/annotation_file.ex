@@ -74,10 +74,13 @@ defmodule Parser.AnnotationFile do
   # Make a finished HTML block from a raw input string.
   defp to_block(string) do
     case string do
-      "NOTES OF DECISIONS" ->                ["<h2>Notes of Decisions</h2>"]
       "LAW REVIEW CITATIONS: " <> cites ->   ["<h2>Law Review Citations</h2>"] ++ to_block(cites)
       "ATTY. GEN. OPINIONS: " <> opinions -> ["<h2>Attorney General Opinions</h2>"] ++ to_block(opinions)
+
+      "LAW REVIEW CITATIONS" ->              ["<h2>Law Review Citations</h2>"]
       "ATTY. GEN. OPINIONS" ->               ["<h2>Attorney General Opinions</h2>"]
+      "NOTES OF DECISIONS" ->                ["<h2>Notes of Decisions</h2>"]
+
       "In general" ->                        ["<h3>In general</h3>"]
       "Mode of procedure" ->                 ["<h3>Mode of procedure</h3>"]
 
