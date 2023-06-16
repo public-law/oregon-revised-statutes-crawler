@@ -83,6 +83,7 @@ defmodule Parser.AnnotationFile do
 
       "In general" ->                        ["<h3>In general</h3>"]
       "Mode of procedure" ->                 ["<h3>Mode of procedure</h3>"]
+      "Generally" ->                         ["<h3>Generally</h3>"]
 
       _ ->                                   ["<p>#{string}</p>"]
     end
