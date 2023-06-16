@@ -78,6 +78,9 @@ defmodule Parser.AnnotationFile do
       "LAW REVIEW CITATIONS: " <> cites ->   ["<h2>Law Review Citations</h2>"] ++ to_block(cites)
       "ATTY. GEN. OPINIONS: " <> opinions -> ["<h2>Attorney General Opinions</h2>"] ++ to_block(opinions)
       "ATTY. GEN. OPINIONS" ->               ["<h2>Attorney General Opinions</h2>"]
+      "In general" ->                        ["<h3>In general</h3>"]
+      "Mode of procedure" ->                 ["<h3>Mode of procedure</h3>"]
+
       _ ->                                   ["<p>#{string}</p>"]
     end
   end
