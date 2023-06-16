@@ -70,4 +70,21 @@ defmodule AnnotationFileTest do
   # test "finds zero Chapter Annotations", %{chapter_annotations_002: annos} do
   #   assert count(annos) == 0
   # end
+
+  test "Section text - 1.160", %{section_annotations_001: collection} do
+    sec_1_160 = get_annotation("1.160", collection)
+
+    assert sec_1_160.text_blocks == [
+      "<h2>Notes of Decisions</h2>",
+      "<h3>In general</h3>",
+      "<p>The trial court did not err or abuse its discretion in allowing counsel for each party plaintiff to examine the witnesses. Wulff v. Sprouse-Reitz, Inc., 262 Or 293, 498 P2d 766 (1972)</p>",
+      "<h3>Mode of procedure</h3>",
+      "<p>This section does not authorize the prosecution of class actions. American Tbr. & Trading Co. v. First Nat. Bank of Oregon, 263 Or 1, 500 P2d 1204 (1972)</p>",
+      "<p>In a writ of review proceeding, a circuit court evidentiary hearing on facts relevant to standing is “most comfortable” to the spirit of the statutes. Duddles v. City Council of West Linn, 21 Or App 310, 535 P2d 583 (1975)</p>"
+    ]
+  end
+
+  def get_annotation(section_number, collection) do
+    collection |> find(fn a -> a.section_number == section_number end)
+  end
 end
