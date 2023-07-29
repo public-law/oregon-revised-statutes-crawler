@@ -23,14 +23,18 @@ defmodule Util do
 
   defp group_with_func(predicate) do
     fn e, acc ->
-      if predicate.(e) do
-        [[e]] ++ acc
-      else
-        case acc do
-          [curr | tail] -> [curr ++ [e] | tail]
-          [] -> []
-        end
-      end
+      group_with_func(predicate.(e), e, acc)
+    end
+  end
+
+  defp group_with_func(true, e, acc) do
+    [[e]] ++ acc
+  end
+
+  defp group_with_func(false, e, acc) do
+    case acc do
+      [curr | tail] -> [curr ++ [e] | tail]
+      [] -> []
     end
   end
 
