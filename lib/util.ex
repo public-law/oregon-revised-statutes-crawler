@@ -18,21 +18,24 @@ defmodule Util do
   [["x", "c", "d"]]
   """
   def group_with(list, predicate) do
-    result_reversed =
-      reduce(list, [], fn e, acc ->
-        case predicate.(e) do
-          true ->
-            [[e]] ++ acc
+    reduce(list, [], group_with_func(predicate)) |> reverse
+  end
 
-          false ->
-            case acc do
-              [curr | tail] -> [curr ++ [e] | tail]
-              [] -> []
-            end
-        end
-      end)
+  defp group_with_func(predicate) do
+    fn e, acc ->
+      group_with_func(predicate.(e), e, acc)
+    end
+  end
 
-    reverse(result_reversed)
+  defp group_with_func(true, e, acc) do
+    [[e]] ++ acc
+  end
+
+  defp group_with_func(false, e, acc) do
+    case acc do
+      [curr | tail] -> [curr ++ [e] | tail]
+      [] -> []
+    end
   end
 
 
@@ -46,7 +49,9 @@ defmodule Util do
     list
     |> Enum.flat_map(fn
       {:ok, result} -> [result]
-      {:error, msg} -> fun.(msg); []
+      {:error, msg} ->
+        fun.(msg)
+        []
     end)
   end
 

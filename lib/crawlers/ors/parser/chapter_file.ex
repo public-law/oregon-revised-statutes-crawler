@@ -43,9 +43,7 @@ defmodule Parser.ChapterFile do
     filtered_paragraphs =
       paragraphs
       |> Floki.filter_out("[align=center]")
-      |> Enum.reject(&repealed?/1)
-      |> Enum.reject(&subchapter_heading?/1)
-      |> Enum.reject(&subsubchapter_heading?/1)
+      |> Enum.reject(fn p -> repealed?(p) || subchapter_heading?(p) || subsubchapter_heading?(p) end)
 
     lists_of_paragraphs =
       filtered_paragraphs
@@ -55,7 +53,7 @@ defmodule Parser.ChapterFile do
 
     lists_of_paragraphs
     |> map(fn p -> new_section(p, current_edition) end)
-    |> Util.cat_oks(&Logger.warn/1)
+    |> Util.cat_oks(&Logger.warning/1)
   end
 
 
