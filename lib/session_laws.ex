@@ -1,14 +1,15 @@
-defmodule LawPdfs do
+defmodule SessionLaws do
   @moduledoc """
   Session laws API client.
   """
 
-  @spec request :: list | HTTPoison.Error.t()
+  @spec pdf_paths(integer, binary) :: list | HTTPoison.Error.t()
   @doc """
-  # Request
-  # POST https://www.oregonlegislature.gov/bills_laws/_layouts/15/inplview.aspx?List=%7B88BF04C7-3C52-4FFA-9717-94016EC3B24E%7D&View=%7B3BEB1821-2C16-4437-85F5-00046A0A96E7%7D&IsXslView=TRUE&IsCSR=TRUE&GroupString=%3B%232022%20Regular%3B%23&IsGroupRender=TRUE
+  E.g.,
+    `SessionLaws.pdf_paths(2021, "Special 2")`
+    `SessionLaws.pdf_paths(2022, "Regular")`
   """
-  def request() do
+  def pdf_paths(year, session) when is_integer(year) and is_binary(session) do
     url = "https://www.oregonlegislature.gov/bills_laws/_layouts/15/inplview.aspx"
 
     # ====== Headers ======
@@ -16,11 +17,11 @@ defmodule LawPdfs do
 
     # ====== Query Params ======
     params = [
-      {"List", "{88BF04C7-3C52-4FFA-9717-94016EC3B24E}"},
-      {"View", "{3BEB1821-2C16-4437-85F5-00046A0A96E7}"},
-      {"IsXslView", "TRUE"},
-      {"IsCSR", "TRUE"},
-      {"GroupString", ";#2022 Regular;#"},
+      {"List",          "{88BF04C7-3C52-4FFA-9717-94016EC3B24E}"},
+      {"View",          "{3BEB1821-2C16-4437-85F5-00046A0A96E7}"},
+      {"IsXslView",     "TRUE"},
+      {"IsCSR",         "TRUE"},
+      {"GroupString",   ";##{year} #{session};#"},
       {"IsGroupRender", "TRUE"},
     ]
 
@@ -36,7 +37,6 @@ defmodule LawPdfs do
 
       {:error, error = %HTTPoison.Error{reason: reason}} ->
         IO.puts("Request failed: #{reason}")
-
         error
     end
   end
