@@ -30,6 +30,7 @@ defmodule Parser.AnnotationFile do
   import Util
 
 
+  @spec parse(%{:body => binary, optional(any) => any}) :: Crawly.ParsedItem.t()
   def parse(%{body: html}) do
     document =
       html
