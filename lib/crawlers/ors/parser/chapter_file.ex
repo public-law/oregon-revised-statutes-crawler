@@ -55,7 +55,7 @@ defmodule Parser.ChapterFile do
 
     lists_of_paragraphs
     |> map(fn p -> new_section(p, current_edition) end)
-    |> Util.cat_oks(&Logger.warn/1)
+    |> Util.cat_oks(&Logger.warning/1)
   end
 
 
