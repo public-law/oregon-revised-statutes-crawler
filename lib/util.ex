@@ -46,7 +46,9 @@ defmodule Util do
     list
     |> Enum.flat_map(fn
       {:ok, result} -> [result]
-      {:error, msg} -> fun.(msg); []
+      {:error, msg} ->
+        fun.(msg)
+        []
     end)
   end
 
