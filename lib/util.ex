@@ -18,21 +18,20 @@ defmodule Util do
   [["x", "c", "d"]]
   """
   def group_with(list, predicate) do
-    result_reversed =
-      reduce(list, [], fn e, acc ->
-        case predicate.(e) do
-          true ->
-            [[e]] ++ acc
+    reduce(list, [], group_with_func(predicate)) |> reverse
+  end
 
-          false ->
-            case acc do
-              [curr | tail] -> [curr ++ [e] | tail]
-              [] -> []
-            end
+  defp group_with_func(predicate) do
+    fn e, acc ->
+      if predicate.(e) do
+        [[e]] ++ acc
+      else
+        case acc do
+          [curr | tail] -> [curr ++ [e] | tail]
+          [] -> []
         end
-      end)
-
-    reverse(result_reversed)
+      end
+    end
   end
 
 
