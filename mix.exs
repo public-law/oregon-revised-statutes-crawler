@@ -27,14 +27,17 @@ defmodule Crawlers.MixProject do
   defp deps do
     [
       {:crawly, "~> 0.14.0"},
+      {:floki, "~> 0.33.0"},
+
       {:credo, "> 0.0.0"},
       {:dialyxir, "> 1.0.0", runtime: false},
-      {:domo, "~> 1.5"},
+
       {:erlyconv, github: "eugenehr/erlyconv"},
-      {:floki, "~> 0.33.0"},
       {:httpoison, "~> 1.7"},
       {:jason, "~> 1.4"},
       {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
+
+      {:domo, "~> 1.5"},
       {:typed_struct, "~> 0.3.0", runtime: false}
     ]
   end
