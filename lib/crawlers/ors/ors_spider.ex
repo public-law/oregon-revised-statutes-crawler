@@ -1,4 +1,4 @@
-defmodule Spider do
+defmodule OrsSpider do
   @moduledoc """
   The Spider module is responsible for crawling the ORS website.
   """
