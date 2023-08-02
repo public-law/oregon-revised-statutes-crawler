@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
 
-iex -S mix run -e "Crawly.Engine.start_spider(Spider)"
+iex -S mix run -e "Crawly.Engine.start_spider(OrsSpider)"

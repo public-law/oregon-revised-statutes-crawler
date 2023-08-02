@@ -34,7 +34,7 @@ defmodule Crawlers.MixProject do
 
       {:erlyconv, github: "eugenehr/erlyconv"},
       {:httpoison, "~> 1.7"},
-      {:jason, "~> 1.4"},
+      {:jason,     "~> 1.4"},
       {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
 
       {:domo, "~> 1.5"},
