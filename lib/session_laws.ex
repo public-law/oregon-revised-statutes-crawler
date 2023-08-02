@@ -1,6 +1,8 @@
 defmodule SessionLaws do
   @moduledoc """
   Session laws API client.
+
+  Source Index: https://www.oregonlegislature.gov/bills_laws/Pages/Oregon-Laws.aspx
   """
 
   @url "https://www.oregonlegislature.gov/bills_laws/_layouts/15/inplview.aspx"
