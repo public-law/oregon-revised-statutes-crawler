@@ -34,6 +34,6 @@ defmodule Crawlers.Oar.Parser do
     Logger.info("Parsing #{url}...")
     {json_text, 0} = System.cmd("analyze", [url], into: "")
 
-    json_text
+    Jason.decode!(json_text)
   end
 end
