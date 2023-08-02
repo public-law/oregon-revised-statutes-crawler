@@ -14,11 +14,11 @@ defmodule Spider do
 
 
   @impl Crawly.Spider
-  def base_url, do: "https://www.oregonlegislature.gov/"
+  def base_url(), do: "https://www.oregonlegislature.gov/"
 
 
   @impl Crawly.Spider
-  def init do
+  def init() do
     [start_urls: [@ors_home_page]]
   end
 
