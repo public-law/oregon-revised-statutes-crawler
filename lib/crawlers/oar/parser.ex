@@ -9,20 +9,26 @@ defmodule Crawlers.Oar.Parser do
         ++ SessionLaws.special_session_pdfs(2021, 2)
         ++ SessionLaws.special_session_pdfs(2021, 1)
 
-    urls = raw_paths
-      |> Enum.map(&cleanup_path/1)
+    json_data = raw_paths
+      |> Enum.map(&form_the_url/1)
+      |> Enum.map(&parse_to_json/1)
 
 
     %Elixir.Crawly.ParsedItem{
-      items:    urls,
+      items:    json_data,
       requests: []
     }
   end
 
 
-  defp cleanup_path(path) do
+  defp form_the_url(path) do
     path
     |> String.replace("http://", "https://")
-    |> String.replace(~r/^\/bills_laws/, "https://www.oregonlegislature.gov/bills_laws")
+    |> String.replace(~r{^/bills_laws}, "https://www.oregonlegislature.gov/bills_laws")
+  end
+
+
+  defp parse_to_json(url) do
+    url
   end
 end
