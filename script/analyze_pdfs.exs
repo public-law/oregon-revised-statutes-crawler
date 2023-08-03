@@ -17,18 +17,21 @@ defmodule AnalyzePdfs do
 
 
   def parse_to_json(url) when is_binary(url) do
-    IO.puts(:standard_error, "Parsing #{url}...")
-
-    json_struct = case System.cmd("analyze", [url], into: "") do
+    case run_analyzer(url) do
       {json_text, 0} ->
-        %{source_url: url, metadata: Jason.decode!(json_text)}
+        %{ source_url: url, metadata: Jason.decode!(json_text) }
 
       _ ->
         %{ error: url }
     end
-
-    json_struct
   end
+
+
+  defp run_analyzer(url) do
+    IO.puts(:standard_error, "Parsing #{url}...")
+    System.cmd("analyze", [url], into: "")
+  end
+
 end
 
 
