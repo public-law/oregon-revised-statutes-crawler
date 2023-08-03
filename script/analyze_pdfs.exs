@@ -12,7 +12,7 @@ defmodule AnalyzePdfs do
     |> Enum.reject(&(String.length(&1) == 0))
     |> Enum.map(&parse_to_structure/1)
     |> Enum.map(&Jason.encode!/1)
-    |> File.write("tmp/metadata.json")
+    |> File.write("tmp/ors-session-laws-metadata.json")
   end
 
 
