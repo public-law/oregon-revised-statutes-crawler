@@ -13,8 +13,8 @@ config :crawly,
     # {Crawly.Pipelines.DuplicatesFilter, item_id: :title},
     Crawly.Pipelines.JSONEncoder,
     {Crawly.Pipelines.WriteToFile, extension: "jsonl", folder: "./tmp"}
-  ] #,
-  # on_spider_closed_callback: fn _, _, _ -> System.halt(1) end
+  ],
+  on_spider_closed_callback: fn _, _, _ -> System.halt(1) end
 
 config :mix_test_watch,
   clear: true

@@ -10,14 +10,14 @@ defmodule Crawlers.Oar.Parser do
       SessionLaws.regular_session_pdfs(2022)
         ++ SessionLaws.special_session_pdfs(2021, 2)
 
-    metadata_fragments = raw_paths
+    urls = raw_paths
       |> Enum.sort()
       |> Enum.map(&form_the_url/1)
-      |> Enum.map(&parse_to_json/1)
+      # |> Enum.map(&parse_to_json/1)
 
 
     %Elixir.Crawly.ParsedItem{
-      items:    metadata_fragments,
+      items:    urls,
       requests: []
     }
   end
@@ -30,9 +30,15 @@ defmodule Crawlers.Oar.Parser do
   end
 
 
-  defp parse_to_json(url) do
+  def parse_to_json(url) do
     Logger.info("Parsing #{url}...")
-    {json_text, 0} = System.cmd("analyze", [url], into: "")
+    json_text = case System.cmd("analyze", [url], into: "") do
+      {json_text, 0} ->
+        json_text
+
+      _ ->
+        "{ \"error\": \"#{url}\" }"
+    end
 
     Jason.decode!(json_text)
   end
