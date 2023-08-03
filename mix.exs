@@ -26,15 +26,18 @@ defmodule Crawlers.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:crawly, "~> 0.14.0"},
+      {:crawly, git: "https://github.com/elixir-crawly/crawly", ref: "5646911c4b8efeba21efb3eb3f064d7fe0e087f2"},
+      {:floki, "~> 0.33.0"},
+
       {:credo, "> 0.0.0"},
       {:dialyxir, "> 1.0.0", runtime: false},
-      {:domo, "~> 1.5"},
+
       {:erlyconv, github: "eugenehr/erlyconv"},
-      {:floki, "~> 0.33.0"},
       {:httpoison, "~> 1.7"},
-      {:jason, "~> 1.4"},
+      {:jason,     "~> 1.4"},
       {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
+
+      {:domo, "~> 1.5"},
       {:typed_struct, "~> 0.3.0", runtime: false}
     ]
   end

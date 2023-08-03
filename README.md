@@ -20,7 +20,7 @@ We've made the data from the last run available here: https://github.com/public-
 ## To run the spider
 
 ``` bash
-iex -S mix run -e "Crawly.Engine.start_spider(Spider)"
+iex -S mix run -e "Crawly.Engine.start_spider(OrsSpider)"
 ```
 
 ## To auto-run tests
