@@ -9,7 +9,6 @@ defmodule Crawlers.Oar.Parser do
     raw_paths =
       SessionLaws.regular_session_pdfs(2022)
         ++ SessionLaws.special_session_pdfs(2021, 2)
-        ++ SessionLaws.special_session_pdfs(2021, 1)
 
     metadata_fragments = raw_paths
       |> Enum.sort()
