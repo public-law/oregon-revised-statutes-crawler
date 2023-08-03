@@ -10,13 +10,13 @@ defmodule AnalyzePdfs do
     |> String.split("\n")
     |> Enum.map(&String.trim/1)
     |> Enum.reject(&(String.length(&1) == 0))
-    |> Enum.map(&parse_to_json/1)
+    |> Enum.map(&parse_to_structure/1)
     |> Enum.map(&Jason.encode!/1)
-    |> Enum.map(&IO.puts/1)
+    |> File.write("tmp/metadata.json")
   end
 
 
-  def parse_to_json(url) when is_binary(url) do
+  def parse_to_structure(url) when is_binary(url) do
     case run_analyzer(url) do
       {json_text, 0} ->
         %{ source_url: url, metadata: Jason.decode!(json_text) }
@@ -31,7 +31,6 @@ defmodule AnalyzePdfs do
     IO.puts(:standard_error, "Parsing #{url}...")
     System.cmd("analyze", [url], into: "")
   end
-
 end
 
 
