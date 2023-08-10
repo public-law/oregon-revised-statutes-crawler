@@ -62,10 +62,12 @@ defmodule Parser.ChapterFile do
       dom
       |> Floki.find("p")
 
-    filtered_paragraphs =
+    renumbered_toc_entries =
       paragraphs
-      |> Floki.filter_out("[align=center]")
-      |> Enum.reject(fn p -> ! repealed?(p) end)
+      |> Enum.filter(fn p -> renumbered?(p) end)
+      |> Enum.map(fn p -> Floki.text(p) end)
+
+    renumbered_toc_entries
   end
 
 
@@ -131,6 +133,13 @@ defmodule Parser.ChapterFile do
     else
       false
     end
+  end
+
+
+  def renumbered?(node) do
+    node
+    |> Floki.text()
+    |> String.contains?("renumbered")
   end
 
 
