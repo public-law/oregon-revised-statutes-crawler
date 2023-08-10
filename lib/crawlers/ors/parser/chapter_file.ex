@@ -84,9 +84,16 @@ defmodule Parser.ChapterFile do
       |> Enum.map( fn p -> Floki.find(p, "span") end )
       |> Enum.map( fn [span1, span2] -> [Floki.text(span1), Floki.text(span2)] end )
       |> Enum.map( fn [span1, span2] -> [trim(span1), Crawlers.String.capture(span2, ~r/renumbered (\S+) /)] end )
+      |> Enum.map( fn items -> Enum.map(items, &make_url/1) end )
 
     renumbered_toc_entries
   end
+
+
+  def make_url(section_number) do
+    "https://oregon.public.law/statutes/ors_#{section_number}"
+  end
+
 
 
   @spec new_section(list, integer) :: {:error, any} | {:ok, Section.t}

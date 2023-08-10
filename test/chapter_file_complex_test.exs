@@ -280,7 +280,7 @@ defmodule ChapterFileComplexTest do
     test "gets the right data" do
       sections = Parser.ChapterFile.renumbered_sections(parsed_fixture("ors001.html"))
 
-      assert [["1.165", "1.185"] | _ ] = sections
+      assert [["https://oregon.public.law/statutes/ors_1.165", "https://oregon.public.law/statutes/ors_1.185"] | _ ] = sections
     end
   end
 

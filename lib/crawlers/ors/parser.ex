@@ -48,6 +48,32 @@ defmodule Parser do
   end
 
 
+    @spec parse_home_page_for_redirects(
+          binary
+          | %{
+              :body => binary | %{:body => binary | map, optional(any) => any},
+              optional(any) => any
+            }
+        ) :: Crawly.ParsedItem.t()
+  def parse_home_page_for_redirects(%{body: html}), do: parse_home_page_for_redirects(html)
+
+  def parse_home_page_for_redirects(html) when is_bitstring(html) do
+    chapters = chapters(AllChapters.request())
+
+    chapter_reqs =
+      chapters
+      |> map(fn c -> c.url end)
+      |> Enum.reverse()
+      |> map(&Crawly.Utils.request_from_url/1)
+
+    %Elixir.Crawly.ParsedItem{
+      items: [],
+      requests: chapter_reqs
+    }
+  end
+
+
+
   @spec chapters(any) :: [Chapter]
   def chapters(api_data) do
       api_data
