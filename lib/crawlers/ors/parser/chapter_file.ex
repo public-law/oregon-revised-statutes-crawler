@@ -67,8 +67,7 @@ defmodule Parser.ChapterFile do
       |> Enum.filter(fn p -> renumbered?(p) end)
       |> Enum.map( fn p -> Floki.find(p, "span") end )
       |> Enum.map( fn [span1, span2] -> [Floki.text(span1), Floki.text(span2)] end )
-      |> Enum.map( fn [span1, span2] -> [trim(span1), trim(span2)] end )
-      |> dbg
+      |> Enum.map( fn [span1, span2] -> [trim(span1), Crawlers.String.capture(span2, ~r/renumbered (\S+) /)] end )
 
     renumbered_toc_entries
   end
