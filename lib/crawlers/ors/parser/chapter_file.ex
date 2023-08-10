@@ -57,6 +57,11 @@ defmodule Parser.ChapterFile do
   end
 
 
+  def renumbered_sections(dom) do
+
+  end
+
+
   @spec new_section(list, integer) :: {:error, any} | {:ok, Section.t}
   def new_section(elements, edition) do
     {heading_p, remaining_ps} = List.pop_at(elements, 0)
