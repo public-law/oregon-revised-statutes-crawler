@@ -29,6 +29,22 @@ defmodule Parser.ChapterFile do
   end
 
 
+  @spec parse_redirects(binary | %{:body => binary}) :: Crawly.ParsedItem.t
+  def parse_redirects(%{body: html}), do: parse_redirects(html)
+
+  def parse_redirects(html) when is_bitstring(html) do
+    document =
+      html
+      |> Util.convert_from_windows_text()
+      |> Floki.parse_document!()
+
+    %Elixir.Crawly.ParsedItem{
+      items: renumbered_sections(document),
+      requests: []
+    }
+  end
+
+
   def sub_chapters(_) do
     []
   end
