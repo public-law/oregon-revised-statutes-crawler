@@ -278,8 +278,8 @@ defmodule ChapterFileComplexTest do
 
     test "gets the right data" do
       sections = Parser.ChapterFile.renumbered_sections(parsed_fixture("ors001.html"))
-      assert sections[0][:from] == "1.165"
-      assert sections[0][:to]   == "1.185"
+
+      assert ["1.165", "1.185"] = first(sections)
     end
   end
 
