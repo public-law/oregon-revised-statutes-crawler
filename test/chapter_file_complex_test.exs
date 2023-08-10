@@ -273,8 +273,13 @@ defmodule ChapterFileComplexTest do
   describe "Renumbers sections" do
     test "gets the correct number" do
       sections = Parser.ChapterFile.renumbered_sections(parsed_fixture("ors001.html"))
-
       assert count(sections) == 2
+    end
+
+    test "gets the right data" do
+      sections = Parser.ChapterFile.renumbered_sections(parsed_fixture("ors001.html"))
+      assert sections[0][:from] == "1.165"
+      assert sections[0][:to]   == "1.185"
     end
   end
 
