@@ -58,7 +58,14 @@ defmodule Parser.ChapterFile do
 
 
   def renumbered_sections(dom) do
+    paragraphs =
+      dom
+      |> Floki.find("p")
 
+    filtered_paragraphs =
+      paragraphs
+      |> Floki.filter_out("[align=center]")
+      |> Enum.reject(fn p -> ! repealed?(p) end)
   end
 
 
