@@ -1,16 +1,6 @@
 defmodule RenumberedTest do
   @moduledoc """
-  Test 'complex' Chapter Files, 837 & 001. They're complex because it has:
-
-  * Sub-chapters,
-  * Sub-sub-chapters,
-  * Embedded tables, and
-  * "Note" paragraphs on some Sections.
-
-  The source file is served from:
-
-  https://www.oregonlegislature.gov/bills_laws/ors/ors837.html
-
+  Test `Parser.ChapterFile.renumbered_sections`.
   The fixture was made by downloading it verbatim with curl.
   """
   import Enum
