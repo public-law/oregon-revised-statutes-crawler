@@ -12,6 +12,7 @@ defmodule RenumberedTest do
     # The context data for the tests.
     %{
       sections_001: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors001.html")),
+      sections_343: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors343.html"))
     }
   end
 
