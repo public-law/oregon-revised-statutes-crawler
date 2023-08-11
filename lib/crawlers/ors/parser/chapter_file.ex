@@ -96,8 +96,7 @@ defmodule Parser.ChapterFile do
 
     renumbered = span2
     |> trim()
-    |> Crawlers.String.capture(~r/renumbered ([0-9A-Z\.]+)/i)
-    |> dbg()
+    |> Crawlers.String.capture(~r/renumbered\s\s?([0-9A-Z\.]+)/i)
 
     if is_nil(renumbered) do
       nil
