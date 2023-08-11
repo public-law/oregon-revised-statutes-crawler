@@ -4,25 +4,30 @@ defmodule Crawlers.String do
   """
 
   @spec capture(binary, Regex.t()) :: binary | nil
-  def capture(string, regex) do
-    captures(string, regex) |> Enum.at(0)
+  def capture(string, regex) when is_binary(string) do
+    list_of_captures = captures(string, regex)
+    if list_of_captures == nil do
+      nil
+    else
+      hd(list_of_captures)
+    end
   end
 
 
   @spec captures(binary, Regex.t()) :: [binary] | nil
-  def captures(string, regex) do
+  def captures(string, regex) when is_binary(string) do
     Regex.run(regex, string, capture: :all_but_first)
   end
 
 
   @spec blank?(binary) :: boolean()
-  def blank?(s) do
+  def blank?(s) when is_binary(s) do
     empty?(s) || String.match?(s, ~r/^\s+$/)
   end
 
 
   @spec empty?(binary) :: boolean()
-  def empty?(s) do
+  def empty?(s) when is_binary(s) do
     String.length(s) == 0
   end
 end

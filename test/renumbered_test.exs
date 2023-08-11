@@ -23,7 +23,7 @@ defmodule RenumberedTest do
     end
 
     test "gets the right data", %{sections_001: sections} do
-      assert [["https://oregon.public.law/statutes/ors_1.165", "https://oregon.public.law/statutes/ors_1.185"] | _ ] = sections
+      assert ["https://oregon.public.law/statutes/ors_1.165", "https://oregon.public.law/statutes/ors_1.185"] = hd(sections)
     end
   end
 
@@ -34,7 +34,7 @@ defmodule RenumberedTest do
     end
 
     test "gets the right data", %{sections_343: sections} do
-      assert [["https://oregon.public.law/statutes/ors_343.187", "https://oregon.public.law/statutes/ors_339.623"] | _ ] = sections
+      assert ["https://oregon.public.law/statutes/ors_343.187", "https://oregon.public.law/statutes/ors_339.623"] = hd(sections)
     end
   end
 

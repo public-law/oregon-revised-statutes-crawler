@@ -84,6 +84,7 @@ defmodule Parser.ChapterFile do
       |> Enum.map( fn p -> Floki.find(p, "span") end )
       |> Enum.map( fn [span1, span2] -> [Floki.text(span1), Floki.text(span2)] end )
       |> Enum.map(&parse_both_spans/1)
+      |> Enum.reject(&is_nil/1)
       |> Enum.map( fn items -> Enum.map(items, &make_url/1) end )
 
     renumbered_toc_entries
@@ -91,7 +92,17 @@ defmodule Parser.ChapterFile do
 
 
   def parse_both_spans([span1, span2]) do
-    [trim(span1), Crawlers.String.capture(span2, ~r/renumbered (\S+) /)]
+    original   = trim(span1)
+
+    renumbered = span2
+    |> Crawlers.String.capture(~r/renumbered (\S+) /)
+    |> dbg()
+
+    if is_nil(renumbered) do
+      nil
+    else
+      [original, renumbered]
+    end
   end
 
 
