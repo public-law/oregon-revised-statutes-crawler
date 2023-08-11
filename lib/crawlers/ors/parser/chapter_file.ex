@@ -95,7 +95,8 @@ defmodule Parser.ChapterFile do
     original   = trim(span1)
 
     renumbered = span2
-    |> Crawlers.String.capture(~r/renumbered ([0-9A-Z\.]+)/)
+    |> trim()
+    |> Crawlers.String.capture(~r/renumbered ([0-9A-Z\.]+)/i)
     |> dbg()
 
     if is_nil(renumbered) do
@@ -180,7 +181,7 @@ defmodule Parser.ChapterFile do
   def renumbered?(node) do
     node
     |> Floki.text()
-    |> String.contains?("renumbered")
+    |> String.contains?(["renumbered", "Renumbered"])
   end
 
 
