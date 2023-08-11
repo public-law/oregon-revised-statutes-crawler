@@ -92,11 +92,15 @@ defmodule Parser.ChapterFile do
 
 
   def parse_both_spans([span1, span2]) do
-    original   = trim(span1)
+    original =
+      span1
+      |> trim()
+      |> Crawlers.String.capture(~r/([0-9A-Z]+\.[0-9A-Z]+)/i)
 
-    renumbered = span2
-    |> trim()
-    |> Crawlers.String.capture(~r/renumbered\s\s?([0-9A-Z\.]+)/i)
+    renumbered =
+      span2
+      |> trim()
+      |> Crawlers.String.capture(~r/renumbered\s\s?([0-9A-Z]+\.[0-9A-Z]+)/i)
 
     if is_nil(renumbered) do
       nil
