@@ -17,7 +17,7 @@ defmodule RenumberedTest do
   end
 
 
-  describe "Renumbers sections" do
+  describe "Chapter 001" do
     test "gets the correct number", %{sections_001: sections} do
       assert count(sections) == 2
     end
@@ -27,6 +27,16 @@ defmodule RenumberedTest do
     end
   end
 
+
+  describe "Chapter 343" do
+    test "gets the correct number", %{sections_343: sections} do
+      assert count(sections) == 29
+    end
+
+    test "gets the right data", %{sections_343: sections} do
+      assert [["https://oregon.public.law/statutes/ors_343.187", "https://oregon.public.law/statutes/ors_339.623"] | _ ] = sections
+    end
+  end
 
 
   #
