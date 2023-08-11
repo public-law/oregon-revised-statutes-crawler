@@ -35,7 +35,7 @@ defmodule RenumberedTest do
       assert count(sections) == 29
     end
 
-    test "gets the right data", %{sections_343: sections} do
+    test "returns the missing redirect", %{sections_343: sections} do
       assert [
         "https://oregon.public.law/statutes/ors_343.187",
         "https://oregon.public.law/statutes/ors_339.623"] = hd(sections)

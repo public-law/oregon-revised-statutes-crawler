@@ -6,6 +6,7 @@ defmodule Crawlers.String do
   @spec capture(binary, Regex.t()) :: binary | nil
   def capture(string, regex) when is_binary(string) do
     list_of_captures = captures(string, regex)
+
     if list_of_captures == nil do
       nil
     else
