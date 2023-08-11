@@ -29,6 +29,22 @@ defmodule Parser.ChapterFile do
   end
 
 
+  @spec parse_redirects(binary | %{:body => binary}) :: Crawly.ParsedItem.t
+  def parse_redirects(%{body: html}), do: parse_redirects(html)
+
+  def parse_redirects(html) when is_bitstring(html) do
+    document =
+      html
+      |> Util.convert_from_windows_text()
+      |> Floki.parse_document!()
+
+    %Elixir.Crawly.ParsedItem{
+      items: renumbered_sections(document),
+      requests: []
+    }
+  end
+
+
   def sub_chapters(_) do
     []
   end
@@ -55,6 +71,49 @@ defmodule Parser.ChapterFile do
     |> map(fn p -> new_section(p, current_edition) end)
     |> Util.cat_oks(&Logger.warning/1)
   end
+
+
+  def renumbered_sections(dom) do
+    paragraphs =
+      dom
+      |> Floki.find("p")
+
+    renumbered_toc_entries =
+      paragraphs
+      |> Enum.filter(fn p -> renumbered?(p) end)
+      |> Enum.map( fn p -> Floki.find(p, "span") end )
+      |> Enum.map( fn [span1, span2] -> [Floki.text(span1), Floki.text(span2)] end )
+      |> Enum.map(&parse_both_spans/1)
+      |> Enum.reject(&is_nil/1)
+      |> Enum.map( fn items -> Enum.map(items, &make_url/1) end )
+
+    renumbered_toc_entries
+  end
+
+
+  def parse_both_spans([span1, span2]) do
+    original =
+      span1
+      |> trim()
+      |> Crawlers.String.capture(~r/([0-9A-Z]+\.[0-9A-Z]+)/i)
+
+    renumbered =
+      span2
+      |> trim()
+      |> Crawlers.String.capture(~r/renumbered\s\s?([0-9A-Z]+\.[0-9A-Z]+)/i)
+
+    if is_nil(renumbered) do
+      nil
+    else
+      [original, renumbered]
+    end
+  end
+
+
+  def make_url(section_number) do
+    "https://oregon.public.law/statutes/ors_#{section_number}"
+  end
+
 
 
   @spec new_section(list, integer) :: {:error, any} | {:ok, Section.t}
@@ -119,6 +178,13 @@ defmodule Parser.ChapterFile do
     else
       false
     end
+  end
+
+
+  def renumbered?(node) do
+    node
+    |> Floki.text()
+    |> String.contains?(["renumbered", "Renumbered"])
   end
 
 
