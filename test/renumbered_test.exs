@@ -12,6 +12,7 @@ defmodule RenumberedTest do
     # The context data for the tests.
     %{
       sections_001: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors001.html")),
+      sections_165: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors165.html")),
       sections_343: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors343.html"))
     }
   end
@@ -26,6 +27,19 @@ defmodule RenumberedTest do
       assert [
         "https://oregon.public.law/statutes/ors_1.165",
         "https://oregon.public.law/statutes/ors_1.185"] = hd(sections)
+    end
+  end
+
+
+  describe "Chapter 165" do
+    test "gets the correct number", %{sections_165: sections} do
+      assert count(sections) == 1
+    end
+
+    test "gets the right data", %{sections_165: sections} do
+      assert [
+        "https://oregon.public.law/statutes/ors_165.107",
+        "https://oregon.public.law/statutes/ors_165.117"] = hd(sections)
     end
   end
 
