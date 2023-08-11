@@ -38,7 +38,7 @@ defmodule RenumberedTest do
     test "returns the missing redirect", %{sections_343: sections} do
       assert [
         "https://oregon.public.law/statutes/ors_343.187",
-        "https://oregon.public.law/statutes/ors_339.623"] = hd(sections)
+        "https://oregon.public.law/statutes/ors_339.623"] = Enum.at sections, 5
     end
   end
 
