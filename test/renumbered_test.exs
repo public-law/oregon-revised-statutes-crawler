@@ -45,6 +45,19 @@ defmodule RenumberedTest do
   end
 
 
+  describe "Chapter 181" do
+    test "gets the correct number", %{sections_181: sections} do
+      assert count(sections) == 198
+    end
+
+    test "the first redirect", %{sections_181: sections} do
+      assert [
+        "https://oregon.public.law/statutes/ors_181.010",
+        "https://oregon.public.law/statutes/ors_181A.010"] = hd(sections)
+    end
+  end
+
+
   describe "Chapter 343" do
     test "gets the correct number", %{sections_343: sections} do
       assert count(sections) == 29
