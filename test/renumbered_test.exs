@@ -13,6 +13,7 @@ defmodule RenumberedTest do
     %{
       sections_001: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors001.html")),
       sections_165: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors165.html")),
+      sections_181: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors181.html")),
       sections_343: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors343.html"))
     }
   end
@@ -40,6 +41,19 @@ defmodule RenumberedTest do
       assert [
         "https://oregon.public.law/statutes/ors_165.107",
         "https://oregon.public.law/statutes/ors_165.117"] = hd(sections)
+    end
+  end
+
+
+  describe "Chapter 181" do
+    test "gets the correct number", %{sections_181: sections} do
+      assert count(sections) == 198
+    end
+
+    test "the first redirect", %{sections_181: sections} do
+      assert [
+        "https://oregon.public.law/statutes/ors_181.010",
+        "https://oregon.public.law/statutes/ors_181A.010"] = hd(sections)
     end
   end
 

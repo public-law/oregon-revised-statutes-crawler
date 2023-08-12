@@ -31,9 +31,6 @@ defmodule Crawlers.ORS.Models.Chapter do
       empty?(struct.anno_url) ->
         {:error, "Ch. #{struct.number}: Annotation URL can't be blank."}
 
-      struct.name == "(Former Provisions)" ->
-        {:error, "Ch. #{struct.number}: Former Provisions chapters are not valid."}
-
       invalid_chapter_number?(struct.number) ->
         {:error, "Ch. ...: Malformed chapter number: '#{struct.number}'"}
 
