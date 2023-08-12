@@ -21,18 +21,17 @@ defmodule ChaptersTest do
 
   test "finds the correct # of Chapters", %{chapters: chapters} do
     chapter_count = 688
-    former_provision_count = 107
 
-    assert count(chapters) == chapter_count - former_provision_count
+    assert count(chapters) == chapter_count
   end
 
 
-  test "Former provisions chapters are not returned", %{chapters: chapters} do
+  test "Former provisions chapters are returned", %{chapters: chapters} do
     names =
       chapters
       |> map(& &1.name)
 
-    assert all?(names, &(&1 != "(Former Provisions)"))
+    assert any?(names, &(&1 == "(Former Provisions)"))
   end
 
 
