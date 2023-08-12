@@ -13,6 +13,7 @@ defmodule RenumberedTest do
     %{
       sections_001: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors001.html")),
       sections_165: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors165.html")),
+      sections_181: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors181.html")),
       sections_343: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors343.html"))
     }
   end
