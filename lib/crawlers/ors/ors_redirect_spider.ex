@@ -33,4 +33,5 @@ defmodule OrsRedirectSpider do
     Logger.info("Parsing #{response.request_url}...")
     ChapterFile.parse_redirects(response)
   end
+
 end

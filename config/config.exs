@@ -1,6 +1,17 @@
 import Config
 
+config :logger,
+  backends: [{LoggerFileBackend, :debug_log}]
+
+config :logger, :debug_log,
+  path: "./tmp/logs/spider.log",
+  level: :debug
+
+
 config :crawly,
+  log_dir: "./tmp/logs",
+  log_to_file: true,
+
   closespider_timeout: 1,
   concurrent_requests_per_domain: 8,
   middlewares: [
@@ -18,6 +29,3 @@ config :crawly,
 
 config :mix_test_watch,
   clear: true
-
-config :logger,
-  level: :info
