@@ -14,7 +14,8 @@ defmodule RenumberedTest do
       sections_001: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors001.html")),
       sections_165: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors165.html")),
       sections_181: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors181.html")),
-      sections_343: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors343.html"))
+      sections_343: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors343.html")),
+      sections_414: Parser.ChapterFile.renumbered_sections(parsed_fixture("ors414.html")),
     }
   end
 
@@ -68,6 +69,19 @@ defmodule RenumberedTest do
         "https://oregon.public.law/statutes/ors_343.187",
         "https://oregon.public.law/statutes/ors_339.623"] = Enum.at sections, 5
     end
+  end
+
+
+  describe "Chapter 414" do
+    test "gets the correct number", %{sections_414: sections} do
+      assert count(sections) == 57
+    end
+
+    # test "returns the missing redirect", %{sections_414: sections} do
+    #   assert [
+    #     "https://oregon.public.law/statutes/ors_414.187",
+    #     "https://oregon.public.law/statutes/ors_339.623"] = Enum.at sections, 5
+    # end
   end
 
 
