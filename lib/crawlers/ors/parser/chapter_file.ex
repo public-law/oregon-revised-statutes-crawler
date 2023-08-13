@@ -79,7 +79,8 @@ defmodule Parser.ChapterFile do
     renumbered_toc_entries =
       paragraphs
       |> Enum.filter(fn p -> renumbered?(p) end)
-      |> Enum.map( fn p -> Floki.find(p, "span") end )
+      |> Enum.map(&two_spans/1)
+      |> Util.cat_oks(&Logger.warning/1)
       |> Enum.filter( fn spans -> Enum.count(spans) == 2 end)
       |> Enum.map( fn [span1, span2] -> [Floki.text(span1), Floki.text(span2)] end )
       |> Enum.map(&parse_both_spans/1)
@@ -87,6 +88,16 @@ defmodule Parser.ChapterFile do
       |> Enum.map( fn items -> Enum.map(items, &make_url/1) end )
 
     renumbered_toc_entries
+  end
+
+
+  def two_spans(node) do
+    case Floki.find(node, "span") do
+      [span1, span2] ->
+        {:ok, [span1, span2]}
+      _ ->
+        {:error, "Expected two spans in #{inspect(node)}"}
+    end
   end
 
 
