@@ -80,6 +80,7 @@ defmodule Parser.ChapterFile do
       paragraphs
       |> Enum.filter(fn p -> renumbered?(p) end)
       |> Enum.map( fn p -> Floki.find(p, "span") end )
+      |> Enum.filter( fn spans -> Enum.count(spans) == 2 end)
       |> Enum.map( fn [span1, span2] -> [Floki.text(span1), Floki.text(span2)] end )
       |> Enum.map(&parse_both_spans/1)
       |> Enum.reject(&is_nil/1)
