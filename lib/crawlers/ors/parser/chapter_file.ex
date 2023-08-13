@@ -80,7 +80,7 @@ defmodule Parser.ChapterFile do
       paragraphs
       |> Enum.filter(fn p -> renumbered?(p) end)
       |> Enum.map(&two_spans/1)
-      |> Util.cat_oks(&Logger.warning/1)
+      |> Enum.reject(&is_nil/1)
       |> Enum.filter( fn spans -> Enum.count(spans) == 2 end)
       |> Enum.map( fn [span1, span2] -> [Floki.text(span1), Floki.text(span2)] end )
       |> Enum.map(&parse_both_spans/1)
@@ -94,9 +94,9 @@ defmodule Parser.ChapterFile do
   def two_spans(node) do
     case Floki.find(node, "span") do
       [span1, span2] ->
-        {:ok, [span1, span2]}
+        [span1, span2]
       _ ->
-        {:error, "Expected two spans in #{inspect(node)}"}
+        nil
     end
   end
 
