@@ -18,7 +18,7 @@ defmodule Crawlers.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger, :logger_file_backend],
       mod: {Crawlers.Application, []}
     ]
   end
@@ -38,7 +38,9 @@ defmodule Crawlers.MixProject do
       {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
 
       {:domo, "~> 1.5"},
-      {:typed_struct, "~> 0.3.0", runtime: false}
+      {:typed_struct, "~> 0.3.0", runtime: false},
+
+      {:logger_file_backend, "~> 0.0.12"},
     ]
   end
 end

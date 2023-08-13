@@ -25,12 +25,15 @@ defmodule OrsRedirectSpider do
   @impl Crawly.Spider
   def parse_item(%{request_url: @ors_home_page} = response) do
     Logger.info("Parsing #{response.request_url}...")
+
     Parser.parse_home_page_for_redirects(response)
   end
 
 
   def parse_item(%{request_url: @chapter_root <> _} = response) do
     Logger.info("Parsing #{response.request_url}...")
-    ChapterFile.parse_redirects(response)
+
+    ChapterFile.parse_redirects(response.body)
   end
+
 end

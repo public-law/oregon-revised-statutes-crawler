@@ -15,6 +15,18 @@ defmodule Crawlers.String do
   end
 
 
+  @spec capture(binary, Regex.t()) :: binary | nil
+  def capture_last(string, regex) when is_binary(string) do
+    list_of_captures = Regex.scan(regex, string, capture: :all_but_first)
+
+    if Enum.empty?(list_of_captures) do
+      nil
+    else
+      List.last(list_of_captures)
+    end
+  end
+
+
   @spec captures(binary, Regex.t()) :: [binary] | nil
   def captures(string, regex) when is_binary(string) do
     Regex.run(regex, string, capture: :all_but_first)

@@ -29,9 +29,7 @@ defmodule Parser.ChapterFile do
   end
 
 
-  @spec parse_redirects(binary | %{:body => binary}) :: Crawly.ParsedItem.t
-  def parse_redirects(%{body: html}), do: parse_redirects(html)
-
+  @spec parse_redirects(binary) :: Crawly.ParsedItem.t
   def parse_redirects(html) when is_bitstring(html) do
     document =
       html
@@ -81,13 +79,25 @@ defmodule Parser.ChapterFile do
     renumbered_toc_entries =
       paragraphs
       |> Enum.filter(fn p -> renumbered?(p) end)
-      |> Enum.map( fn p -> Floki.find(p, "span") end )
+      |> Enum.map(&two_spans/1)
+      |> Enum.reject(&is_nil/1)
+      |> Enum.filter( fn spans -> Enum.count(spans) == 2 end)
       |> Enum.map( fn [span1, span2] -> [Floki.text(span1), Floki.text(span2)] end )
       |> Enum.map(&parse_both_spans/1)
       |> Enum.reject(&is_nil/1)
       |> Enum.map( fn items -> Enum.map(items, &make_url/1) end )
 
     renumbered_toc_entries
+  end
+
+
+  def two_spans(node) do
+    case Floki.find(node, "span") do
+      [span1, span2] ->
+        [span1, span2]
+      _ ->
+        nil
+    end
   end
 
 
@@ -100,7 +110,7 @@ defmodule Parser.ChapterFile do
     renumbered =
       span2
       |> trim()
-      |> Crawlers.String.capture(~r/renumbered\s\s?([0-9A-Z]+\.[0-9A-Z]+)/i)
+      |> Crawlers.String.capture_last( ~r/renumbered\s\s?([0-9A-Z]+\.[0-9A-Z]+)/i )
 
     if is_nil(renumbered) do
       nil
