@@ -57,7 +57,7 @@ defmodule Parser do
       ) :: Crawly.ParsedItem.t()
   def parse_home_page_for_redirects(%{body: html}), do: parse_home_page_for_redirects(html)
 
-  def parse_home_page_for_redirects(html) when is_bitstring(html) do
+  def parse_home_page_for_redirects(_) do
     chapters = chapters(AllChapters.request())
 
     chapter_reqs =

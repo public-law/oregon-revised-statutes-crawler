@@ -29,9 +29,7 @@ defmodule Parser.ChapterFile do
   end
 
 
-  @spec parse_redirects(binary | %{:body => binary}) :: Crawly.ParsedItem.t
-  def parse_redirects(%{body: html}), do: parse_redirects(html)
-
+  @spec parse_redirects(binary) :: Crawly.ParsedItem.t
   def parse_redirects(html) when is_bitstring(html) do
     document =
       html
