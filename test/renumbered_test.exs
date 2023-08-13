@@ -75,9 +75,10 @@ defmodule RenumberedTest do
 
 
   describe "Chapter 414" do
-    # test "gets the correct number", %{sections_414: sections} do
-    #   assert count(sections) == 56
-    # end
+    test "gets the correct number", %{sections_414: sections} do
+      # The HTML doc has two superfluous "renumbered" mentions.
+      assert count(sections) == 55
+    end
 
     test "returns the second 'renumbered' instance", %{sections_414: sections} do
       old_414_105 = sections |> Enum.find(fn s -> String.contains?(hd(s), "414.105") end)
