@@ -26,7 +26,7 @@ defmodule Crawlers.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:crawly, git: "https://github.com/elixir-crawly/crawly", ref: "5646911c4b8efeba21efb3eb3f064d7fe0e087f2"},
+      {:crawly, "> 0.0.0"},
       {:floki, "~> 0.33.0"},
 
       {:credo, "> 0.0.0"},
