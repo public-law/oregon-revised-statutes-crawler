@@ -51,11 +51,12 @@ defmodule Crawlers.MixProject do
       {:jason,     "~> 1.4"},
       {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
 
-      {:domo, "~> 1.5"},
+      {:domo,         "~> 1.5"},
       {:typed_struct, "~> 0.3.0", runtime: false},
+
       {:logger_file_backend, "~> 0.0.12"},
 
-      {:gleam_stdlib, "~> 0.32"},
+      {:gleam_stdlib, "~> 0.33"},
       {:gleeunit,     "~> 1.0"  , only: [:dev, :test], runtime: false},
     ]
   end
