@@ -1,17 +1,33 @@
 defmodule Crawlers.MixProject do
   use Mix.Project
 
+  @app :crawlers
+
   def project do
     [
-      app: :crawlers,
-      compilers: [:domo_compiler] ++ Mix.compilers(),
+      app: @app,
+      archives: [mix_gleam: "~> 0.6.2"],
+      compilers: [:domo_compiler, :gleam] ++ Mix.compilers(),
       version: "0.1.0",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       preferred_cli_env: [
         "test.watch": :test
-      ]
+      ],
+      aliases: [
+        # Or add this to your aliases function
+        "deps.get": ["deps.get", "gleam.deps.get"]
+      ],
+      erlc_paths: [
+        "build/dev/erlang/#{@app}/_gleam_artefacts",
+        # For Gleam < v0.25.0
+        "build/dev/erlang/#{@app}/build"
+      ],
+      erlc_include_path: "build/dev/erlang/#{@app}/include",
+      # For Elixir >= v1.15.0
+      prune_code_paths: false,
+
     ]
   end
 
@@ -39,8 +55,10 @@ defmodule Crawlers.MixProject do
 
       {:domo, "~> 1.5"},
       {:typed_struct, "~> 0.3.0", runtime: false},
-
       {:logger_file_backend, "~> 0.0.12"},
+
+      {:gleam_stdlib, "~> 0.32"},
+      {:gleeunit,     "~> 1.0"  , only: [:dev, :test], runtime: false},
     ]
   end
 end
