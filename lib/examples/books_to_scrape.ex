@@ -3,11 +3,11 @@
    use Crawly.Spider
 
    @impl Crawly.Spider
-   def base_url(), do: "https://books.toscrape.com/"
+   def base_url(), do: :books_to_scrape_gleam.base_url()
 
    @impl Crawly.Spider
    def init() do
-     [start_urls: ["https://books.toscrape.com/"]]
+     [start_urls: :books_to_scrape_gleam.start_urls()]
    end
 
    @impl Crawly.Spider
