@@ -13,7 +13,7 @@ defmodule News.Spider do
 
   @impl Crawly.Spider
   def init() do
-    [start_urls: ["https://www.jdsupra.com/legal-news/rss-law-feeds.aspx"]]
+    [start_urls: [@index]]
   end
 
 
@@ -21,7 +21,7 @@ defmodule News.Spider do
   def parse_item(%{request_url: @index} = response) do
     Logger.info("Parsing the feed index #{response.request_url}...")
 
-    next_requests =
+    feed_urls =
       response.body
       |> Floki.parse_document!
       |> Floki.find("li > a")
@@ -30,21 +30,21 @@ defmodule News.Spider do
         Crawly.Utils.build_absolute_url(url, response.request.url) |> Crawly.Utils.request_from_url()
       end)
 
-    %{items: [], requests: next_requests}
+    %{items: [], requests: feed_urls}
   end
 
 
   def parse_item(%{request_url: @feed_prefix <> _} = response) do
     Logger.info("Parsing RSS feed #{response.request_url}...")
 
-    next_requests =
+    article_urls =
       response.body
       |> Floki.parse_document!
       |> Floki.find("link")
       |> Enum.map(&Floki.text()/1)
       |> Enum.map(&Crawly.Utils.request_from_url/1)
 
-    %{items: [], requests: next_requests}
+    %{items: [], requests: article_urls}
   end
 
 
