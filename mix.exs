@@ -21,8 +21,6 @@ defmodule Crawlers.MixProject do
       ],
       erlc_paths: [
         "build/dev/erlang/#{@app}/_gleam_artefacts",
-        # For Gleam < v0.25.0
-        "build/dev/erlang/#{@app}/build"
       ],
       erlc_include_path: "build/dev/erlang/#{@app}/include",
       # For Elixir >= v1.15.0
