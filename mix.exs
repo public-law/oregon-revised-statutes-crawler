@@ -28,16 +28,16 @@ defmodule Crawlers.MixProject do
     [
       # Crawly with deps that it uses.
       {:crawly, git: "https://github.com/elixir-crawly/crawly", branch: :master},
-      {:floki, "~> 0.33.0"},
+      {:floki,               "~> 0.33.0"},
       {:logger_file_backend, "~> 0.0.11"},
-      {:httpoison,      "~> 1.7"},
 
       {:credo,    "> 0.0.0"},
       {:dialyxir, "> 1.0.0", runtime: false},
+      {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
 
       {:erlyconv, github: "eugenehr/erlyconv"},
+      {:httpoison,      "~> 1.7"},
       {:jason,          "~> 1.4"},
-      {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
 
       {:domo,         "~> 1.5"},
       {:typed_struct, "~> 0.3.0", runtime: false},

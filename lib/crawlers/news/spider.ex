@@ -16,5 +16,6 @@ defmodule News.Spider do
   @impl Crawly.Spider
   def parse_item(response) do
     Logger.info("parse_item #{response.request_url}...")
+    %{items: [], requests: []}
   end
 end
