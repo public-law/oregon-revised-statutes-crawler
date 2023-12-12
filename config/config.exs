@@ -17,7 +17,7 @@ config :crawly,
   middlewares: [
     Crawly.Middlewares.DomainFilter,
     Crawly.Middlewares.UniqueRequest,
-    {Crawly.Middlewares.UserAgent, user_agents: ["Crawly Bot"]}
+    {Crawly.Middlewares.UserAgent, user_agents: ["Public.Law Bot"]}
   ],
   pipelines: [
     # {Crawly.Pipelines.Validate, fields: [:name]},

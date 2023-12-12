@@ -51,6 +51,6 @@ defmodule News.Spider do
   def parse_item(%{request_url: @article_prefix <> _} = response) do
     Logger.info("Parsing article #{response.request_url}...")
 
-    %{items: [], requests: []}
+    %{items: [%{url: response.request_url}], requests: []}
   end
 end
