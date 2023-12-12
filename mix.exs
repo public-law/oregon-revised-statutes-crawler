@@ -27,7 +27,7 @@ defmodule Crawlers.MixProject do
   defp deps do
     [
       {:crawly, git: "https://github.com/elixir-crawly/crawly", branch: :master},
-      {:floki, "~> 0.33.0"},
+      {:floki, "~> 0.33"},
 
       {:credo, "> 0.0.0"},
       {:dialyxir, "> 1.0.0", runtime: false},
