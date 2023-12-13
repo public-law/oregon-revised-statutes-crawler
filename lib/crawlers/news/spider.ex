@@ -1,3 +1,5 @@
+import News.Article
+
 defmodule News.Spider do
   @moduledoc false
   use Crawly.Spider
@@ -50,7 +52,8 @@ defmodule News.Spider do
 
   def parse_item(%{request_url: @article_prefix <> _} = response) do
     Logger.info("Parsing article #{response.request_url}...")
+    article = News.Article.parse(response.body)
 
-    %{items: [%{url: response.request_url}], requests: []}
+    %{items: [article], requests: []}
   end
 end
