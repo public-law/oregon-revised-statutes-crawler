@@ -88,40 +88,47 @@ defmodule News.Article do
 
   @spec find_citations_in_html(Floki.html_tree) :: [binary]
   def find_citations_in_html(document) do
-    cites_from_hrefs =
-      document
+    (cites_from_hrefs(document) ++ cites_from_text(document))
+      |> filter(&is_binary/1)
+      |> cleanup_list()
+  end
+
+  def cites_from_hrefs(document) do
+    document
       |> hrefs()
       |> map(&href_to_cite/1)
+   end
 
+  def cites_from_text(document) do
     html = Floki.text(document)
-    crs_cites_from_text_1 =
+
+    [
+      simple_cites(html, ~r/(\d+-\d+-\d+(?:\.\d+)?) C.R.S./,             &("C.R.S. #{&1}")),
+      simple_cites(html, ~r/Colo. Rev. Stat. § (\d+-\d+-\d+(?:\.\d+)?)/, &("C.R.S. #{&1}")),
+      simple_cites(html, ~r/Nev. Rev. Stat. § (\d+[A-Z]?\.\d+[A-Z]?)/,   &("NRS #{&1}")),
+      simple_cites(html, ~r/NY Penal Law § (\d+\.\d+)/,                  &("NY Penal Law Section #{&1}")),
+      simple_cites(html, ~r/Ore. Rev. Stat. § (\d+[A-Z]?\.\d+[A-Z]?)/,   &("ORS #{&1}")),
+
       Regex.scan(~r/(C.R.S. &#xa7;(?:&#xa7;)? \d+-\d+-\d+)/, html)
       |> flatten()
-      |> map(fn m -> String.replace(m, ~r/&#xa7; ?/, "", global: true) end)
+      |> map(fn m -> String.replace(m, ~r/&#xa7; ?/, "", global: true) end),
 
-    crs_cites_from_text_2 =
-      Regex.scan(~r/(\d+-\d+-\d+(?:\.\d+)?) C.R.S./, html)
-      |> map(&last/1)
-      |> map(fn m -> "C.R.S. #{m}" end)
-      |> flatten()
-
-    crs_cites_from_text_3 =
-      Regex.scan(~r/Colo. Rev. Stat. § (\d+-\d+-\d+(?:\.\d+)?)/, html)
-      |> map(&last/1)
-      |> map(fn m -> "C.R.S. #{m}" end)
-      |> flatten()
-
-    tx_cites_from_text =
       Regex.scan(~r/(Texas \w+ Code Section [\d\w.]+)/, html)
       |> flatten()
       |> map(fn m -> String.replace(m, "Texas ",          "Tex. ")    end)
       |> map(fn m -> String.replace(m, "Family ",         "Fam. ")    end)
-      |> map(fn m -> String.replace(m, "Transportation ", "Transp. ") end)
+      |> map(fn m -> String.replace(m, "Transportation ", "Transp. ") end),
+    ]
+    |> flatten()
+  end
 
 
-     (cites_from_hrefs ++ crs_cites_from_text_1 ++ crs_cites_from_text_2 ++ crs_cites_from_text_3 ++ tx_cites_from_text)
-     |> filter(&is_binary/1)
-     |> cleanup_list()
+  @spec simple_cites(binary(), Regex.t(), (any() -> any())) :: list()
+  def simple_cites(html, regex, replace_func) do
+    Regex.scan(regex, html)
+    |> map(&last/1)
+    |> map(replace_func)
+    |> flatten()
   end
 
 
