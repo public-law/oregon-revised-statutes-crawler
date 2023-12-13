@@ -117,7 +117,11 @@ defmodule News.Article do
 
     nrs_cites =
       html
-      |> simple_cites(~r/Nev. Rev. Stat. § (\d+[A-Z]?\.\d+)/, &("NRS #{&1}"))
+      |> simple_cites(~r/Nev. Rev. Stat. § (\d+[A-Z]?\.\d+[A-Z]?)/, &("NRS #{&1}"))
+
+    ors_cites =
+      html
+      |> simple_cites(~r/Ore. Rev. Stat. § (\d+[A-Z]?\.\d+[A-Z]?)/, &("ORS #{&1}"))
 
     tx_cites_from_text =
       Regex.scan(~r/(Texas \w+ Code Section [\d\w.]+)/, html)
@@ -131,6 +135,7 @@ defmodule News.Article do
      ++ crs_cites_from_text_3
      ++ tx_cites_from_text
      ++ nrs_cites
+     ++ ors_cites
   end
 
 
