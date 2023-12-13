@@ -102,45 +102,33 @@ defmodule News.Article do
   def cites_from_text(document) do
     html = Floki.text(document)
 
-    crs_cites_from_text_1 =
+    [
       Regex.scan(~r/(C.R.S. &#xa7;(?:&#xa7;)? \d+-\d+-\d+)/, html)
       |> flatten()
-      |> map(fn m -> String.replace(m, ~r/&#xa7; ?/, "", global: true) end)
+      |> map(fn m -> String.replace(m, ~r/&#xa7; ?/, "", global: true) end),
 
-    crs_cites_from_text_2 =
       html
-      |> simple_cites(~r/(\d+-\d+-\d+(?:\.\d+)?) C.R.S./, &("C.R.S. #{&1}"))
+      |> simple_cites(~r/(\d+-\d+-\d+(?:\.\d+)?) C.R.S./, &("C.R.S. #{&1}")),
 
-    crs_cites_from_text_3 =
       html
-      |> simple_cites(~r/Colo. Rev. Stat. § (\d+-\d+-\d+(?:\.\d+)?)/, &("C.R.S. #{&1}"))
+      |> simple_cites(~r/Colo. Rev. Stat. § (\d+-\d+-\d+(?:\.\d+)?)/, &("C.R.S. #{&1}")),
 
-    nrs_cites =
       html
-      |> simple_cites(~r/Nev. Rev. Stat. § (\d+[A-Z]?\.\d+[A-Z]?)/, &("NRS #{&1}"))
+      |> simple_cites(~r/Nev. Rev. Stat. § (\d+[A-Z]?\.\d+[A-Z]?)/, &("NRS #{&1}")),
 
-    ors_cites =
       html
-      |> simple_cites(~r/Ore. Rev. Stat. § (\d+[A-Z]?\.\d+[A-Z]?)/, &("ORS #{&1}"))
+      |> simple_cites(~r/Ore. Rev. Stat. § (\d+[A-Z]?\.\d+[A-Z]?)/, &("ORS #{&1}")),
 
-    ny_penal_law_cites =
       html
-      |> simple_cites(~r/NY Penal Law § (\d+\.\d+)/, &("NY Penal Law Section #{&1}"))
+      |> simple_cites(~r/NY Penal Law § (\d+\.\d+)/, &("NY Penal Law Section #{&1}")),
 
-    tx_cites_from_text =
       Regex.scan(~r/(Texas \w+ Code Section [\d\w.]+)/, html)
       |> flatten()
       |> map(fn m -> String.replace(m, "Texas ",          "Tex. ")    end)
       |> map(fn m -> String.replace(m, "Family ",         "Fam. ")    end)
-      |> map(fn m -> String.replace(m, "Transportation ", "Transp. ") end)
-
-    crs_cites_from_text_1
-    ++ crs_cites_from_text_2
-    ++ crs_cites_from_text_3
-    ++ tx_cites_from_text
-    ++ nrs_cites
-    ++ ors_cites
-    ++ ny_penal_law_cites
+      |> map(fn m -> String.replace(m, "Transportation ", "Transp. ") end),
+    ]
+    |> flatten()
   end
 
 
