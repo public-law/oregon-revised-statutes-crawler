@@ -13,7 +13,7 @@ config :crawly,
   log_to_file: true,
 
   closespider_timeout: 1,
-  concurrent_requests_per_domain: 4,
+  concurrent_requests_per_domain: 8,
   middlewares: [
     Crawly.Middlewares.DomainFilter,
     Crawly.Middlewares.UniqueRequest,

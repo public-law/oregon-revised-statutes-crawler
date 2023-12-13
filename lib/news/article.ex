@@ -64,8 +64,8 @@ defmodule News.Article do
           source_url: <<_::24, _::_*8>>,
           title: binary
         }
-  def parse_from_html(html, url) when is_binary(html), do: parse_from_html(html, URI.parse(url))
-  def parse_from_html(html, %URI{} = uri) when is_binary(html) do
+    def parse_from_html(html, url) when is_binary(html) and is_binary(url), do: parse_from_html(html, URI.parse(url))
+    def parse_from_html(html, %URI{} = uri) when is_binary(html) do
     {:ok, document} = Floki.parse_document(html)
 
     cites      = find_citations_in_html(document)
