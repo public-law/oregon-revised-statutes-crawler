@@ -28,8 +28,8 @@ defmodule Crawlers.MixProject do
     [
       # Crawly with deps that it uses.
       {:crawly, github: "dogweather/crawly", branch: "error-level-messages"},
-      {:floki,               "~> 0.33.0"},
-      {:logger_file_backend, "~> 0.0.11"},
+      {:floki, "~> 0.33.0"},
+      {:logger_file_backend, github: "dbii/logger_file_backend", branch: "warn-fix"},
 
       {:credo,    "> 0.0.0"},
       {:dialyxir, "> 1.0.0", runtime: false},
