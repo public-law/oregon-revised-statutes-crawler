@@ -117,7 +117,7 @@ defmodule News.Article do
 
     nrs_cites =
       html
-      |> simple_cites(~r/Nev. Rev. Stat. § (\d+\.\d+)/, &("NRS #{&1}"))
+      |> simple_cites(~r/Nev. Rev. Stat. § (\d+[A-Z]?\.\d+)/, &("NRS #{&1}"))
 
     tx_cites_from_text =
       Regex.scan(~r/(Texas \w+ Code Section [\d\w.]+)/, html)
@@ -126,7 +126,11 @@ defmodule News.Article do
       |> map(fn m -> String.replace(m, "Family ",         "Fam. ")    end)
       |> map(fn m -> String.replace(m, "Transportation ", "Transp. ") end)
 
-     crs_cites_from_text_1 ++ crs_cites_from_text_2 ++ crs_cites_from_text_3 ++ tx_cites_from_text ++ nrs_cites
+     crs_cites_from_text_1
+     ++ crs_cites_from_text_2
+     ++ crs_cites_from_text_3
+     ++ tx_cites_from_text
+     ++ nrs_cites
   end
 
 
