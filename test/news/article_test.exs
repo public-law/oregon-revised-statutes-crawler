@@ -31,7 +31,8 @@ defmodule News.ArticleTest do
   @snippet_test_cases [
     %{html: "<html></html>", cites: []},
     %{html: "<html><p>under Colo. Rev. Stat. § 24-34-402.7 and</p></html>", cites: ["C.R.S. 24-34-402.7"]},
-    %{html: "<html><p>under Ore. Rev. Stat. § 633.295 and</p></html>", cites: ["ORS 633.295"]},
+    %{html: "<html><p>under Ore. Rev. Stat. § 633.295 and</p></html>",      cites: ["ORS 633.295"]},
+    %{html: "<html><p>under Nev. Rev. Stat. § 675.020 and</p></html>",      cites: ["NRS 675.020"]},
   ]
 
   Enum.each(@snippet_test_cases, fn %{html: html, cites: cites} ->
