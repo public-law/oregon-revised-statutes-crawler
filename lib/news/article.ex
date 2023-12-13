@@ -108,16 +108,12 @@ defmodule News.Article do
       |> map(fn m -> String.replace(m, ~r/&#xa7; ?/, "", global: true) end)
 
     crs_cites_from_text_2 =
-      Regex.scan(~r/(\d+-\d+-\d+(?:\.\d+)?) C.R.S./, html)
-      |> map(&last/1)
-      |> map(fn m -> "C.R.S. #{m}" end)
-      |> flatten()
+      html
+      |> simple_cites(~r/(\d+-\d+-\d+(?:\.\d+)?) C.R.S./, &("C.R.S. #{&1}"))
 
     crs_cites_from_text_3 =
-      Regex.scan(~r/Colo. Rev. Stat. § (\d+-\d+-\d+(?:\.\d+)?)/, html)
-      |> map(&last/1)
-      |> map(fn m -> "C.R.S. #{m}" end)
-      |> flatten()
+      html
+      |> simple_cites(~r/Colo. Rev. Stat. § (\d+-\d+-\d+(?:\.\d+)?)/, &("C.R.S. #{&1}"))
 
     tx_cites_from_text =
       Regex.scan(~r/(Texas \w+ Code Section [\d\w.]+)/, html)
@@ -127,6 +123,15 @@ defmodule News.Article do
       |> map(fn m -> String.replace(m, "Transportation ", "Transp. ") end)
 
      crs_cites_from_text_1 ++ crs_cites_from_text_2 ++ crs_cites_from_text_3 ++ tx_cites_from_text
+  end
+
+
+  @spec simple_cites(binary(), Regex.t(), (any() -> any())) :: list()
+  def simple_cites(html, regex, replace_func) do
+    Regex.scan(regex, html)
+    |> map(&last/1)
+    |> map(replace_func)
+    |> flatten()
   end
 
 
