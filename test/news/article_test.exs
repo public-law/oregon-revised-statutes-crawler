@@ -34,6 +34,7 @@ defmodule News.ArticleTest do
     %{html: "<html><p>under Ore. Rev. Stat. § 633.295 and</p></html>",      cites: ["ORS 633.295"]},
     %{html: "<html><p>under Nev. Rev. Stat. § 675.020 and</p></html>",      cites: ["NRS 675.020"]},
     %{html: "<html><p>under Nev. Rev. Stat. § 603A.302 and</p></html>",     cites: ["NRS 603A.302"]},
+    %{html: "<html><p>See NY Penal Law § 155.25.</p></html>",               cites: ["NY Penal Law Section 155.25"]},
   ]
 
   Enum.each(@snippet_test_cases, fn %{html: html, cites: cites} ->
