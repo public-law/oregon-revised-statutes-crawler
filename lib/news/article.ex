@@ -106,8 +106,8 @@ defmodule News.Article do
       simple_cites(html, ~r/(\d+-\d+-\d+(?:\.\d+)?) C.R.S./,             &("C.R.S. #{&1}")),
       simple_cites(html, ~r/Colo. Rev. Stat. § (\d+-\d+-\d+(?:\.\d+)?)/, &("C.R.S. #{&1}")),
       simple_cites(html, ~r/Nev. Rev. Stat. § (\d+[A-Z]?\.\d+[A-Z]?)/,   &("NRS #{&1}")),
-      simple_cites(html, ~r/Ore. Rev. Stat. § (\d+[A-Z]?\.\d+[A-Z]?)/,   &("ORS #{&1}")),
       simple_cites(html, ~r/NY Penal Law § (\d+\.\d+)/,                  &("NY Penal Law Section #{&1}")),
+      simple_cites(html, ~r/Ore. Rev. Stat. § (\d+[A-Z]?\.\d+[A-Z]?)/,   &("ORS #{&1}")),
 
       Regex.scan(~r/(C.R.S. &#xa7;(?:&#xa7;)? \d+-\d+-\d+)/, html)
       |> flatten()
