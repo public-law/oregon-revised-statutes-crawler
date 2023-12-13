@@ -86,6 +86,7 @@ defmodule News.Article do
   end
 
 
+  @spec find_citations_in_html(Floki.html_tree) :: [binary]
   def find_citations_in_html(document) do
     cites_from_hrefs =
       document
@@ -118,6 +119,7 @@ defmodule News.Article do
   end
 
 
+  @spec hrefs(Floki.html_tree) :: [binary]
   def hrefs(document) do
     document
     |> Floki.attribute("a", "href")
