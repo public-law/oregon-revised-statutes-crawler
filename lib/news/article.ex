@@ -88,12 +88,20 @@ defmodule News.Article do
 
   @spec find_citations_in_html(Floki.html_tree) :: [binary]
   def find_citations_in_html(document) do
-    cites_from_hrefs =
-      document
+    (cites_from_hrefs(document) ++ cites_from_text(document))
+      |> filter(&is_binary/1)
+      |> cleanup_list()
+  end
+
+  def cites_from_hrefs(document) do
+    document
       |> hrefs()
       |> map(&href_to_cite/1)
+   end
 
+  def cites_from_text(document) do
     html = Floki.text(document)
+
     crs_cites_from_text_1 =
       Regex.scan(~r/(C.R.S. &#xa7;(?:&#xa7;)? \d+-\d+-\d+)/, html)
       |> flatten()
@@ -118,10 +126,7 @@ defmodule News.Article do
       |> map(fn m -> String.replace(m, "Family ",         "Fam. ")    end)
       |> map(fn m -> String.replace(m, "Transportation ", "Transp. ") end)
 
-
-     (cites_from_hrefs ++ crs_cites_from_text_1 ++ crs_cites_from_text_2 ++ crs_cites_from_text_3 ++ tx_cites_from_text)
-     |> filter(&is_binary/1)
-     |> cleanup_list()
+     crs_cites_from_text_1 ++ crs_cites_from_text_2 ++ crs_cites_from_text_3 ++ tx_cites_from_text
   end
 
 
