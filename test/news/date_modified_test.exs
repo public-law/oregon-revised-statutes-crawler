@@ -15,7 +15,9 @@ defmodule News.DateModifiedTest do
     %{date: "2020-01-01", html: "<html><script type='application/ld+json'>{\"dateModified\": \"2020-01-01\"}</script></html>"},
     %{date: "2023-08-25", html: "<html><script type='application/ld+json'>{\"dateModified\": \"Fri, 2023-08-25 21:16:28\"}</script></html>"},
     %{date: "2023-09-20", html: "<html><script type='application/ld+json'>{\"dateModified\": \"2023-09-20T16:20:21-05:00\"}</script></html>"},
-    %{date: "2020-05-19", html: "<html><head><meta property=\"article:published_time\" content=\"2020-05-19T16:20:34+00:00\"></head></html>"}
+    %{date: "2020-05-19", html: "<html><head><meta property=\"article:published_time\" content=\"2020-05-19T16:20:34+00:00\"></head></html>"},
+    # JD Supra
+    %{date: "2023-12-05", html: "<html><div class=\"tc-ns f7 silver mv2\"><time>December 5, 2023</time></div></html>"},
   ]
 
   # Create and run a test for each of the @test_cases

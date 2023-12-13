@@ -56,7 +56,16 @@ defmodule News.Article do
   end
 
 
-  def parse_from_html(html, uri) do
+  @spec parse_from_html(binary, URI.t | binary) :: %News.Article{
+          citations: list(),
+          date_modified: nil | Date.t(),
+          description: binary,
+          source_name: binary,
+          source_url: <<_::24, _::_*8>>,
+          title: binary
+        }
+    def parse_from_html(html, url) when is_binary(html) and is_binary(url), do: parse_from_html(html, URI.parse(url))
+    def parse_from_html(html, %URI{} = uri) when is_binary(html) do
     {:ok, document} = Floki.parse_document(html)
 
     cites      = find_citations_in_html(document)
@@ -77,6 +86,7 @@ defmodule News.Article do
   end
 
 
+  @spec find_citations_in_html(Floki.html_tree) :: [binary]
   def find_citations_in_html(document) do
     cites_from_hrefs =
       document
@@ -95,6 +105,12 @@ defmodule News.Article do
       |> map(fn m -> "C.R.S. #{m}" end)
       |> flatten()
 
+    crs_cites_from_text_3 =
+      Regex.scan(~r/Colo. Rev. Stat. § (\d+-\d+-\d+(?:\.\d+)?)/, html)
+      |> map(&last/1)
+      |> map(fn m -> "C.R.S. #{m}" end)
+      |> flatten()
+
     tx_cites_from_text =
       Regex.scan(~r/(Texas \w+ Code Section [\d\w.]+)/, html)
       |> flatten()
@@ -103,12 +119,13 @@ defmodule News.Article do
       |> map(fn m -> String.replace(m, "Transportation ", "Transp. ") end)
 
 
-     (cites_from_hrefs ++ crs_cites_from_text_1 ++ crs_cites_from_text_2 ++ tx_cites_from_text)
+     (cites_from_hrefs ++ crs_cites_from_text_1 ++ crs_cites_from_text_2 ++ crs_cites_from_text_3 ++ tx_cites_from_text)
      |> filter(&is_binary/1)
      |> cleanup_list()
   end
 
 
+  @spec hrefs(Floki.html_tree) :: [binary]
   def hrefs(document) do
     document
     |> Floki.attribute("a", "href")

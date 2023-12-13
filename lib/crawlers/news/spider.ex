@@ -1,3 +1,5 @@
+alias News.Article
+
 defmodule News.Spider do
   @moduledoc false
   use Crawly.Spider
@@ -19,7 +21,7 @@ defmodule News.Spider do
 
   @impl Crawly.Spider
   def parse_item(%{request_url: @index} = response) do
-    Logger.info("Parsing the feed index #{response.request_url}...")
+    Logger.info("Parsing the feed index #{response.request_url}")
 
     feed_urls =
       response.body
@@ -30,12 +32,12 @@ defmodule News.Spider do
         Crawly.Utils.build_absolute_url(url, response.request.url) |> Crawly.Utils.request_from_url()
       end)
 
-    %{items: [], requests: feed_urls}
+    %Crawly.ParsedItem{items: [], requests: feed_urls}
   end
 
 
   def parse_item(%{request_url: @feed_prefix <> _} = response) do
-    Logger.info("Parsing RSS feed #{response.request_url}...")
+    Logger.info("Parsing RSS feed #{response.request_url}")
 
     article_urls =
       response.body
@@ -44,13 +46,16 @@ defmodule News.Spider do
       |> Enum.map(&Floki.text()/1)
       |> Enum.map(&Crawly.Utils.request_from_url/1)
 
-    %{items: [], requests: article_urls}
+    %Crawly.ParsedItem{items: [], requests: article_urls}
   end
 
 
   def parse_item(%{request_url: @article_prefix <> _} = response) do
-    Logger.info("Parsing article #{response.request_url}...")
+    url = response.request_url
+    Logger.info("Parsing article #{url}")
 
-    %{items: [%{url: response.request_url}], requests: []}
+    article = Article.parse_from_html(response.body, url)
+
+    %Crawly.ParsedItem{items: [%{url: url, article: article}], requests: []}
   end
 end

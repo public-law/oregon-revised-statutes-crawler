@@ -35,11 +35,24 @@ defmodule News.DateModified do
 
   @spec parse_from_meta_tags(Floki.html_tree) :: Date.t | nil
   def parse_from_meta_tags(document) do
-    document
-    |> Floki.find("meta[property='article:published_time']")
-    |> Floki.attribute("content")
-    |> List.first()
-    |> parse_date_text()
+    meta_date =
+      document
+      |> Floki.find("meta[property='article:published_time']")
+      |> Floki.attribute("content")
+      |> List.first()
+      |> parse_date_text()
+
+    date = if is_nil(meta_date) do
+      document
+      |> Floki.find("time")
+      |> List.first()
+      |> Floki.text()
+      |> parse_date_text()
+    else
+      meta_date
+    end
+
+    date
   end
 
 
@@ -50,9 +63,43 @@ defmodule News.DateModified do
          {:ok, date} <- Date.from_iso8601(match) do
       date
     else
-      _ -> nil
+      _ -> parse_human_date_string(a_string)
     end
   end
 
   def parse_date_text(_), do: nil
+
+  @months ~w(January February March April May June July August September October November December)
+
+  @doc """
+  Parses a date string in the format of "January 1, 2020" into a Date.t.
+
+  Examples:
+
+        iex> DateModified.parse_human_date_string("May 26, 1997")
+        ~D[1997-05-26]
+
+        iex> DateModified.parse_human_date_string("January 1, 2020")
+        ~D[2020-01-01]
+
+        iex> DateModified.parse_human_date_string("")
+        nil
+
+        iex> DateModified.parse_human_date_string("January 1")
+        nil
+
+  """
+  @spec parse_human_date_string(binary) :: nil | Date.t
+  def parse_human_date_string(text) when is_binary(text) do
+    with [_, raw_month, raw_day, year] <- Regex.run(~r/^(.+) (.+), (\d\d\d\d)$/, text),
+          day        <- String.pad_leading(raw_day, 2, "0"),
+          month_num  <- Integer.to_string(Enum.find_index(@months, &(&1 == raw_month)) + 1),
+          month      <- String.pad_leading(month_num, 2, "0"),
+         {:ok, date} <- Date.from_iso8601("#{year}-#{month}-#{day}") do
+      date
+    else
+      _ -> nil
+    end
+  end
+
 end
