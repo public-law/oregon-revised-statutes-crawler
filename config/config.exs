@@ -5,7 +5,7 @@ config :logger,
 
 config :logger, :debug_log,
   path: "./tmp/logs/spider.log",
-  level: :debug
+  level: :info
 
 
 config :crawly,
@@ -13,11 +13,11 @@ config :crawly,
   log_to_file: true,
 
   closespider_timeout: 1,
-  concurrent_requests_per_domain: 8,
+  concurrent_requests_per_domain: 4,
   middlewares: [
     Crawly.Middlewares.DomainFilter,
     Crawly.Middlewares.UniqueRequest,
-    {Crawly.Middlewares.UserAgent, user_agents: ["Crawly Bot"]}
+    {Crawly.Middlewares.UserAgent, user_agents: ["Public.Law Bot"]}
   ],
   pipelines: [
     # {Crawly.Pipelines.Validate, fields: [:name]},
