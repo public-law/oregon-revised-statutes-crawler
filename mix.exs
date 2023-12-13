@@ -38,6 +38,7 @@ defmodule Crawlers.MixProject do
       {:erlyconv, github: "eugenehr/erlyconv"},
       {:httpoison,      "~> 1.7"},
       {:jason,          "~> 1.4"},
+      {:curl_ex,        "~> 1.2.0"},
 
       {:domo,         "~> 1.5"},
       {:typed_struct, "~> 0.3.0", runtime: false},
