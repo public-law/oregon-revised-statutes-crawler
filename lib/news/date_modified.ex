@@ -71,6 +71,24 @@ defmodule News.DateModified do
 
   @months ~w(January February March April May June July August September October November December)
 
+  @doc """
+  Parses a date string in the format of "January 1, 2020" into a Date.t.
+
+  Examples:
+
+        iex> DateModified.parse_human_date_string("May 26, 1997")
+        ~D[1997-05-26]
+
+        iex> DateModified.parse_human_date_string("January 1, 2020")
+        ~D[2020-01-01]
+
+        iex> DateModified.parse_human_date_string("")
+        nil
+
+        iex> DateModified.parse_human_date_string("January 1")
+        nil
+
+  """
   @spec parse_human_date_string(binary) :: nil | Date.t
   def parse_human_date_string(text) when is_binary(text) do
     with [_, raw_month, raw_day, year] <- Regex.run(~r/^(.+) (.+), (\d\d\d\d)$/, text),
