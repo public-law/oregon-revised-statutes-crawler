@@ -105,6 +105,12 @@ defmodule News.Article do
       |> map(fn m -> "C.R.S. #{m}" end)
       |> flatten()
 
+    crs_cites_from_text_3 =
+      Regex.scan(~r/Colo. Rev. Stat. § (\d+-\d+-\d+(?:\.\d+)?)/, html)
+      |> map(&last/1)
+      |> map(fn m -> "C.R.S. #{m}" end)
+      |> flatten()
+
     tx_cites_from_text =
       Regex.scan(~r/(Texas \w+ Code Section [\d\w.]+)/, html)
       |> flatten()
@@ -113,7 +119,7 @@ defmodule News.Article do
       |> map(fn m -> String.replace(m, "Transportation ", "Transp. ") end)
 
 
-     (cites_from_hrefs ++ crs_cites_from_text_1 ++ crs_cites_from_text_2 ++ tx_cites_from_text)
+     (cites_from_hrefs ++ crs_cites_from_text_1 ++ crs_cites_from_text_2 ++ crs_cites_from_text_3 ++ tx_cites_from_text)
      |> filter(&is_binary/1)
      |> cleanup_list()
   end
