@@ -123,6 +123,10 @@ defmodule News.Article do
       html
       |> simple_cites(~r/Ore. Rev. Stat. § (\d+[A-Z]?\.\d+[A-Z]?)/, &("ORS #{&1}"))
 
+    ny_penal_law_cites =
+      html
+      |> simple_cites(~r/NY Penal Law § (\d+\.\d+)/, &("NY Penal Law Section #{&1}"))
+
     tx_cites_from_text =
       Regex.scan(~r/(Texas \w+ Code Section [\d\w.]+)/, html)
       |> flatten()
@@ -130,12 +134,13 @@ defmodule News.Article do
       |> map(fn m -> String.replace(m, "Family ",         "Fam. ")    end)
       |> map(fn m -> String.replace(m, "Transportation ", "Transp. ") end)
 
-     crs_cites_from_text_1
-     ++ crs_cites_from_text_2
-     ++ crs_cites_from_text_3
-     ++ tx_cites_from_text
-     ++ nrs_cites
-     ++ ors_cites
+    crs_cites_from_text_1
+    ++ crs_cites_from_text_2
+    ++ crs_cites_from_text_3
+    ++ tx_cites_from_text
+    ++ nrs_cites
+    ++ ors_cites
+    ++ ny_penal_law_cites
   end
 
 
