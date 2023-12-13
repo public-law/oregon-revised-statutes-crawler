@@ -5,7 +5,7 @@ config :logger,
 
 config :logger, :debug_log,
   path: "./tmp/logs/spider.log",
-  level: :debug
+  level: :info
 
 
 config :crawly,
