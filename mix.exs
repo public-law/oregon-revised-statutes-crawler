@@ -27,7 +27,7 @@ defmodule Crawlers.MixProject do
   defp deps do
     [
       # Crawly with deps that it uses.
-      {:crawly, git: "git@github.com:dogweather/crawly.git", branch: "error-level-messages"},
+      {:crawly, github: "dogweather/crawly", branch: "error-level-messages"},
       {:floki,               "~> 0.33.0"},
       {:logger_file_backend, "~> 0.0.11"},
 
