@@ -1,4 +1,4 @@
-import News.Article
+alias News.Article
 
 defmodule News.Spider do
   @moduledoc false
@@ -52,7 +52,8 @@ defmodule News.Spider do
 
   def parse_item(%{request_url: @article_prefix <> _} = response) do
     Logger.info("Parsing article #{response.request_url}...")
-    article = News.Article.parse(response.body)
+
+    article = Article.parse_from_html(response.body, response.request_url)
 
     %{items: [article], requests: []}
   end

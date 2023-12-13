@@ -56,7 +56,16 @@ defmodule News.Article do
   end
 
 
-  def parse_from_html(html, uri) do
+  @spec parse_from_html(binary, URI.t | binary) :: %News.Article{
+          citations: list(),
+          date_modified: nil | Date.t(),
+          description: binary,
+          source_name: binary,
+          source_url: <<_::24, _::_*8>>,
+          title: binary
+        }
+  def parse_from_html(html, url) when is_binary(html), do: parse_from_html(html, URI.parse(url))
+  def parse_from_html(html, %URI{} = uri) when is_binary(html) do
     {:ok, document} = Floki.parse_document(html)
 
     cites      = find_citations_in_html(document)
