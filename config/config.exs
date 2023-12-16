@@ -13,11 +13,14 @@ config :crawly,
   log_dir: "./tmp/logs",
   log_to_file: true,
 
+  start_http_api?: true,
+
   closespider_timeout: 1,
   concurrent_requests_per_domain: 10,
   middlewares: [
     Crawly.Middlewares.DomainFilter,
     Crawly.Middlewares.UniqueRequest,
+    Crawly.Middlewares.RobotsTxt,
     {Crawly.Middlewares.UserAgent, user_agents: ["Public.Law Bot"]}
   ],
   pipelines: [
