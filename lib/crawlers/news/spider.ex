@@ -4,10 +4,10 @@ defmodule News.Spider do
   @moduledoc false
   use Crawly.Spider
 
-  @index          "https://www.jdsupra.com/legal-news/rss-law-feeds.aspx"
-  @feed_prefix    "https://www.jdsupra.com/resources/syndication/docsRSSfeed.aspx"
-  @article_prefix "https://www.jdsupra.com/legalnews"
-
+  @index           "https://www.jdsupra.com/legal-news/rss-law-feeds.aspx"
+  @feed_prefix     "https://www.jdsupra.com/resources/syndication/docsRSSfeed.aspx"
+  @article_prefix  "https://www.jdsupra.com/legalnews"
+  @law_news_prefix "https://www.jdsupra.com/law-news/"
 
   @impl Crawly.Spider
   def base_url(), do: "https://www.jdsupra.com"
@@ -50,6 +50,23 @@ defmodule News.Spider do
   end
 
 
+  def parse_item(%{request_url: @law_news_prefix <> _} = response) do
+    Logger.info("Parsing law news #{response.request_url}")
+
+    article_urls =
+      response.body
+      |> Floki.parse_document!
+      |> Floki.find("h2 > a")
+      |> Floki.attribute("href")
+      |> Enum.map(fn url ->
+        Crawly.Utils.build_absolute_url(url, response.request.url) |> Crawly.Utils.request_from_url()
+      end)
+
+    %Crawly.ParsedItem{items: [], requests: article_urls}
+
+  end
+
+
   def parse_item(%{request_url: @article_prefix <> _} = response) do
     url = response.request_url
     Logger.info("Parsing article #{url}")
@@ -57,5 +74,11 @@ defmodule News.Spider do
     article = Article.parse_from_html(response.body, url)
 
     %Crawly.ParsedItem{items: [%{url: url, article: article}], requests: []}
+  end
+
+  def parse_item(%{request_url: _} = response) do
+    Logger.info("SKIPPING unknown #{response.request_url}")
+
+    %Crawly.ParsedItem{items: [], requests: []}
   end
 end
