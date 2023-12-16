@@ -3,6 +3,7 @@ import Config
 config :logger,
   backends: [{LoggerFileBackend, :debug_log}]
 
+
 config :logger, :debug_log,
   path: "./tmp/logs/spider.log",
   level: :info
@@ -26,6 +27,7 @@ config :crawly,
     {Crawly.Pipelines.WriteToFile, extension: "jsonl", folder: "./tmp"}
   ],
   on_spider_closed_callback: fn _, _, _ -> System.halt(1) end
+
 
 config :mix_test_watch,
   clear: true
