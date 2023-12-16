@@ -6,7 +6,7 @@ defmodule Crawlers.MixProject do
       app: :crawlers,
       compilers: [:domo_compiler] ++ Mix.compilers(),
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       preferred_cli_env: [
@@ -26,8 +26,6 @@ defmodule Crawlers.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      # Crawly with deps that it uses.
-      {:crawly, github: "dogweather/crawly", branch: "error-level-messages"},
       {:floki, "~> 0.33.0"},
       {:logger_file_backend, github: "dbii/logger_file_backend", branch: "warn-fix"},
 
@@ -42,6 +40,8 @@ defmodule Crawlers.MixProject do
 
       {:domo,         "~> 1.5"},
       {:typed_struct, "~> 0.3.0", runtime: false},
+
+      {:crawly, github: "elixir-crawly/crawly", branch: "master"},
     ]
   end
 end
