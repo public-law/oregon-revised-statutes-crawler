@@ -1,3 +1,4 @@
+alias Crawly.Utils
 alias News.Article
 
 defmodule News.Spider do
@@ -28,9 +29,7 @@ defmodule News.Spider do
       |> Floki.parse_document!
       |> Floki.find("li > a")
       |> Floki.attribute("href")
-      |> Enum.map(fn url ->
-        Crawly.Utils.build_absolute_url(url, response.request.url) |> Crawly.Utils.request_from_url()
-      end)
+      |> Enum.map(&(request(&1, response.request.url)))
 
     %Crawly.ParsedItem{items: [], requests: feed_urls}
   end
@@ -44,7 +43,7 @@ defmodule News.Spider do
       |> Floki.parse_document!
       |> Floki.find("link")
       |> Enum.map(&Floki.text()/1)
-      |> Enum.map(&Crawly.Utils.request_from_url/1)
+      |> Enum.map(&Utils.request_from_url/1)
 
     %Crawly.ParsedItem{items: [], requests: article_urls}
   end
@@ -58,9 +57,7 @@ defmodule News.Spider do
       |> Floki.parse_document!
       |> Floki.find("h2 > a")
       |> Floki.attribute("href")
-      |> Enum.map(fn url ->
-        Crawly.Utils.build_absolute_url(url, response.request.url) |> Crawly.Utils.request_from_url()
-      end)
+      |> Enum.map(fn url -> request(url, response.request.url) end)
 
     %Crawly.ParsedItem{items: [], requests: article_urls}
 
@@ -76,9 +73,17 @@ defmodule News.Spider do
     %Crawly.ParsedItem{items: [%{url: url, article: article}], requests: []}
   end
 
+
   def parse_item(%{request_url: _} = response) do
     Logger.info("SKIPPING unknown #{response.request_url}")
 
     %Crawly.ParsedItem{items: [], requests: []}
+  end
+
+
+  def request(url, base_url) do
+    url
+    |> Utils.build_absolute_url(base_url)
+    |> Utils.request_from_url()
   end
 end
