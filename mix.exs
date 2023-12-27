@@ -34,13 +34,15 @@ defmodule Crawlers.MixProject do
       {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
 
       {:erlyconv, github: "eugenehr/erlyconv"},
-      {:httpoison,      "~> 1.7"},
-      {:jason,          "~> 1.4"},
-      {:curl_ex,        "~> 1.2.0"},
+      {:httpoison,        "~> 1.7"},
+      {:jason,            "~> 1.4"},
+      {:curl_ex,          "~> 1.2.0"},
 
+      # Typing and validation
       {:domo,         "~> 1.5"},
       {:typed_struct, "~> 0.3.0", runtime: false},
 
+      # The Crawly framework
       {:crawly, github: "elixir-crawly/crawly", branch: "master"},
     ]
   end
